@@ -333,12 +333,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
             #endregion
 
             #region Centre Console
-            //             --Flights Instruments Panel
-            //elements["PTN_364"] = default_axis_cycle(_("NAV Course Setting"), devices.NAV_INS, inst_commands.Knob_Course, 364)
-            //elements["PTN_653"] = default_axis(_("Barometric Pressure Calibration"), devices.ADC, inst_commands.Knob_Altimeter, 653)
+            AddFunction(new Axis(this, NAV_INS, "3364", "3464", 0.1d, 0d, 1d, "Centre Console", "NAV Course Setting"));
+            AddFunction(new Axis(this, ADC, "3653", "3653", 0.1d, 0d, 1d, "Centre Console", "Barometric Pressure Calibration"));
             //elements["PTN_351"] = default_button_lever(_("Backup ADI Cage/Pitch Adjust Knob"), devices.FLIGHTINSTRUMENTS, inst_commands.ADI_Cage, inst_commands.Knob_ADI, 350, 351)
 
-            //-- Miscelaneous Switch Panel
+            //-- Misc Switch Panel
             AddFunction(Switch.CreateToggleSwitch(this, NAVFLIR, "3422", "3422", "0", "Off", "1", "Auto", "Centre Console", "Video Recorder System Mode Switch", "%1d"));
             AddFunction(Switch.CreateToggleSwitch(this, NAVFLIR, "3423", "3423", "0", "HUD", "1", "MPCD", "Centre Console", "Video Recorder System Display Selector Switch", "%1d"));
             AddFunction(Switch.CreateToggleSwitch(this, DMT, "3424", "3424", "1", "DMT", "0", "Off", "Centre Console", "DMT Toggle On/Off", "%1d"));
@@ -350,16 +349,30 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
 
             #endregion
 
+            #region Throttle Quadrant
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3481", "3481", "1", "On", "0", "Off", "Throttle Quadrant", "JPTL Switch", "%1d"));
+            AddFunction(new Switch(this, FLIGHTCONTROLS, "3483", new SwitchPosition[] { new SwitchPosition("0.0", "Left", "3483"), new SwitchPosition("0.5", "Centre", "3483"), new SwitchPosition("1.0", "Right", "3483") }, "Throttle Quadrant", "Rudder Trim Switch", "%.1f"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3482", "3482", "1", "On", "0", "Off", "Throttle Quadrant", "EMS Button", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3484", "3484", "1", "On", "0", "Off", "Throttle Quadrant", "Manual Fuel Switch", "%1d"));
+            AddFunction(new Axis(this, FLIGHTCONTROLS, "3485", "3485", 0.1d, 0d, 1d, "Throttle Quadrant", "Throttle Lever Friction Knob"));
+            AddFunction(new Axis(this, FLIGHTCONTROLS, "3486", "3486", 0.1d, 0d, 1d, "Throttle Quadrant", "Nozzle Lever Friction Knob"));
+            AddFunction(new Axis(this, DECS, "3490", "3490", 0.1d, 0d, 1d, "Throttle Quadrant", "Throttle Cutoff Lever"));
+            AddFunction(new Axis(this, FLIGHTCONTROLS, "3489", "3489", 0.1d, 0d, 1d, "Throttle Quadrant", "Parking Brake Lever"));
+            AddFunction(new Axis(this, VREST, "3487", "3487", 0.1d, 0d, 1d, "Throttle Quadrant", "Nozzle Control Lever"));
+            AddFunction(new Axis(this, VREST, "3488", "3488", 0.1d, 0d, 1d, "Throttle Quadrant", "STO Stop Lever"));
+
+            #endregion
+
+
             #region Left Hand Left Hand Switches Fuel External Lights SAAHS
             ////         --Trim Panel
             AddFunction(Switch.CreateThreeWaySwitch(this, FLIGHTCONTROLS, "3471", "3471", "1", "Test", "0.5", "On", "0", "Off", "SAAHS", "RPS/YAW Trim Switch", "%.1f"));
             AddFunction(Switch.CreateThreeWaySwitch(this, FLIGHTCONTROLS, "3472", "3472", "1", "Approach", "0.5", "Hover", "0", "Off", "SAAHS", "Trim Mode Switch", "%.1f"));
-            AddFunction(Switch.CreateThreeWaySwitch(this, FLIGHTCONTROLS, "3483", "3483", "1", "Left", "0.5", "Centre", "0", "Right", "SAAHS", "Rudder trim switch", "%1d"));
+            //AddFunction(Switch.CreateThreeWaySwitch(this, FLIGHTCONTROLS, "3483", "3483", "1", "Left", "0.5", "Centre", "0", "Right", "SAAHS", "Rudder trim switch", "%1d"));
 
-            CalibrationPointCollectionDouble aileronTrimScale = new CalibrationPointCollectionDouble(-1.0d, -10d, 1.0d, 10d);
-            AddFunction(new ScaledNetworkValue(this, "473", aileronTrimScale, "SAAHS", "Aileron trim", "Position in degrees","", BindingValueUnits.Degrees));  // values at -1 to 1
-            CalibrationPointCollectionDouble rudderTrimScale = new CalibrationPointCollectionDouble(-1.0d, -10d, 1.0d, 10d);
-            AddFunction(new ScaledNetworkValue(this, "474", rudderTrimScale, "SAAHS", "Rudder trim", "Position in degrees","", BindingValueUnits.Degrees));  // values at -1 to 1
+            CalibrationPointCollectionDouble trimScale = new CalibrationPointCollectionDouble(-1.0d, -10d, 1.0d, 10d);
+            AddFunction(new ScaledNetworkValue(this, "473", trimScale, "SAAHS", "Aileron trim", "Position in degrees","", BindingValueUnits.Degrees));  // values at -1 to 1
+            AddFunction(new ScaledNetworkValue(this, "474", trimScale, "SAAHS", "Rudder trim", "Position in degrees","", BindingValueUnits.Degrees));  // values at -1 to 1
             //         --SAAHS Panel
             AddFunction(Switch.CreateToggleSwitch(this, FLIGHTCONTROLS, "3476", "3476", "1", "Hold", "0", "Off", "SAAHS", "Altitude hold switch", "%1d"));
             AddFunction(Switch.CreateThreeWaySwitch(this, FLIGHTCONTROLS, "3477", "3477", "1", "On", "0.5", "Off", "0", "Reset", "SAAHS", "AFC Switch", "%.1f"));
@@ -386,6 +399,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
             //          -- Pilot Service Panel
             AddFunction(Switch.CreateToggleSwitch(this, ECS, "3514", "3514", "1", "On", "0", "Off", "Pilot Service", "Oxygen Switch", "%1d"));
             AddFunction(Switch.CreateToggleSwitch(this, DECS, "3515", "3515", "1", "Dump", "0", "Off", "Pilot Service", "H2O Dump Switch", "%1d"));
+            // need proper labels
+            AddFunction(Switch.CreateToggleSwitch(this, VREST, "3516", "3516", "1", "On", "0", "Off", "Pilot Service", "LIDS Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3517", "3517", "1", "On", "0", "Off", "Pilot Service", "ENG RPM Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3518", "3518", "1", "On", "0", "Off", "Pilot Service", "EFC Switch", "%1d"));
 
             #endregion
 
@@ -422,6 +439,94 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
             AddFunction(new Digits2Display(this, SMC, "2022", "Stores Management", "Stores quantity display", "Quantity of stores"));
             AddFunction(new SMCMultipleDisplay(this));
             //AddFunction(new Text(this, "2018", "Stores Management", "SMC mode", "Stores management mode in text form"));
+            #endregion
+
+            #region Left Bulkhead
+            // switch positions still need to be labeled
+            AddFunction(Switch.CreateToggleSwitch(this, MSC, "3502", "3502", "1", "Pressed", "0", "Off", "Left Bulkhead", "Seat adjustment switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3519", "3519", "1", "Pressed", "0", "Off", "Left Bulkhead", "Fuel Shutoff Lever", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, DECS, "3520", "3520", "1", "On", "0", "Off", "Left Bulkhead", "DECS switch", "%1d"));
+
+            #endregion
+
+            #region V/UHF Radio
+            // switch positions still need to be labeled
+            AddFunction(new Axis(this, RSC, "3614", "3614", 0.03d, 0d, 1d, "V/UHF Radio", "Volume Knob"));
+            AddFunction(new Axis(this, RSC, "3615", "3615", 0.03d, 0d, 1d, "V/UHF Radio", "Chan/Freq Knob"));
+            AddFunction(new Switch(this, RSC, "3616", new SwitchPosition[] {new SwitchPosition("-0.20", "Norm", "3616"), new SwitchPosition("0.0", "Norm", "3616"), new SwitchPosition("0.0", "Norm", "3616"), new SwitchPosition("0.20", "Norm", "3616"), new SwitchPosition("0.40", "Norm", "3616"), new SwitchPosition("0.60", "Norm", "3616"), new SwitchPosition("0.80", "Norm", "3616"), new SwitchPosition("1.0", "Norm", "3616") }, "V / UHF Radio", "Operational Mode Switch", "%0.1f"));
+            AddFunction(new PushButton(this, RSC, "3617", "3617", "V/UHF Radio", "Ancillary Mode Pointer A mode"));
+            AddFunction(new PushButton(this, RSC, "3618", "3618", "V/UHF Radio", "Ancillary Mode Switch P mode"));
+            AddFunction(new Switch(this, RSC, "3619", new SwitchPosition[] { new SwitchPosition("0.0", "Norm", "3619"), new SwitchPosition("0.0", "Norm", "3619"), new SwitchPosition("0.15", "Norm", "3619"), new SwitchPosition("0.30", "Norm", "3619"), new SwitchPosition("0.45", "Norm", "3619"), new SwitchPosition("0.60", "Norm", "3619"), new SwitchPosition("0.75", "Norm", "3619"), new SwitchPosition("0.90", "Norm", "3619"), new SwitchPosition("1.00", "Norm", "3619") }, "V / UHF Radio", "Frequency Mode Switch", "%0.1f"));
+            AddFunction(new PushButton(this, RSC, "3620", "3620", "V/UHF Radio", "LOAD/OFST Switch"));
+
+            #endregion
+
+            #region ACNIP
+            // switch positions still need to be labeled
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3621", "3621", "1", "On", "0", "Off", "ACNIP", "ACNIP Mode Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3622", "3622", "1", "On", "0", "Off", "ACNIP", "KY-1 Cipher Type Selector Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3623", "3623", "1", "On", "0", "Off", "ACNIP", "KY-2 Cipher Type Selector Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3624", "3624", "1", "On", "0", "Off", "ACNIP", "KY-1 Code/Mode Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3625", "3625", "1", "On", "0", "Off", "ACNIP", "KY-2 Code/Mode Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3626", "3626", "1", "On", "0", "Off", "ACNIP", "ACNIP Radio Selector Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3627", "3627", "1", "On", "0", "Off", "ACNIP", "KY-58 Codes Clear Switch", "%1d"));
+            AddFunction(Switch.CreateThreeWaySwitch(this, ACNIP, "3628", "3628", "1", "On", "0.5", "Off", "0", "Off", "ACNIP", "KY-58 Remote Codes Load Switch", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, ACNIP, "3632", "3632", "1", "On", "0", "Off", "ACNIP", "IFF Operational Mode Switch", "%1d"));
+            AddFunction(Switch.CreateThreeWaySwitch(this, ACNIP, "3633", "3633", "1", "On", "0.5", "Off", "0", "Off", "ACNIP", "IFF Crypto Mode Switch", "%1d"));
+
+            #endregion
+
+            #region ICS IFF
+            // switch positions still need to be labeled
+            AddFunction(new Axis(this, INTERCOM, "3629", "3629", 0.03d, 0d, 1d, "Intercomm", "Aux Volume Knob"));
+            AddFunction(new Axis(this, INTERCOM, "3630", "3630", 0.03d, 0d, 1d, "Intercomm", "Ground Volume Knob"));
+            AddFunction(new Switch(this, RSC, "3631", new SwitchPosition[] { new SwitchPosition("0.0", "Norm", "3631"), new SwitchPosition("0.5", "Norm", "3631"), new SwitchPosition("1.0", "Norm", "3631") }, "Intercomm", "Mic Operational Mode Switch", "%0.1f"));
+
+            #endregion
+
+            #region Interior Lights
+            // switch positions still need to be labeled
+            AddFunction(new PushButton(this, LTINT, "3634", "3634", "Interior Lights", "Compass Light/Test Lights")); //default_tumb_button(_("Compass Light/Test Lights") * * * Not sure if this is correct
+            AddFunction(new Axis(this, LTINT, "3635", "3635", 0.03d, 0d, 1d, "Interior Lights", "Instruments Lights"));
+            AddFunction(new Axis(this, LTINT, "3636", "3636", 0.03d, 0d, 1d, "Interior Lights", "Console Lights"));
+            AddFunction(new Axis(this, LTINT, "3637", "3637", 0.03d, 0d, 1d, "Interior Lights", "Flood Lights"));
+            AddFunction(new Axis(this, LTINT, "3638", "3638", 0.03d, 0d, 1d, "Interior Lights", "Annunciator Lights"));
+            AddFunction(new Axis(this, LTINT, "3150", "3150", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Right Canopy Frame Top"));
+            AddFunction(new Axis(this, LTINT, "3151", "3151", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Right Canopy Frame Bottom"));
+            AddFunction(new Axis(this, LTINT, "3152", "3152", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Right Bulkhead Forward"));
+            AddFunction(new Axis(this, LTINT, "3153", "3153", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Right Bulkhead Aft Front"));
+            AddFunction(new Axis(this, LTINT, "3154", "3154", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Right Bulkhead Aft Back"));
+            AddFunction(new Axis(this, LTINT, "3155", "3155", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Left Bulkhead Aft Back"));
+            AddFunction(new Axis(this, LTINT, "3156", "3156", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Left Bulkhead Aft Front"));
+            AddFunction(new Axis(this, LTINT, "3157", "3157", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Left Bulkhead Forward"));
+            AddFunction(new Axis(this, LTINT, "3158", "3158", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Left Canopy Frame Bottom"));
+            AddFunction(new Axis(this, LTINT, "3159", "3159", 0.03d, -1d, 1d, "Interior Lights", "Flood Lamp Left Canopy Frame Top"));
+
+            #endregion
+
+            #region Canopy Controls
+            // switch positions still need to be labeled
+            AddFunction(Switch.CreateToggleSwitch(this, FLIGHTCONTROLS, "3801", "3801", "1", "On", "0", "Off", "Canopy Controls", "Canopy Handle Left", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, FLIGHTCONTROLS, "3802", "3802", "1", "On", "0", "Off", "Canopy Controls", "Canopy Handle Right", "%1d"));
+            AddFunction(Switch.CreateToggleSwitch(this, FLIGHTCONTROLS, "3803", "3803", "1", "On", "0", "Off", "Canopy Controls", "Canopy Locking Lever", "%1d"));
+
+            AddFunction(Switch.CreateToggleSwitch(this, MSC, "3800", "3800", "1", "On", "0", "Off", "Canopy Controls", "Seat Ground Safety Lever", "%1d"));
+
+            AddFunction(Switch.CreateToggleSwitch(this, FLIGHTCONTROLS, "3501", "3501", "1", "On", "0", "Off", "Canopy Controls", "MFS Emergency Lever", "%1d"));
+            #endregion
+
+            #region Stopwatch
+            AddFunction(new PushButton(this, MSC, "4121", "4121", "Stop Watch", "Stopwatch Start/Stop"));
+            AddFunction(new PushButton(this, MSC, "4122", "4122", "Stop Watch", "Stopwatch Lap/Reset"));
+            #endregion
+
+            #region ECS
+            // switch positions still need to be labeled
+            AddFunction(new Axis(this, ECS, "3639", "3639", 0.03d, 0d, 1d, "Environment Control", "Temperature Control Knob"));
+            AddFunction(Switch.CreateToggleSwitch(this, ECS, "3640", "3640", "1", "On", "0", "Off", "Environment Control", "Fwd Equipment Bay ECS Switch", "%1d"));
+            AddFunction(new Switch(this, ECS, "3641", new SwitchPosition[] { new SwitchPosition("0.0", "Norm", "3641"), new SwitchPosition("0.5", "Norm", "3641"), new SwitchPosition("1.0", "Norm", "3641") }, "Environment Control", "Cabin Defog Switch", "%0.1f"));
+            AddFunction(new Switch(this, ECS, "3642", new SwitchPosition[] { new SwitchPosition("0.0", "Norm", "3642"), new SwitchPosition("0.5", "Norm", "3642"), new SwitchPosition("1.0", "Norm", "3642") }, "Environment Control", "Aft Equipment Bay ECS Switch", "%0.1f"));
+            AddFunction(new Switch(this, ECS, "3643", new SwitchPosition[] { new SwitchPosition("0.0", "Norm", "3643"), new SwitchPosition("0.5", "Norm", "3643"), new SwitchPosition("1.0", "Norm", "3643") }, "Environment Control", "Cabin Pressure Switch", "%0.1f"));
             #endregion
 
             #region Engine Display Panel
@@ -499,7 +604,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
             AddFunction(new FlagValue(this, "347", "Flight Instruments", "SAI Warning Flag", "Displayed when SAI is caged or non-functional."));
             //AddFunction(new RotaryEncoder(this, FLIGHTCONTROLS, BUTTON_3, "66", 0.1d, "SAI", "Pitch Trim / Cage"));
             //AddFunction(new NetworkValue(this, "715", "SAI", "Pitch Adjust", "Current pitch adjustment setting", "0 to 1", BindingValueUnits.Numeric));
-
+            AddFunction(new NetworkValue(this, "363", "Flight Instruments", "Slip Ball", "Current position of the slip ball relative to the center of the tube.", "(-1 to 1) -1 is full left and 1 is full right.", BindingValueUnits.Numeric));
 
             #endregion
 
