@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Control Center", "Control C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phidgets", "Phidgets\Phidgets.csproj", "{06BA10F4-279C-4E82-B77C-333706A617B9}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Helios Installer", "Installer\Helios Installer\Helios Installer.vdproj", "{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{06BA10F4-279C-4E82-B77C-333706A617B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06BA10F4-279C-4E82-B77C-333706A617B9}.Release|x64.ActiveCfg = Release|x64
 		{06BA10F4-279C-4E82-B77C-333706A617B9}.Release|x64.Build.0 = Release|x64
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Debug|Any CPU.ActiveCfg = Debug
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Debug|x64.ActiveCfg = Debug
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|Any CPU.ActiveCfg = Release
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
