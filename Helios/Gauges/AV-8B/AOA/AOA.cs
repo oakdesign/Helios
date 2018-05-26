@@ -31,6 +31,9 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
         // Calibration scale used to render needle
         private CalibrationPointCollectionDouble _needleCalibration;
 
+        private HeliosValue _warningFlag;
+        private GaugeNeedle _warningFlagNeedle;
+
         // Base construcor is passed default name and native size
         public AOA()
             : base("Angle of Attack", new Size(364, 376))
@@ -40,12 +43,16 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
             // Add faceplate image to drawing components
             // Source image file (xaml will be vector rendered to appropriate size)
             //Components.Add(new GaugeImage("{Helios}/Gauges/AV-8B/AOA/aoa_faceplate.xaml",
-                // Rectangle inside gauge where image will be drawn (scaled automatically to fit rectangle)
-            //                              new Rect(32d, 38d, 300d, 300d)));
+            // Rectangle inside gauge where image will be drawn (scaled automatically to fit rectangle)
+                                          //new Rect(32d, 38d, 300d, 300d)));
 
             // Create needle calibration scale which will be used to represent 0 degrees rotation for 0 input and 270 degrees rotation when input is 30.
             _needleCalibration = new CalibrationPointCollectionDouble(-5d, -36d, 20d, 146d);
             _needleCalibration.Add(new CalibrationPointDouble(0d, 0d));
+
+            _warningFlagNeedle = new GaugeNeedle("{Helios}/Gauges/A-10/ADI/adi_backup_warning_flag.xaml", new Point(29d, 226d), new Size(31d, 127d), new Point(0d, 127d));
+            Components.Add(_warningFlagNeedle);
+
 
             // Add needle to drawing components
             // Source image file (xaml will be vector rendered to appropriate size)
@@ -59,7 +66,9 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
                 // Initial rotation for this needle
                                       175d);
             Components.Add(_needle);
-
+            _warningFlag = new HeliosValue(this, new BindingValue(false), "", "Warning Flag", "Indicates whether the warning flag is displayed.", "True if displayed.", BindingValueUnits.Boolean);
+            _warningFlag.Execute += new HeliosActionHandler(OffFlag_Execute);
+            Actions.Add(_warningFlag);
             //Components.Add(new GaugeImage("{Helios}/Gauges/A-10/Common/gauge_bezel.png", new Rect(0d, 0d, 364d, 376d)));
 
             // Create Angle of Attack value holder
@@ -89,6 +98,11 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
         {
             // Interpolate needle rotation based upon angle of attack input
             _needle.Rotation = -_needleCalibration.Interpolate(e.Value.DoubleValue);
+        }
+        void OffFlag_Execute(object action, HeliosActionEventArgs e)
+        {
+            _warningFlag.SetValue(e.Value, e.BypassCascadingTriggers);
+            _warningFlagNeedle.Rotation = e.Value.BoolValue ? 0 : 15;
         }
     }
 }
