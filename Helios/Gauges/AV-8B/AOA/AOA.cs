@@ -43,14 +43,14 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
             // Add faceplate image to drawing components
             // Source image file (xaml will be vector rendered to appropriate size)
             //Components.Add(new GaugeImage("{Helios}/Gauges/AV-8B/AOA/aoa_faceplate.xaml",
-                // Rectangle inside gauge where image will be drawn (scaled automatically to fit rectangle)
-            //                              new Rect(32d, 38d, 300d, 300d)));
+            // Rectangle inside gauge where image will be drawn (scaled automatically to fit rectangle)
+                                          //new Rect(32d, 38d, 300d, 300d)));
 
             // Create needle calibration scale which will be used to represent 0 degrees rotation for 0 input and 270 degrees rotation when input is 30.
             _needleCalibration = new CalibrationPointCollectionDouble(-5d, -36d, 20d, 146d);
             _needleCalibration.Add(new CalibrationPointDouble(0d, 0d));
 
-            _warningFlagNeedle = new GaugeNeedle("{Helios}/Gauges/A-10/ADI/adi_backup_warning_flag.xaml", new Point(29d, 226d), new Size(31d, 127d), new Point(0d, 127d));
+            _warningFlagNeedle = new GaugeNeedle("{Helios}/Gauges/AV-8B/AOA/aoa_off_flag.xaml", new Point(60d, 300d), new Size(62d, 78d), new Point(0d, 178d),0d);
             Components.Add(_warningFlagNeedle);
 
 
@@ -60,9 +60,9 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
                 // Location on gauge which the needle will be rotated
                                       new Point(182d, 188d),
                 // Size of needle image (will scale image to this size automatically)
-                                      new Size(33d, 165d),
+                                      new Size(36d, 154d),
                 // Center point of needle image to rotate around
-                                      new Point(16d, 130d),
+                                      new Point(18d, 136d),
                 // Initial rotation for this needle
                                       175d);
             Components.Add(_needle);
@@ -102,7 +102,9 @@ namespace GadrocsWorkshop.Helios.Gauges.AV8B.ADI
         void OffFlag_Execute(object action, HeliosActionEventArgs e)
         {
             _warningFlag.SetValue(e.Value, e.BypassCascadingTriggers);
-            _warningFlagNeedle.Rotation = e.Value.BoolValue ? 0 : 15;
+            _warningFlagNeedle.Rotation = e.Value.BoolValue ? -90 : 0;
+            _warningFlagNeedle.IsHidden = e.Value.BoolValue;
+
         }
     }
 }
