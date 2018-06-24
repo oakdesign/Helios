@@ -13,29 +13,34 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace GadrocsWorkshop.Helios.Gauges.AV8B.trimPosition
+namespace GadrocsWorkshop.Helios.Gauges.AV8B
 {
     using GadrocsWorkshop.Helios.ComponentModel;
     using System;
     using System.Windows;
 
-    [HeliosControl("Helios.AV8B.trimPosition", "Trim Position Needle", "AV-8B Gauges", typeof(GaugeRenderer))]
-    public class trimPosition: BaseGauge
+  public class trimPosition: BaseGauge
     {
         private HeliosValue _angle;
         private GaugeNeedle _needle;
         private CalibrationPointCollectionDouble _needleCalibration;
 
-        public trimPosition()
-            : base("Trim Position Needle", new Size(80, 80))
+        public trimPosition(GaugeImage GI,String gaugeName,Size gaugeSize)
+            : base(gaugeName, gaugeSize)
         {
-            //Components.Add(new GaugeImage("{Helios}/Gauges/AV-8B/EDP Nozzle/edp_noz_faceplate.xaml", new Rect(30d, 30d, 300d, 300d)));
+            Components.Add(GI);
 
-            _needleCalibration = new CalibrationPointCollectionDouble(0d, 0d, 0.94d, 150d);
-            _needle = new GaugeNeedle("{Helios}/Gauges/AV-8B/Common/nozzle_needle.xaml", new Point(40d, 40d), new Size(15d, 36d), new Point(7.6d, 28.1d), 0d);
+            _needleCalibration = new CalibrationPointCollectionDouble(-1.0d, -45d, 1.0d, 45d);
+            //_needleCalibration.Add(new CalibrationPointDouble(-0.50d, -35d));
+            //_needleCalibration.Add(new CalibrationPointDouble(-0.10d, -22d));
+            //_needleCalibration.Add(new CalibrationPointDouble(0d, 0d));
+            //_needleCalibration.Add(new CalibrationPointDouble(0.10d, 22d));
+            //_needleCalibration.Add(new CalibrationPointDouble(0.50d, 35d));
+
+            _needle = new GaugeNeedle("{Helios}/Gauges/AV-8B/Engine Panel/nozzle_needle.xaml", new Point(150d, 150d), new Size(36d, 140d), new Point(18d, 122d), 0d);
             Components.Add(_needle);
 
-            _angle = new HeliosValue(this, new BindingValue(0d), "", "angle", "Current position of trim.", "(0 - 120)", BindingValueUnits.Degrees);
+            _angle = new HeliosValue(this, new BindingValue(0d), "", "angle", "Current position of trim.", "", BindingValueUnits.Degrees);
             _angle.Execute += new HeliosActionHandler(Angle_Execute);
             Actions.Add(_angle);
         }
