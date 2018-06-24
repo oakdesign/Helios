@@ -57,6 +57,8 @@ Global
 		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Debug|x64.ActiveCfg = Debug
 		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|Any CPU.ActiveCfg = Release
 		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|x64.ActiveCfg = Release
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|x64.Build.0 = Release
+		{B92E9DFF-DF23-44D3-9B1E-ED1F5A0DD587}.Release|x64.Deploy.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
