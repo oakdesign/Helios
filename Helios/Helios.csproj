@@ -162,8 +162,6 @@
     <Compile Include="Gauges\AV-8B\Fuel Panel\fuelPanel.cs" />
     <Compile Include="Gauges\AV-8B\Advisory Panel\advisory_Panel.cs" />
     <Compile Include="Gauges\AV-8B\UFC\UFC_AV8B.cs" />
-    <Compile Include="Gauges\FA-18C\MFD\MFD-FA18C-Type-2.cs" />
-    <Compile Include="Gauges\FA-18C\MFD\MFD-FA18C-Type-1.cs" />
     <Compile Include="Gauges\AV-8B\MFD\MFD-AV8B.cs" />
     <Compile Include="Controls\MFD-A10.cs" />
     <Compile Include="Controls\MFD-F16.cs" />
@@ -303,9 +301,6 @@
     <Compile Include="Gauges\AV-8B\2 Digit Display\2DigitDisplay.cs" />
     <Compile Include="Gauges\AV-8B\VVI\VVI.cs" />
     <Compile Include="Gauges\BaseGauge.cs" />
-    <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDevice.cs" />
-    <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDeviceRenderer.cs" />
-    <Compile Include="Gauges\FA-18C\UFC\UFC.cs" />
     <Compile Include="Gauges\KA-50\EGT\EGT.cs" />
     <Compile Include="Gauges\F-16\ADI\ADI.cs" />
     <Compile Include="Gauges\F-16\Airspeed\Airspeed.cs" />
@@ -392,10 +387,6 @@
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder3.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder4.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterface.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml.cs">
-      <DependentUpon>FA18CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterface.cs" />
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml.cs">
       <DependentUpon>AV8BInterfaceEditor.xaml</DependentUpon>
@@ -664,7 +655,6 @@
     <Resource Include="Interfaces\DCS\FC2\Export.lua" />
     <Resource Include="Interfaces\DCS\FC2\ExportFunctions.lua" />
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions.lua" />
-    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions.lua" />
     <None Include="Templates\Base\A-10\0.htpl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2178,10 +2168,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2247,9 +2233,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\DCS\FA18C\Functions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Buttons\mfd-in.png" />
     <Resource Include="Images\Buttons\mfd-lit-in.png" />
@@ -2767,10 +2751,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\FA-18C\AMPCD Frame.png" />
-    <Resource Include="Images\FA-18C\MPCD Frame.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AV-8B\AV-8B SMC Faceplate.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2825,11 +2805,6 @@
     <Resource Include="Images\AV-8B\UFC Button Up Dash.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\FA-18C\UFC Button Dn AP.png" />
-    <Resource Include="Images\FA-18C\UFC Button Dn DL.png" />
-    <Resource Include="Images\FA-18C\UFC Button Dn ILS.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AV-8B\UFC Button Dn 0.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn 2.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn 3.png" />
@@ -2855,24 +2830,12 @@
     <Resource Include="Images\AV-8B\UFC Button Dn TOO.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn WOF.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn WPN.png" />
-    <Resource Include="Images\FA-18C\UFC 1080.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up AP.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up DL.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up ILS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\UFC Button Dn 0.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up 0.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AV-8B\MFD Button 1 DnH.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 DnV.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 UpH.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 UpV.png" />
-    <Resource Include="Images\FA-18C\MFD Button DnH.png" />
-    <Resource Include="Images\FA-18C\MFD Button DnV.png" />
-    <Resource Include="Images\FA-18C\MFD Button UpH.png" />
-    <Resource Include="Images\FA-18C\MFD Button UpV.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AV-8B\MFD Rocker L Dn.png" />
