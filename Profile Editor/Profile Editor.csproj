@@ -25,7 +25,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>805</ApplicationRevision>
-    <ApplicationVersion>1.4.2018.%2a</ApplicationVersion>
+    <ApplicationVersion>1.4.2018.805</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -363,9 +363,7 @@
     <Resource Include="Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProfileEditor.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="ProfileEditor.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
