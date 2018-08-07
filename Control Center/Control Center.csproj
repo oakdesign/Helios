@@ -24,7 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>624</ApplicationRevision>
+    <ApplicationRevision>805</ApplicationRevision>
     <ApplicationVersion>1.4.2018.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -158,9 +158,7 @@
     <Resource Include="Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Helios.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Helios.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
