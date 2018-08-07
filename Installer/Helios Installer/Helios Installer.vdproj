@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0170FF83217E44CA941E12868F939963"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_01F6ABED845E4B92917760319769F490"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -184,6 +190,12 @@
         "Entry"
         {
         "MsmKey" = "8:_257CD7D688EC47DEBC542C3FA55A2B62"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_262483C9069B43B6B6DE577C81D14D5D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1520,6 +1532,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0170FF83217E44CA941E12868F939963"
+            {
+            "SourcePath" = "8:..\\..\\bin\\Release\\x86\\lua52.dll"
+            "TargetName" = "8:lua52.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_6C2790D37C964B98A2372ADE527AEB83"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_01F6ABED845E4B92917760319769F490"
             {
             "SourcePath" = "8:..\\..\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Round.htpl"
@@ -1950,6 +1982,26 @@
             "TargetName" = "8:8.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_262483C9069B43B6B6DE577C81D14D5D"
+            {
+            "SourcePath" = "8:..\\..\\bin\\Release\\x64\\lua52.dll"
+            "TargetName" = "8:lua52.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_BB2897D84A7D4A9A9FB1FB90BD863ECD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -5235,6 +5287,28 @@
                             "Property" = "8:_30FC1643DAF04AB7946C7611148D32E0"
                                 "Folders"
                                 {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_6C2790D37C964B98A2372ADE527AEB83"
+                                    {
+                                    "Name" = "8:x86"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_C949ED2691A64239892DB5EA4F3FA6B5"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_BB2897D84A7D4A9A9FB1FB90BD863ECD"
+                                    {
+                                    "Name" = "8:x64"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_B13D44A45DEF47B1A51F5F9EC8EB1139"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -5511,15 +5585,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Helios"
-        "ProductCode" = "8:{6BE9A9B5-5B8C-46FE-8146-B3FF34234B90}"
-        "PackageCode" = "8:{68C103BF-2299-4E73-A927-B79648AEB6AF}"
+        "ProductCode" = "8:{9369D4A9-6B07-4C71-AEF3-C1ABECFDC115}"
+        "PackageCode" = "8:{9AC126AC-30C3-4984-9B25-F6BB1119CE03}"
         "UpgradeCode" = "8:{589D8667-3ED9-478B-8F67-A56E4FADBC63}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.4.0805"
+        "ProductVersion" = "8:1.4.0807"
         "Manufacturer" = "8:Gadrocs Workshop"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
