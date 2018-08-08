@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Helios.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EosSharp, Version=1.1.5488.21795, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -2233,7 +2236,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Helios.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Buttons\mfd-in.png" />
     <Resource Include="Images\Buttons\mfd-lit-in.png" />
