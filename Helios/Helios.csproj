@@ -11,6 +11,8 @@
     <AssemblyName>Helios</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -71,13 +73,11 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.4.1.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.DirectInput, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SharpDXPackageBinDir)\SharpDX.DirectInput.dll</HintPath>
+    <Reference Include="SharpDX.DirectInput, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DirectInput.4.1.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -2238,6 +2238,30 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Helios.ico" />
+    <Folder Include="Gauges\FA-18C\Controls\" />
+    <Folder Include="Gauges\M-2000C\" />
+    <Folder Include="Images\M-2000C\" />
+    <Folder Include="Interfaces\DCS\M2000C\Functions\" />
+    <Folder Include="Interfaces\DCS\MiG21\Functions\" />
+    <Folder Include="Templates\Base\FA-18C\" />
+    <Folder Include="Templates\Base\M-2000C\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FA-18C\MPCD Knob.png" />
+    <Resource Include="Images\FA-18C\UFC Rotator_U.png" />
+    <Resource Include="Gauges\FA-18C\Altimeter\Altimeter_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\Altimeter\RADAR_Altimeter_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\Battery\Battery_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\CabinPressure\Cabin_Pressure_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\Common\gauge_bezel.png" />
+    <Resource Include="Gauges\FA-18C\Common\engine_bezel.png" />
+    <Resource Include="Gauges\FA-18C\Battery\Battery_Needle_Cover.png" />
+    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Cover.png" />
+    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\HydraulicPressure\Hyd_Pressure_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\IAS\IAS.png" />
+    <Resource Include="Gauges\FA-18C\LOx\LOx_Faceplate.png" />
+    <Resource Include="Gauges\FA-18C\VVI\VVI_Faceplate.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Buttons\mfd-in.png" />
@@ -2861,7 +2885,6 @@
     <PostBuildEvent>xcopy /s /y "$(SolutionDir)packages\NLua.1.3.2.1\lib\native\*.*" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('..\packages\SharpDX.2.6.3\build\SharpDX.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

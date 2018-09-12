@@ -23,6 +23,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Windows;
@@ -361,7 +362,14 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                 document.IsSelected = true;
                 document.ContentId = HeliosSerializer.GetReferenceName(profileObject);
                 document.Content = CreateDocumentContent(editor);
-                DocumentPane.Children.Add(document);
+                // Since a new LayoutRoot object is created upon de-serialization, the Child LayoutDocumentPane no longer belongs to the LayoutRoot 
+                // therefore the LayoutDocumentPane 'DocumentPane' must be referred to dynamically
+                // change added by yzfanimal
+                LayoutDocumentPane DocumentPane = this.DockManager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
+                if (DocumentPane != null)
+                {
+                    DocumentPane.Children.Add(document);
+                }
                 document.Closed += Document_Closed;
 
                 meta = AddDocumentMeta(profileObject, document, editor);
@@ -902,9 +910,13 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
             _systemDefaultLayout = systemDefaultLayoutWriter.ToString();
         }
 
-        private void Donate_Click(object sender, RoutedEventArgs e)
+        private void Donate_Click_Gadroc(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2MMREAY3KDXJ6");
+        }
+        private void Donate_Click_Current(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://bluefinbima.github.io/helios/donate/");
         }
 
         private void Explorer_ItemDeleting(object sender, ItemDeleteEventArgs e)

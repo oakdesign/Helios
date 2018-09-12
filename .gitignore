@@ -8,4 +8,4 @@ TestResults
 *.suo
 /packages
 /.vs
-Helios*.zip
+Helios *.zip
