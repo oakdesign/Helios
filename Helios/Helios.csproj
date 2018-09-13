@@ -2238,30 +2238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Helios.ico" />
-    <Folder Include="Gauges\FA-18C\Controls\" />
-    <Folder Include="Gauges\M-2000C\" />
-    <Folder Include="Images\M-2000C\" />
-    <Folder Include="Interfaces\DCS\M2000C\Functions\" />
-    <Folder Include="Interfaces\DCS\MiG21\Functions\" />
-    <Folder Include="Templates\Base\FA-18C\" />
-    <Folder Include="Templates\Base\M-2000C\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\MPCD Knob.png" />
-    <Resource Include="Images\FA-18C\UFC Rotator_U.png" />
-    <Resource Include="Gauges\FA-18C\Altimeter\Altimeter_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Altimeter\RADAR_Altimeter_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Battery\Battery_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\CabinPressure\Cabin_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Common\gauge_bezel.png" />
-    <Resource Include="Gauges\FA-18C\Common\engine_bezel.png" />
-    <Resource Include="Gauges\FA-18C\Battery\Battery_Needle_Cover.png" />
-    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Cover.png" />
-    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\HydraulicPressure\Hyd_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\IAS\IAS.png" />
-    <Resource Include="Gauges\FA-18C\LOx\LOx_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\VVI\VVI_Faceplate.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Buttons\mfd-in.png" />
@@ -2879,6 +2855,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AV-8B\Advisory Panel Frame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\DCS\MiG21\Functions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
