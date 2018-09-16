@@ -54,7 +54,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>..\Helios.ico</ApplicationIcon>
+    <ApplicationIcon>Helios.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EosSharp, Version=1.1.5488.21795, Culture=neutral, processorArchitecture=MSIL">
@@ -168,17 +168,6 @@
     <Compile Include="Gauges\AV-8B\Fuel Panel\fuelPanel.cs" />
     <Compile Include="Gauges\AV-8B\Advisory Panel\advisory_Panel.cs" />
     <Compile Include="Gauges\AV-8B\UFC\UFC_AV8B.cs" />
-    <Compile Include="Gauges\FA-18C\ADI\ADI.cs" />
-    <Compile Include="Gauges\FA-18C\Altimeter\BarometricAltimeter.cs" />
-    <Compile Include="Gauges\FA-18C\Altimeter\RADARAltimeter.cs" />
-    <Compile Include="Gauges\FA-18C\Battery\Battery.cs" />
-    <Compile Include="Gauges\FA-18C\BrakePressure\Brake_Pressure.cs" />
-    <Compile Include="Gauges\FA-18C\CabinPressure\CabinPressure.cs" />
-    <Compile Include="Gauges\FA-18C\HydraulicPressure\Hydraulic.cs" />
-    <Compile Include="Gauges\FA-18C\IAS\IAS.cs" />
-    <Compile Include="Gauges\FA-18C\LOx\LOx.cs" />
-    <Compile Include="Gauges\FA-18C\MFD\MFD-FA18C-Type-2.cs" />
-    <Compile Include="Gauges\FA-18C\MFD\MFD-FA18C-Type-1.cs" />
     <Compile Include="Gauges\AV-8B\MFD\MFD-AV8B.cs" />
     <Compile Include="Controls\MFD-A10.cs" />
     <Compile Include="Controls\MFD-F16.cs" />
@@ -318,10 +307,6 @@
     <Compile Include="Gauges\AV-8B\2 Digit Display\2DigitDisplay.cs" />
     <Compile Include="Gauges\AV-8B\VVI\VVI.cs" />
     <Compile Include="Gauges\BaseGauge.cs" />
-    <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDevice.cs" />
-    <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDeviceRenderer.cs" />
-    <Compile Include="Gauges\FA-18C\UFC\UFC.cs" />
-    <Compile Include="Gauges\FA-18C\VVI\VVI.cs" />
     <Compile Include="Gauges\KA-50\EGT\EGT.cs" />
     <Compile Include="Gauges\F-16\ADI\ADI.cs" />
     <Compile Include="Gauges\F-16\Airspeed\Airspeed.cs" />
@@ -431,10 +416,6 @@
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder3.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder4.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterface.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml.cs">
-      <DependentUpon>FA18CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterface.cs" />
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml.cs">
       <DependentUpon>AV8BInterfaceEditor.xaml</DependentUpon>
@@ -472,7 +453,6 @@
     <Compile Include="Interfaces\DCS\Common\Switch.cs" />
     <Compile Include="Interfaces\DCS\Common\SwitchPosition.cs" />
     <Compile Include="Interfaces\DCS\Common\Text.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\Functions\Altimeter.cs" />
     <Compile Include="Interfaces\DCS\FC2\FC2Interface.cs" />
     <Compile Include="Interfaces\DCS\FC2\FC2InterfaceEditor.xaml.cs">
       <DependentUpon>FC2InterfaceEditor.xaml</DependentUpon>
@@ -480,10 +460,6 @@
     <Compile Include="Interfaces\DCS\Generic\GenericInterface.cs" />
     <Compile Include="Interfaces\DCS\Generic\GenericInterfaceEditor.xaml.cs">
       <DependentUpon>GenericInterfaceEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\DCS\M2000C\M2000CInterface.cs" />
-    <Compile Include="Interfaces\DCS\M2000C\M2000CInterfaceEditor.xaml.cs">
-      <DependentUpon>M2000CInterfaceEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\DCS\MiG21\MiG21Interface.cs" />
     <Compile Include="Interfaces\DCS\MiG21\MiG21InterfaceEditor.xaml.cs">
@@ -718,9 +694,7 @@
     <Resource Include="Interfaces\DCS\MiG21\Export.lua" />
     <Resource Include="Interfaces\DCS\MiG21\ExportFunctions.lua" />
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions.lua" />
-    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions.lua" />
     <Resource Include="Interfaces\DCS\Generic\ExportFunctions.lua" />
-    <None Include="Interfaces\DCS\M2000C\ExportFunctions.lua" />
     <None Include="Templates\Base\A-10\0.htpl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2542,59 +2516,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Resource Include="Gauges\FA-18C\Altimeter\alt_drum_tape.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Altimeter\altimeter_needle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Common\drum_tape.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Common\drum_tape_reverse.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Common\eng_small_needle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Common\needle_a.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\Altimeter\RADAR_Altimeter_Min_Needle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\ADI\adi_bank_pointer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\ADI\adi_guides.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\ADI\adi_inner_ring.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\ADI\adi_outer_ring.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\FA-18C\ADI\adi_slip_ball.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
     <Page Include="Interfaces\DCS\A10C\A10CInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2611,10 +2533,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Interfaces\DCS\Generic\GenericInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\M2000C\M2000CInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2676,30 +2594,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gauges\FA-18C\Controls\" />
-    <Folder Include="Gauges\M-2000C\" />
-    <Folder Include="Images\M-2000C\" />
-    <Folder Include="Interfaces\DCS\M2000C\Functions\" />
     <Folder Include="Interfaces\DCS\MiG21\Functions\" />
-    <Folder Include="Templates\Base\FA-18C\" />
-    <Folder Include="Templates\Base\M-2000C\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\MPCD Knob.png" />
-    <Resource Include="Images\FA-18C\UFC Rotator_U.png" />
-    <Resource Include="Gauges\FA-18C\Altimeter\Altimeter_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Altimeter\RADAR_Altimeter_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Battery\Battery_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\CabinPressure\Cabin_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\Common\gauge_bezel.png" />
-    <Resource Include="Gauges\FA-18C\Common\engine_bezel.png" />
-    <Resource Include="Gauges\FA-18C\Battery\Battery_Needle_Cover.png" />
-    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Cover.png" />
-    <Resource Include="Gauges\FA-18C\BrakePressure\Brake_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\HydraulicPressure\Hyd_Pressure_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\IAS\IAS.png" />
-    <Resource Include="Gauges\FA-18C\LOx\LOx_Faceplate.png" />
-    <Resource Include="Gauges\FA-18C\VVI\VVI_Faceplate.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Buttons\mfd-in.png" />
@@ -3219,10 +3114,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\FA-18C\AMPCD Frame.png" />
-    <Resource Include="Images\FA-18C\MPCD Frame.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AV-8B\AV-8B SMC Faceplate.png" />
   </ItemGroup>
   <ItemGroup>
@@ -3277,11 +3168,6 @@
     <Resource Include="Images\AV-8B\UFC Button Up Dash.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\FA-18C\UFC Button Dn AP.png" />
-    <Resource Include="Images\FA-18C\UFC Button Dn DL.png" />
-    <Resource Include="Images\FA-18C\UFC Button Dn ILS.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\AV-8B\UFC Button Dn 0.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn 2.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn 3.png" />
@@ -3307,23 +3193,12 @@
     <Resource Include="Images\AV-8B\UFC Button Dn TOO.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn WOF.png" />
     <Resource Include="Images\AV-8B\UFC Button Dn WPN.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up AP.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up DL.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up ILS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\UFC Button Dn 0.png" />
-    <Resource Include="Images\FA-18C\UFC Button Up 0.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AV-8B\MFD Button 1 DnH.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 DnV.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 UpH.png" />
     <Resource Include="Images\AV-8B\MFD Button 1 UpV.png" />
-    <Resource Include="Images\FA-18C\MFD Button DnH.png" />
-    <Resource Include="Images\FA-18C\MFD Button DnV.png" />
-    <Resource Include="Images\FA-18C\MFD Button UpH.png" />
-    <Resource Include="Images\FA-18C\MFD Button UpV.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\AV-8B\MFD Rocker L Dn.png" />
@@ -3340,55 +3215,17 @@
     <Resource Include="Images\AV-8B\Advisory Panel Frame.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Gauges\FA-18C\Altimeter\RADAR_Altimeter_Cover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Gauges\FA-18C\HydraulicPressure\PRESS_1.png" />
-    <Resource Include="Gauges\FA-18C\HydraulicPressure\PRESS_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\panel_Right_front.png" />
-    <Resource Include="Images\FA-18C\Pull to Cage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\Push to Test.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\indicator_green.png" />
-    <Resource Include="Images\FA-18C\indicator_red.png" />
-    <Resource Include="Images\FA-18C\indicator_off.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\Radar Altimeter Off Flag.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\Radar Altimeter Blank.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\FA-18C\brake_PULLED_1.png" />
-    <Resource Include="Images\FA-18C\brake_PULLED_2.png" />
-    <Resource Include="Images\FA-18C\brake_PULLED_3.png" />
-    <Resource Include="Images\FA-18C\brake_PUSHED_1.png" />
-    <Resource Include="Images\FA-18C\brake_PUSHED_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Gauges\FA-18C\ADI\adi_bezel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Gauges\FA-18C\ADI\adi_glass.png" />
-    <Resource Include="Gauges\FA-18C\ADI\adi_inner_ring.png" />
-    <Resource Include="Gauges\FA-18C\ADI\adi_slip_bezel.png" />
-    <Resource Include="Gauges\FA-18C\ADI\adi_off_flag.png" />
-    <Resource Include="Gauges\FA-18C\ADI\adi_wings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Gauges\FA-18C\ADI\adi_ball.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Gauges\FA-18C\UFC\UFC Faceplate.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Helios.ico" />
+    <Content Include="Installation Artefacts\Helios.ico" />
+    <Content Include="Installation Artefacts\Helios.png" />
+    <Content Include="Installation Artefacts\Helios.Read.Me.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Installation Artefacts\HeliosBanner.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Installation Artefacts\ProfileEditor.ico" />
+    <Content Include="Installation Artefacts\ProfileEditor.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
