@@ -26,9 +26,7 @@
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 Helios 1.4.2018.0915 Beta is not an explicit collaboration with Craig Courtney, but it
-relies heavily on the original Helios and I do not assert copyright ownership of the 
-files that I have added to the project and I give copyright of these files to 
-Craig Courtney.  This distribution is not endorsed by Craig Courtney.
+relies heavily on the original Helios. This distribution is not endorsed by Craig Courtney.
                                                                      
 This code is beta code and this also goes for the installer.
 
@@ -43,7 +41,7 @@ also unlikely to get fixed.
 1)  Make a complete back-up of your %userprofile%\Helios directory.  I take no responsibility for messing up your
     current Helios profiles
 
-2)  Make sure that you back up all of your existing Exports.lua scripts and the like.  I am not expecting that the 
+2)  Ensure that you back up all of your existing Exports.lua scripts and the like.  I am not expecting that the 
     A-10C interface will change the Exports.LUA from the original Helios one if you install it from this level 
     but it might do.  If you install the scripting from the new AV-8B intereface, it will definitely replace the current
     export.lua
@@ -55,7 +53,7 @@ also unlikely to get fixed.
     of Helios, then it is likely to cause problems if you attempt to open it again in an older version of Helios so 
     point 1 above is very important. 
 
-5)  Maker sure you virus scan the installation.  I believe my build system to be virus free, however I make no claims
+5)  Make sure you virus scan the installation.  I believe my build system to be virus free, however I make no claims
     that it is virus free, and I take no responsibility for any damage to your system as a result of installation of
     Helios or its install mechanism.
 
