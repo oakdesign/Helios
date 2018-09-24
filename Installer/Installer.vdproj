@@ -676,13 +676,13 @@
         "Entry"
         {
         "MsmKey" = "8:_9274F4C50CC50F560D572438444CF10F"
-        "OwnerKey" = "8:_FA987369A3EA4F739E46E3E94BA7D12B"
+        "OwnerKey" = "8:_72CEFC0E61EB439E9A3A8073F41622EF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_9274F4C50CC50F560D572438444CF10F"
-        "OwnerKey" = "8:_72CEFC0E61EB439E9A3A8073F41622EF"
+        "OwnerKey" = "8:_FA987369A3EA4F739E46E3E94BA7D12B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -862,6 +862,12 @@
         "Entry"
         {
         "MsmKey" = "8:_B79624F4E933927D78B22054D903C024"
+        "OwnerKey" = "8:_72CEFC0E61EB439E9A3A8073F41622EF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B79624F4E933927D78B22054D903C024"
         "OwnerKey" = "8:_FA987369A3EA4F739E46E3E94BA7D12B"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -869,12 +875,6 @@
         {
         "MsmKey" = "8:_B79624F4E933927D78B22054D903C024"
         "OwnerKey" = "8:_80A510498A90463B948A51AD3876BD90"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B79624F4E933927D78B22054D903C024"
-        "OwnerKey" = "8:_72CEFC0E61EB439E9A3A8073F41622EF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1300,13 +1300,13 @@
         "Entry"
         {
         "MsmKey" = "8:_F92EF5AB31B3FB68E9C014194DF172B7"
-        "OwnerKey" = "8:_FA987369A3EA4F739E46E3E94BA7D12B"
+        "OwnerKey" = "8:_80A510498A90463B948A51AD3876BD90"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F92EF5AB31B3FB68E9C014194DF172B7"
-        "OwnerKey" = "8:_80A510498A90463B948A51AD3876BD90"
+        "OwnerKey" = "8:_FA987369A3EA4F739E46E3E94BA7D12B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1468,6 +1468,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F92EF5AB31B3FB68E9C014194DF172B7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_72CEFC0E61EB439E9A3A8073F41622EF"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1475,18 +1481,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_11C3E4C64601725883833A5485723A47"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A9E91FD7A64AC345670E190A47DE2A26"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F92EF5AB31B3FB68E9C014194DF172B7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1531,6 +1525,12 @@
         "OwnerKey" = "8:_B79624F4E933927D78B22054D903C024"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A9E91FD7A64AC345670E190A47DE2A26"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1539,7 +1539,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Installer\\Helios Installer\\Debug\\Helios Installer.msi"
+        "OutputFilename" = "8:Helios Installer\\Debug\\Helios Installer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -1571,7 +1571,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Helios Installer.msi"
+        "OutputFilename" = "8:..\\Helios Installer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -1628,7 +1628,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00FC8BEFE62F497A9C0231E62956C0CF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\RWR Bezel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\RWR Bezel.htpl"
             "TargetName" = "8:RWR Bezel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -1648,7 +1648,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0170FF83217E44CA941E12868F939963"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\x86\\lua52.dll"
+            "SourcePath" = "8:..\\bin\\Release\\x86\\lua52.dll"
             "TargetName" = "8:lua52.dll"
             "Tag" = "8:"
             "Folder" = "8:_6C2790D37C964B98A2372ADE527AEB83"
@@ -1668,7 +1668,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_01F6ABED845E4B92917760319769F490"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Round.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Round.htpl"
             "TargetName" = "8:Tactile Round.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -1688,7 +1688,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0413D0BCA61C4C45A5A9F3EF3CCF148F"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Round - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Round - Light.htpl"
             "TargetName" = "8:Tactile Round - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -1708,7 +1708,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_092DA7B2E10C49B7962C99EA2D4EBB40"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\DED Bezel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\DED Bezel.htpl"
             "TargetName" = "8:DED Bezel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -1728,7 +1728,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09CDF2B6E5AD427EA0FD41391362DC23"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\WX.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\WX.htpl"
             "TargetName" = "8:WX.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -1779,7 +1779,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0AE0D61D3DEE467C926EA2082809E352"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Enter.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Enter.htpl"
             "TargetName" = "8:Enter.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -1799,7 +1799,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D0D826DE4B3457BAB5899EAA223F238"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Horizontal Rocker.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Horizontal Rocker.htpl"
             "TargetName" = "8:Horizontal Rocker.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -1850,7 +1850,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E176AE0E2354CC8A3B557390A1FD4B4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Landing Lights Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Landing Lights Switch.htpl"
             "TargetName" = "8:Landing Lights Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -1870,7 +1870,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F921DCBD8B743978B3CAF0856BFF0A4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\ENTR.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\ENTR.htpl"
             "TargetName" = "8:ENTR.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -1921,7 +1921,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_118DB8C36CDA4DFBBE13BE20283CF520"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 4.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 4.htpl"
             "TargetName" = "8:Rotary - Knob 4.htpl"
             "Tag" = "8:"
             "Folder" = "8:_C8C2CA30A4144B81AAC69C960ADFE1E5"
@@ -1972,7 +1972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_11FC9B9C3C4E4347AE998619EB70506F"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\MFD Lit.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\MFD Lit.htpl"
             "TargetName" = "8:MFD Lit.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -1992,7 +1992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_130286783E1D423CA5F2E41D13132D53"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Helios\\Installation Artefacts\\HeliosBanner.jpg"
+            "SourcePath" = "8:..\\Helios\\Installation Artefacts\\HeliosBanner.jpg"
             "TargetName" = "8:HeliosBanner.jpg"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
@@ -2012,7 +2012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_135C1929438347A49BFF5C695434C562"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Vertical Panel Guard.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Vertical Panel Guard.htpl"
             "TargetName" = "8:Vertical Panel Guard.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2043,7 +2043,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\pt-BR\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\pt-BR\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AC77F9C93EF044EA87E2F68A79F2BB63"
@@ -2063,7 +2063,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_17EDC72CD7334DAF9892887E3B80B864"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\1.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\1.htpl"
             "TargetName" = "8:1.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2083,7 +2083,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_19FA496ED2DF4F1C898DB30B6B4246F3"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Space.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Space.htpl"
             "TargetName" = "8:Space.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2103,7 +2103,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1AAA4B73050C4625B97C77180323D08D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\6.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\6.htpl"
             "TargetName" = "8:6.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2123,7 +2123,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_257CD7D688EC47DEBC542C3FA55A2B62"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\8.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\8.htpl"
             "TargetName" = "8:8.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2143,7 +2143,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_262483C9069B43B6B6DE577C81D14D5D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\x64\\lua52.dll"
+            "SourcePath" = "8:..\\bin\\Release\\x64\\lua52.dll"
             "TargetName" = "8:lua52.dll"
             "Tag" = "8:"
             "Folder" = "8:_BB2897D84A7D4A9A9FB1FB90BD863ECD"
@@ -2174,7 +2174,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\fr\\Xceed.Wpf.Toolkit.LiveExplorer.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\fr\\Xceed.Wpf.Toolkit.LiveExplorer.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8F90DD53541342C9BD830CE097E9E579"
@@ -2194,7 +2194,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2883A5E1FD7240DA82ECECFBD7BBBA53"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Square - Tan.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Square - Tan.htpl"
             "TargetName" = "8:Square - Tan.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -2214,7 +2214,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2A9134C3F98C458CB33F247E6D04B6DE"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull APU.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull APU.htpl"
             "TargetName" = "8:Fire Pull APU.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2234,7 +2234,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2B6B94AF0DF84A9FBA3001B7ECE7C646"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 3.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 3.htpl"
             "TargetName" = "8:Rotary - Knob 3.htpl"
             "Tag" = "8:"
             "Folder" = "8:_C8C2CA30A4144B81AAC69C960ADFE1E5"
@@ -2254,7 +2254,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D4D95B9AA494C4D9F8FC5C43D3CFDFF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Flat Top - Locking.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Flat Top - Locking.htpl"
             "TargetName" = "8:Flat Top - Locking.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -2274,7 +2274,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_303E97AD288C4DC08257BCC8AF2D6B5A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Screw.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Screw.htpl"
             "TargetName" = "8:Screw.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -2294,7 +2294,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_32299EC62E634D6C99EE9E7DC226B3C6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom Right.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom Right.htpl"
             "TargetName" = "8:Backplate Screw - Bottom Right.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -2314,7 +2314,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_38A53070FE7A4090ACF062457D1A62AF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Arrows - Dark.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Arrows - Dark.htpl"
             "TargetName" = "8:Arrows - Dark.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -2334,7 +2334,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C92AE43EBD141549E2BE1A8397B0296"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Comms Rotary Encoder.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Comms Rotary Encoder.htpl"
             "TargetName" = "8:Comms Rotary Encoder.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -2354,7 +2354,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3D0836955A924742BDF09AC4AAE2911A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\UHF Indicator.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\UHF Indicator.htpl"
             "TargetName" = "8:UHF Indicator.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2385,7 +2385,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\sv\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\sv\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2728CF87756148C0AF688375A6F6FB1A"
@@ -2416,7 +2416,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\zh-Hans\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\zh-Hans\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5CA8E992A670403AA958959AF27703D5"
@@ -2436,7 +2436,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_442254C81E9241298AE32CE4703D1F5F"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\H2O Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\H2O Switch.htpl"
             "TargetName" = "8:H2O Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -2487,7 +2487,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4628AF75E1714F7D960E6AEA1A1B7B71"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Gear Light Diagarm.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Gear Light Diagarm.htpl"
             "TargetName" = "8:Gear Light Diagarm.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2507,7 +2507,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_46E490DCA2BF4745ABD383303AE23BF1"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\3-way Toggle Domed.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\3-way Toggle Domed.htpl"
             "TargetName" = "8:3-way Toggle Domed.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -2527,7 +2527,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4794A1B7B390496A8E1E91144EDE7CD8"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Data.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Data.htpl"
             "TargetName" = "8:Data.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2547,7 +2547,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_480D822650A442B483C94F62837A3FA5"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\9.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\9.htpl"
             "TargetName" = "8:9.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2567,7 +2567,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_480F80561C144A2781B57B61C4D04A0E"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Ground Safety Lever.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Ground Safety Lever.htpl"
             "TargetName" = "8:Ground Safety Lever.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -2587,7 +2587,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4931E852C0234ECF96022AEEC211D4A1"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Master Caution.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Master Caution.htpl"
             "TargetName" = "8:Master Caution.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2618,7 +2618,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\hu\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\hu\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_464E8D87B1044E0699C062F6BAD88288"
@@ -2638,7 +2638,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E1FEBCCB57143439B95EC0317CD4E73"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\3.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\3.htpl"
             "TargetName" = "8:3.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2689,7 +2689,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_52BE15B1434942D2828F53D3DC728111"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Triangles - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Triangles - Light.htpl"
             "TargetName" = "8:Triangles - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -2709,7 +2709,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5465912A0C6042C1B40983A2EA23E439"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Triangles - Dark.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Triangles - Dark.htpl"
             "TargetName" = "8:Triangles - Dark.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -2729,7 +2729,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_571EA0EEA58A43FC92F27CEF3AB1163A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Canopy Lock Lever.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Canopy Lock Lever.htpl"
             "TargetName" = "8:AV-8B Canopy Lock Lever.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -2749,7 +2749,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57B8D4BE8ED54400A83AE49D5323C2E2"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\6.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\6.htpl"
             "TargetName" = "8:6.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2769,7 +2769,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57FB680EDAD242979E5CA8EEB4037CE0"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\HARS.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\HARS.htpl"
             "TargetName" = "8:HARS.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2789,7 +2789,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_58C14876B8874F36B745892CE932383B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Arrow.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Arrow.htpl"
             "TargetName" = "8:Arrow.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2809,7 +2809,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_595F03AEDE6B465996B13C62D52C6673"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Mark.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Mark.htpl"
             "TargetName" = "8:Mark.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2829,7 +2829,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5C0F2E06C83B4BE4A5E2BE5BECBF8FAA"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Hack.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Hack.htpl"
             "TargetName" = "8:Hack.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2849,7 +2849,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5C823EE9FC3A464FA917280B904167E3"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Clear.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Clear.htpl"
             "TargetName" = "8:Clear.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -2869,7 +2869,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6222EB03B8364AE7B503BAF907E12BC2"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Push Button Indicators\\Push Indicator - Square.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Push Button Indicators\\Push Indicator - Square.htpl"
             "TargetName" = "8:Push Indicator - Square.htpl"
             "Tag" = "8:"
             "Folder" = "8:_06E91944D7F04F3B803BA1BECA00E4BC"
@@ -2889,7 +2889,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6514902112144222AAD94CE24F6A2A6C"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\2.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\2.htpl"
             "TargetName" = "8:2.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2920,7 +2920,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\fr\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\fr\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_8F90DD53541342C9BD830CE097E9E579"
@@ -2940,7 +2940,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65E7C8DF80F04A398D24820A178D5C1B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Round.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Round.htpl"
             "TargetName" = "8:Round.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -2960,7 +2960,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66C02DD1B8D7456CBF039A9E14C89A67"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\COM 1.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\COM 1.htpl"
             "TargetName" = "8:COM 1.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -2991,7 +2991,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\ru\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\ru\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C4D0EF41818544F3A013ACEE5CAB6FE6"
@@ -3011,7 +3011,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_67CEE4CA88474BD8808061E6BF543D00"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\SMC Square 3-way Toggle A.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\SMC Square 3-way Toggle A.htpl"
             "TargetName" = "8:SMC Square 3-way Toggle A.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -3031,7 +3031,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_67D8E2592FDB4E548ABA31CE5441D4E3"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Fuel Cutoff Lever.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Fuel Cutoff Lever.htpl"
             "TargetName" = "8:Fuel Cutoff Lever.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -3082,7 +3082,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6AE92D72D65144FB978C5177E03EC6C7"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Dark Wheel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Dark Wheel.htpl"
             "TargetName" = "8:Dark Wheel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -3102,7 +3102,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D9F3C5832A04C4EBB4D0C278EBC1435"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Orange Seal - Round.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Orange Seal - Round.htpl"
             "TargetName" = "8:Orange Seal - Round.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -3122,7 +3122,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6DF5AF699B9B40CFA13583B1FDCAB1AE"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Sel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Sel.htpl"
             "TargetName" = "8:Sel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3142,7 +3142,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70790A957042404AB91CA9496EF10663"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Dark.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Dark.htpl"
             "TargetName" = "8:Plus Minus - Dark.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -3162,7 +3162,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_715D294991C048DF9FB2873186BA980E"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Blank.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Blank.htpl"
             "TargetName" = "8:Blank.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3182,7 +3182,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_73422F6702814298BD7C7BB55F0A9189"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\CMDS Outline.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\CMDS Outline.htpl"
             "TargetName" = "8:CMDS Outline.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3202,7 +3202,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7373B32BEA9F4C90A1AB3607D27D4FB6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\RCL.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\RCL.htpl"
             "TargetName" = "8:RCL.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3222,7 +3222,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7549767DBE5A43D7BEB2AB9F58B95E8B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Flat Top - Locking.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Flat Top - Locking.htpl"
             "TargetName" = "8:Flat Top - Locking.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -3242,7 +3242,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_75A122FFD375479288492CB28086D976"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Spider Canopy Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Spider Canopy Switch.htpl"
             "TargetName" = "8:Spider Canopy Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3262,7 +3262,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76474257C3E744129202365703A6660A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\2-way Toggle Domed.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\2-way Toggle Domed.htpl"
             "TargetName" = "8:2-way Toggle Domed.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -3282,7 +3282,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_764F3C84E0E2482B91E5A5F40ACA42BF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 2.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 2.htpl"
             "TargetName" = "8:Encoder - Knob 2.htpl"
             "Tag" = "8:"
             "Folder" = "8:_FC23250ED713411EB427D1B27461B762"
@@ -3302,7 +3302,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_772B163EBB1D4111B81820EA984417BF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom Left.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom Left.htpl"
             "TargetName" = "8:Backplate Screw - Bottom Left.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -3322,7 +3322,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7923536944D644A190EE1B27F96CD647"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\Push - White.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\Push - White.htpl"
             "TargetName" = "8:Push - White.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -3353,7 +3353,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\de\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\de\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D7CDF2C345484F46AAED508C597413A8"
@@ -3373,7 +3373,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B96C280447B47D194A5256D461D1C04"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top Right.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top Right.htpl"
             "TargetName" = "8:Backplate Screw - Top Right.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -3393,7 +3393,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CF2D5D7049B4501935D501706A7A8B4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\SMC Square 3-Way Toggle B.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\SMC Square 3-Way Toggle B.htpl"
             "TargetName" = "8:SMC Square 3-Way Toggle B.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -3413,7 +3413,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7DAAEEBFE8EB478F841D74C5027028E2"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\5.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\5.htpl"
             "TargetName" = "8:5.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3433,7 +3433,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7DB0D6769B6B46B5BB6C2E45ACAA791D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\4.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\4.htpl"
             "TargetName" = "8:4.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3453,7 +3453,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F4F392D4BC84F6184E15C9961B96552"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\LTR.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\LTR.htpl"
             "TargetName" = "8:LTR.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3473,7 +3473,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F5AE617F1E347D698C31BD23EE4C2DD"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Round.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Round.htpl"
             "TargetName" = "8:Round.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -3493,7 +3493,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_80FB408383954F9AB11D8AA3F4727992"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Panels\\Generic Screws.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Panels\\Generic Screws.htpl"
             "TargetName" = "8:Generic Screws.htpl"
             "Tag" = "8:"
             "Folder" = "8:_75A921BEC47C4F2B8BC73C9C3D10C779"
@@ -3513,7 +3513,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_861DC91E7820440D8CC7304FC5CB3174"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Hexagonal Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Hexagonal Switch.htpl"
             "TargetName" = "8:Hexagonal Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -3533,7 +3533,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86A00FD4B80548FE9CA741E217BB8AFA"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Indicators\\Indicator - Square.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Indicators\\Indicator - Square.htpl"
             "TargetName" = "8:Indicator - Square.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D1356738E1CE4CE7877501B49915C912"
@@ -3553,7 +3553,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_875128DC0CE24BF88B98731A5ABCDA15"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\AFT.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\AFT.htpl"
             "TargetName" = "8:AFT.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3573,7 +3573,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_890FCB9AA27A445D928871D0902C101A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\2.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\2.htpl"
             "TargetName" = "8:2.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3593,7 +3593,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B5B46A678EA46C1A1309A20BB723561"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Round - Locking.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Round - Locking.htpl"
             "TargetName" = "8:Round - Locking.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -3644,7 +3644,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C2948C0789B4981AFBBF9E585E7C328"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Indicators\\Anunciator.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Indicators\\Anunciator.htpl"
             "TargetName" = "8:Anunciator.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D1356738E1CE4CE7877501B49915C912"
@@ -3664,7 +3664,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D357B55EB904980AC481CBB3106F0EB"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Orange Seal.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Orange Seal.htpl"
             "TargetName" = "8:Orange Seal.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -3684,7 +3684,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8EA4E42D68C04614ABE2F36F0CF2AB0A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Round - Locking.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Round - Locking.htpl"
             "TargetName" = "8:Round - Locking.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -3704,7 +3704,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8EC5E130E4664DBFAC81952961B779A4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\ANCHR.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\ANCHR.htpl"
             "TargetName" = "8:ANCHR.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3735,7 +3735,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\it\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\it\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D4C203E1FE9344FDAD874BE1DE9D12A3"
@@ -3755,7 +3755,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8FF8BFB2DED74B958DC340F567C88B11"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Orange Seal.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Orange Seal.htpl"
             "TargetName" = "8:Orange Seal.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -3775,7 +3775,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_91168419D2934DAE80807783727DA2F6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull Left.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull Left.htpl"
             "TargetName" = "8:Fire Pull Left.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3795,7 +3795,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_91A5F74D7A5E49818EF721C66A08D445"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Yaw Trim Scale.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Yaw Trim Scale.htpl"
             "TargetName" = "8:Yaw Trim Scale.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3846,7 +3846,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_92DF576C8839462E865BBC578AC6D4ED"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top Left.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top Left.htpl"
             "TargetName" = "8:Backplate Screw - Top Left.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -3866,7 +3866,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9531F74F45034F10B33FAEC8060D428B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Altitude Alert.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Altitude Alert.htpl"
             "TargetName" = "8:Altitude Alert.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3886,7 +3886,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_95E833D13F0A4FA9997C813D82B9545F"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Blank - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Blank - Light.htpl"
             "TargetName" = "8:Blank - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -3906,7 +3906,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_977AB8351A8C4AA2A82FF7226173750A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\COM 2.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\COM 2.htpl"
             "TargetName" = "8:COM 2.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3926,7 +3926,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_97A79C9345B44CDFB145832FB2D02687"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\F-16 Panel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\F-16 Panel.htpl"
             "TargetName" = "8:F-16 Panel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -3946,7 +3946,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9848A049CD8B4077A90D3EAE4B88F267"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\7.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\7.htpl"
             "TargetName" = "8:7.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -3966,7 +3966,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9913882FA9B14154AE56B5515834E598"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Hats\\DCS Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Hats\\DCS Switch.htpl"
             "TargetName" = "8:DCS Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_B79B9B25155A4CB8847DA510DCEF2189"
@@ -3986,7 +3986,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_99E21D78F5994EC9ACFC2CFD8026D16E"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 5.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 5.htpl"
             "TargetName" = "8:Rotary - Knob 5.htpl"
             "Tag" = "8:"
             "Folder" = "8:_C8C2CA30A4144B81AAC69C960ADFE1E5"
@@ -4006,7 +4006,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C97538AFF8249FEB3929F31578CD23A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Vertical Rocker.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Vertical Rocker.htpl"
             "TargetName" = "8:Vertical Rocker.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4026,7 +4026,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0A0386175BD479A98CF1DB3058845AC"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Flare Salvo Button.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Flare Salvo Button.htpl"
             "TargetName" = "8:Flare Salvo Button.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -4046,7 +4046,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0BFF416CCCA41EBAE826D911A907F3B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\3.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\3.htpl"
             "TargetName" = "8:3.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4066,7 +4066,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A88B52B9AB0F4E14B856642CD8FD0C33"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\9.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\9.htpl"
             "TargetName" = "8:9.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4086,7 +4086,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A8A74056124C4AD693F3BAFD2ADA58FD"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Flat Top.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Flat Top.htpl"
             "TargetName" = "8:Flat Top.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -4137,7 +4137,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ABEFA240B7DC4932AE60B85114E8E703"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\0.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\0.htpl"
             "TargetName" = "8:0.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4157,7 +4157,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AC29AC036EBF454C85B51E7829B7B14C"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\MFD.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\MFD.htpl"
             "TargetName" = "8:MFD.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -4177,7 +4177,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD56652454A345D5BE11B0768B60A253"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\STR PT.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\STR PT.htpl"
             "TargetName" = "8:STR PT.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4197,7 +4197,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD66F05204DF4728BFEBB7217DFF461B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Blank - Dark.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Blank - Dark.htpl"
             "TargetName" = "8:Blank - Dark.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -4217,7 +4217,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AD7D03839E304167B1475303E6245715"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Right.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Right.htpl"
             "TargetName" = "8:Backplate Screw - Right.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -4237,7 +4237,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ADA63B3B4AC3454F8CB5B815B2FCE1DE"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Bottom.htpl"
             "TargetName" = "8:Backplate Screw - Bottom.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -4257,7 +4257,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AE9BF261DD9341E69804011F5F0CB58B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Flaps Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Flaps Switch.htpl"
             "TargetName" = "8:AV-8B Flaps Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -4277,7 +4277,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B25A40941EAF434794710A2A568E56A4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Light.htpl"
             "TargetName" = "8:Plus Minus - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -4297,7 +4297,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B557B0599E0E49F0953CFF41CCD2474C"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Helios\\Installation Artefacts\\Helios.Read.Me.txt"
+            "SourcePath" = "8:..\\Helios\\Installation Artefacts\\Helios.Read.Me.txt"
             "TargetName" = "8:Helios.Read.Me.txt"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
@@ -4379,7 +4379,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B98FC97AB593418DAE7EF536AAD530C1"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Square - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\Tactile Square - Light.htpl"
             "TargetName" = "8:Tactile Square - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -4399,7 +4399,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BA9FC9731D5A4946A05CFD1261A14EF1"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\A-A.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\A-A.htpl"
             "TargetName" = "8:A-A.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4419,7 +4419,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB29820F6A4F4438B99646A0DC3709CF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\IFF.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\IFF.htpl"
             "TargetName" = "8:IFF.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4439,7 +4439,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BD6F94700DAF4B34AA9627BB9C798790"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Panel Screw.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Panel Screw.htpl"
             "TargetName" = "8:Panel Screw.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4459,7 +4459,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF533E1CB52D4403BA362262FAFE2155"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Dark - Horizontal.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Dark - Horizontal.htpl"
             "TargetName" = "8:Plus Minus - Dark - Horizontal.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -4479,7 +4479,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1E324455A3C4EA8AFEA5FBFFE95FD6C"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\4.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\4.htpl"
             "TargetName" = "8:4.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4510,7 +4510,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\es\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\es\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E325EED682934913B8759BAB29B6DCDB"
@@ -4530,7 +4530,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C33FAA7A13BC4733B70770A3A361CAF6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Seat Arming Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Seat Arming Switch.htpl"
             "TargetName" = "8:Seat Arming Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4550,7 +4550,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4C4A3B8709A48F1A679FB68E030935E"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 1.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rotaries\\Rotary - Knob 1.htpl"
             "TargetName" = "8:Rotary - Knob 1.htpl"
             "Tag" = "8:"
             "Folder" = "8:_C8C2CA30A4144B81AAC69C960ADFE1E5"
@@ -4570,7 +4570,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4CF6FEAC7724D569F91FBCFA1062169"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\FM Indicator.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\FM Indicator.htpl"
             "TargetName" = "8:FM Indicator.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4590,7 +4590,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C506CC3F82C54A7D90D5E51348254E7A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Caution.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Caution.htpl"
             "TargetName" = "8:Caution.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -4610,7 +4610,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C5C6C4EE57F84F5C9FE59AE776CA244A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\A-G.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\A-G.htpl"
             "TargetName" = "8:A-G.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4630,7 +4630,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C63ABB0B3E574661B08E1A928BE99BD6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Vertical.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Vertical.htpl"
             "TargetName" = "8:MPCD Rocker Vertical.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -4650,7 +4650,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C778A97C571B4CF592967C6BB01BA92F"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\5.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\5.htpl"
             "TargetName" = "8:5.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4701,7 +4701,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAC4DDDE0F9C4CBB940F91D8680ED83D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Gear Handle.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Gear Handle.htpl"
             "TargetName" = "8:Gear Handle.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4721,7 +4721,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC03FDF0D05B4E56984E55A60C4EA9DA"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\White Wheel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\White Wheel.htpl"
             "TargetName" = "8:White Wheel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -4792,7 +4792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFD2CD98E7BB47F692229C8B13605839"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\FWD.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\FWD.htpl"
             "TargetName" = "8:FWD.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4812,7 +4812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D32D06A4A9BA4B51993647A238C46E00"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Gear Handle.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Gear Handle.htpl"
             "TargetName" = "8:Gear Handle.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4832,7 +4832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D5CFECFE635747938E5D02F456DFB2D9"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Angled Left.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Angled Left.htpl"
             "TargetName" = "8:MPCD Rocker Angled Left.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -4883,7 +4883,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D94247775D134D67A9809BD0EE457EE5"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Light - Horizontal.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Plus Minus - Light - Horizontal.htpl"
             "TargetName" = "8:Plus Minus - Light - Horizontal.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -4903,7 +4903,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA7E27854DB14CFDAFBF8C316CC126DA"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\ILS.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\ILS.htpl"
             "TargetName" = "8:ILS.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -4923,7 +4923,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DF05BED28D664B05BF53CCE4485E18C4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Pointy Toggle.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\AV-8B Pointy Toggle.htpl"
             "TargetName" = "8:AV-8B Pointy Toggle.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -4943,7 +4943,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DF96D27F67E34EBBBA95A4E558FC4D9D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\8.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\8.htpl"
             "TargetName" = "8:8.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -4963,7 +4963,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E0BD756952534F448243034374AC0E31"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Panels\\Generic Backplate.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Panels\\Generic Backplate.htpl"
             "TargetName" = "8:Generic Backplate.htpl"
             "Tag" = "8:"
             "Folder" = "8:_75A921BEC47C4F2B8BC73C9C3D10C779"
@@ -4983,7 +4983,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E13089F71A3D46C0914A3EAFABEB1010"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\F-16 ICP Panel.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\F-16 ICP Panel.htpl"
             "TargetName" = "8:F-16 ICP Panel.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -5003,7 +5003,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E26D8C29663D4F62A4DE53178A06732E"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\EGI.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\EGI.htpl"
             "TargetName" = "8:EGI.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5023,7 +5023,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E2A72C64744043B48A5BBCD404F8C161"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Func.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Func.htpl"
             "TargetName" = "8:Func.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5043,7 +5043,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E42D6A6C7BCF468698EEF0F7F2C94D06"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\7.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\7.htpl"
             "TargetName" = "8:7.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -5063,7 +5063,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E47179711AEE4FB4A6150ED801B61009"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Angled Right.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Rocker Angled Right.htpl"
             "TargetName" = "8:MPCD Rocker Angled Right.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5083,7 +5083,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E47C22CD86EB4A8DA7A156F9285CBD43"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Orange Seal - Round.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Orange Seal - Round.htpl"
             "TargetName" = "8:Orange Seal - Round.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -5103,7 +5103,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E4BA99E707B6436F8D781AB4F1D28FB3"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Left.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Left.htpl"
             "TargetName" = "8:Backplate Screw - Left.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -5123,7 +5123,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E91790134F7C459BA904F8518118F176"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\1.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\1.htpl"
             "TargetName" = "8:1.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -5143,7 +5143,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E9557A83BB7746E0B879CF9264EC0FF3"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Buttons\\Push - Red.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Buttons\\Push - Red.htpl"
             "TargetName" = "8:Push - Red.htpl"
             "Tag" = "8:"
             "Folder" = "8:_8AF368E13ADF45C9B1A2741E5D2BCA66"
@@ -5163,7 +5163,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA902A0569314AD091D3E5DF06AAF0EB"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Button Horizontal.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Button Horizontal.htpl"
             "TargetName" = "8:MPCD Button Horizontal.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5183,7 +5183,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB23B1E088424494844BFD63A29531D0"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\TISL.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\TISL.htpl"
             "TargetName" = "8:TISL.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5203,7 +5203,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ECAB8FDA23F14872AA40F80F453389E5"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Master Arm Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Master Arm Switch.htpl"
             "TargetName" = "8:Master Arm Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5223,7 +5223,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EDD18A50ADCE4B629787CCB05B3E341D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Indicators\\Green Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Indicators\\Green Light.htpl"
             "TargetName" = "8:Green Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D1356738E1CE4CE7877501B49915C912"
@@ -5254,7 +5254,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\ro\\Xceed.Wpf.AvalonDock.resources.dll"
+            "SourcePath" = "8:..\\bin\\Release\\ro\\Xceed.Wpf.AvalonDock.resources.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7BC17883A7D64FB0B39C76B68CC35785"
@@ -5274,7 +5274,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F00C928DDB7B48919C4EE8E03D381056"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\0.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\0.htpl"
             "TargetName" = "8:0.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -5294,7 +5294,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F249AF10CEDB4D85B77B096D326312AD"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Button Vertical.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\MPCD Button Vertical.htpl"
             "TargetName" = "8:MPCD Button Vertical.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5314,7 +5314,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F2C58771541746809EF6F80B0919993D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 5.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 5.htpl"
             "TargetName" = "8:Encoder - Knob 5.htpl"
             "Tag" = "8:"
             "Folder" = "8:_FC23250ED713411EB427D1B27461B762"
@@ -5334,7 +5334,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3323412813B4DD8A2D33725E39CF528"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 4.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 4.htpl"
             "TargetName" = "8:Encoder - Knob 4.htpl"
             "Tag" = "8:"
             "Folder" = "8:_FC23250ED713411EB427D1B27461B762"
@@ -5354,7 +5354,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3B1D8DB61CE450B85EDF08FCC5C0866"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\Horizontal Panel Guard.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\Horizontal Panel Guard.htpl"
             "TargetName" = "8:Horizontal Panel Guard.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -5374,7 +5374,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F6013F9BFFDD47A691F7CC97C520F034"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Decorations\\Backplate Screw - Top.htpl"
             "TargetName" = "8:Backplate Screw - Top.htpl"
             "Tag" = "8:"
             "Folder" = "8:_E4F996999D2F404F9FCFAC5F62BBA565"
@@ -5394,7 +5394,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F62EB2231E794A41B9372C9B1C4E95E4"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\MID.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\MID.htpl"
             "TargetName" = "8:MID.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5414,7 +5414,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F673E36236FD455C987D74F0C245A0A6"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull Right.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\Fire Pull Right.htpl"
             "TargetName" = "8:Fire Pull Right.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5434,7 +5434,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F72DEE0236AA41C3901059FF36DC967A"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 3.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Encoders\\Encoder - Knob 3.htpl"
             "TargetName" = "8:Encoder - Knob 3.htpl"
             "Tag" = "8:"
             "Folder" = "8:_FC23250ED713411EB427D1B27461B762"
@@ -5454,7 +5454,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F74403A16B8A412F877080E061A968CF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Landing Gear Lever.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Landing Gear Lever.htpl"
             "TargetName" = "8:Landing Gear Lever.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5474,7 +5474,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F77B6487695C4C24AD160F28A3F32DDE"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Toggles\\Flat Top.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Toggles\\Flat Top.htpl"
             "TargetName" = "8:Flat Top.htpl"
             "Tag" = "8:"
             "Folder" = "8:_17CF8409674F4D8B82CA8EDAE986B115"
@@ -5494,7 +5494,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F79FA6ABA48E49EF92611520881AC995"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\AV-8B\\Rotary Switch.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\AV-8B\\Rotary Switch.htpl"
             "TargetName" = "8:Rotary Switch.htpl"
             "Tag" = "8:"
             "Folder" = "8:_02F8246442494AFA845FD9A0F8DB8826"
@@ -5514,7 +5514,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F84E9ACF89324F7A84541E3C1B8A10F8"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\A-10\\TCN.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\A-10\\TCN.htpl"
             "TargetName" = "8:TCN.htpl"
             "Tag" = "8:"
             "Folder" = "8:_D84D27AC7ECF4270938327933B4B025E"
@@ -5596,7 +5596,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FBF4E7E65DD84778B0ABD97CF5D36B98"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Square - Tan.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Threeway Toggles\\Square - Tan.htpl"
             "TargetName" = "8:Square - Tan.htpl"
             "Tag" = "8:"
             "Folder" = "8:_9DFD9EC12BFC49098F3C5B7AFA57CBC0"
@@ -5616,7 +5616,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FC9363CD35E44902A8F6D3469924F431"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\Rockers\\Arrows - Light.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\Rockers\\Arrows - Light.htpl"
             "TargetName" = "8:Arrows - Light.htpl"
             "Tag" = "8:"
             "Folder" = "8:_1B4DBC198CC847669FFCB86DA15E69CE"
@@ -5636,7 +5636,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FEFB4C5ECEDD429090162BDF1510F37D"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\bin\\Release\\Templates\\Base\\F-16\\LIST.htpl"
+            "SourcePath" = "8:..\\bin\\Release\\Templates\\Base\\F-16\\LIST.htpl"
             "TargetName" = "8:LIST.htpl"
             "Tag" = "8:"
             "Folder" = "8:_956F5C2F5D444060B4D3115A4842A174"
@@ -6095,15 +6095,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Helios"
-        "ProductCode" = "8:{0F22F3E6-02CC-4BF3-B946-2C9430282531}"
-        "PackageCode" = "8:{DA647710-86CF-4DA2-B93B-63238947CB0D}"
+        "ProductCode" = "8:{974DBB6E-FAA5-4E7A-B53C-7436448BD713}"
+        "PackageCode" = "8:{4B539D23-C6DE-497F-BC42-21F7FB5F84DB}"
         "UpgradeCode" = "8:{589D8667-3ED9-478B-8F67-A56E4FADBC63}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:14.18.0915"
+        "ProductVersion" = "8:14.18.0924"
         "Manufacturer" = "8:Gadrocs Workshop"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -6696,7 +6696,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_72CEFC0E61EB439E9A3A8073F41622EF"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Phidgets\\obj\\Release\\Phidgets.dll"
+            "SourcePath" = "8:..\\Phidgets\\obj\\Release\\Phidgets.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
@@ -6724,7 +6724,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_80A510498A90463B948A51AD3876BD90"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Control Center\\obj\\Release\\Control Center.exe"
+            "SourcePath" = "8:..\\Control Center\\obj\\Release\\Control Center.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
@@ -6754,7 +6754,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E6A2C78B3575408E83C42476E5449D05"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Helios\\obj\\Release\\Helios.dll"
+            "SourcePath" = "8:..\\Helios\\obj\\Release\\Helios.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
@@ -6782,7 +6782,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FA987369A3EA4F739E46E3E94BA7D12B"
             {
-            "SourcePath" = "8:D:\\Users\\Larmour\\Projects\\GitHub\\helios\\Profile Editor\\obj\\Release\\Profile Editor.exe"
+            "SourcePath" = "8:..\\Profile Editor\\obj\\Release\\Profile Editor.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5129BB67B5B1431C8208EBAF27E3DE9D"
