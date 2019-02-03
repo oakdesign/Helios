@@ -142,6 +142,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
+            Configuration.RestoreConfig("ExportHelios.lua");
             Configuration.RestoreConfig();
         }
     }

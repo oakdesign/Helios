@@ -1,183 +1,172 @@
-﻿-- for some reason, this causes a failure on my system so commenting it
--- out in the hope that others don't see a problem with it.
--- os.setlocale("ISO-8559-1", "numeric")
+local lfs = require "lfs"
+require "debug"
+local InvokeChildExports = nil
+local ThisExport = {}
+local PrevExport = {}
+PrevExport.LuaExportStart = LuaExportStart
+PrevExport.LuaExportStop = LuaExportStop
+PrevExport.LuaExportBeforeNextFrame = LuaExportBeforeNextFrame
+PrevExport.LuaExportAfterNextFrame = LuaExportAfterNextFrame
+PrevExport.LuaExportActivityNextEvent = LuaExportActivityNextEvent
 
--- Simulation id
-gSimID = string.format("%08x*",os.time())
-
--- State data for export
-gPacketSize = 0
-gSendStrings = {}
-gLastData = {}
-
--- Frame counter for non important data
-gTickCount = 0
-
--- DCS Export Functions
-function LuaExportStart()
--- Works once just before mission start.
-	
-    -- 2) Setup udp sockets to talk to helios
-    package.path  = package.path..";.\\LuaSocket\\?.lua"
-    package.cpath = package.cpath..";.\\LuaSocket\\?.dll"
-   
-    socket = require("socket")
-    
-    c = socket.udp()
-	c:setsockname("*", 0)
-	c:setoption('broadcast', true)
-    c:settimeout(.001) -- set the timeout for reading the socket 
+LuaExportStart = nil
+LuaExportStop = nil
+LuaExportBeforeNextFrame = nil
+LuaExportAfterNextFrame = nil
+LuaExportActivityNextEvent = nil
+gHeliosDebug = true
+local scriptDebug = false   -- local control of tracing
+local lInterval = 0.067
+-- introspect the script and where it was run from
+local thisScript = debug.getinfo(1,'S').short_src:gsub("\\","/"):match('^.*/(.*).[Ll][Uu][Aa]"]$')
+local thisPath = debug.getinfo(1,'S').short_src:gsub("\\","/"):match('^.*%s"(.*/)[Ss][Cc][Rr][Ii][Pp][Tt][Ss]/.*.[Ll][Uu][Aa]"]$'):gsub("/","\\\\")
+local llogFile
+local lDebugLogFileName = thisPath .. "Logs\\Helios.log"
+WriteToHeliosLog = function(caller, message)
+    if gHeliosDebug then
+    	if llogFile then
+			local lAircraft = gAircraft
+			if lAircraft == nil then lAircraft = "*" end
+    		llogFile:write(string.format("%s %s: %s\r\n", os.date("%H:%M:%S"), lAircraft .. '|' .. caller, message))
+        end
+    end
 end
-
-function LuaExportBeforeNextFrame()
-	ProcessInput()
+if gHeliosDebug then
+	llogFile = assert(io.open(lDebugLogFileName, "w"))
+	if llogFile then
+		   WriteToHeliosLog(thisScript,"Helios Exports Initialisation")
+		   WriteToHeliosLog(thisScript,"Current Directory=" .. lfs.currentdir())
+	end
 end
-
-function LuaExportAfterNextFrame()	
-end
-
-function LuaExportStop()
--- Works once just after mission stop.
-    c:close()
-end
-
-function ProcessInput()
-    local lInput = c:receive()
-    local lCommand, lCommandArgs, lDevice, lArgument, lLastValue
-    
-    if lInput then
-	
-        lCommand = string.sub(lInput,1,1)
-        
-		if lCommand == "R" then
-			ResetChangeValues()
+InvokeChildExports = function ()
+		-- This function attempts to determine the aircraft type which will usually happen on first 
+		-- invocation for local aircraft missions, however if the export file gets invoked as part 
+		-- of a mission, then there will not be an aircraft so we have to be prepared to find the 
+		-- aircraft type at a later time so this function is also called as part of LuaExportStart
+		-- * * * We also need to check the best way to get hooked in to missions where the pilot chooses a different aircraft type * * * 
+		local DCSInfo = LoGetSelfData()
+		if DCSInfo == nil then
+			WriteToHeliosLog(thisScript,string.format("DCSInfo / LoGetSelfData is nil in InvokeChildExports"))
+		else
+			local k,v
+			for k,v in pairs(DCSInfo) do
+					if type(v) == "string" or type(v) == "number" then 
+					WriteToHeliosLog(thisScript,"DCSInfo - Key: " .. k .. " Value: " .. v)	
+					end
+			end
+			gAircraft = DCSInfo.Name
+			WriteToHeliosLog(thisScript,string.format("Aircraft: " .. gAircraft))
+			-- invoke all of the Export scripts in the Aircraft Directory
+			for file in lfs.dir(thisPath .. "Scripts\\" .. gAircraft .."\\") do
+				if file:match('(.*).[Ll][Uu][Aa]$') ~= nil then 
+					WriteToHeliosLog(thisScript,"Mods - Calling " .. thisPath .. "Scripts\\" .. gAircraft .. "\\" .. file)
+					log.write('USERMOD.HELIOS',log.INFO,thisScript,"Mods - Calling " .. thisPath .. "Scripts\\" .. gAircraft .. "\\" .. file)
+					dofile(thisPath .. "Scripts\\" .. gAircraft .. "\\" .. file)
+				end
+			end		
 		end
-	
-		if (lCommand == "C") then
-			lCommandArgs = StrSplit(string.sub(lInput,2),",")
-			lDevice = GetDevice(lCommandArgs[1])
-			if type(lDevice) == "table" then
-				lDevice:performClickableAction(lCommandArgs[2],lCommandArgs[3])	
+
+end 
+LuaExportStart = function()
+if scriptDebug then WriteToHeliosLog(thisScript,"LuaExportStart() invoked.") end
+    -- the only reason for code in this function is to catch a later
+	-- aircraft selection and invokve the necessary child scripts.
+	if gAircraft == nil then
+    	WriteToHeliosLog(thisScript,"Invoking child exports from LuaExportStart()")
+		InvokeChildExports()
+	else
+		local DCSInfo = LoGetSelfData()
+		if DCSInfo.Name ~= gAircraft then
+	    	WriteToHeliosLog(thisScript,"Aircraft change from " .. gAircraft .. " to " .. DCSInfo.Name )
+			-- if the aircraft name does not match the one that we previously had
+			-- then we need to unhook the existing exports and reattach some new ones.
+			InvokeChildExports()
+			if gAircraft == nil then
+				   WriteToHeliosLog(thisScript,"Aircraft remains NIL after InvokeChildExports() called from LuaExportStart().")
 			end
 		end
-    end 
+	end
+	if PrevExport.LuaExportStart then 
+		PrevExport.LuaExportStart()
+	end
 end
+LuaExportStop = function()
+if scriptDebug then WriteToHeliosLog(thisScript,"LuaExportStop() invoked.") end
+	if PrevExport.LuaExportStop then
+		PrevExport.LuaExportStop()
+	end
+	-- A stop has been issued so we unhook the child routines because if
+	-- we restart, it could be with a new aircraft
+	LuaExportStart = ThisExport.LuaExportStart
+	LuaExportStop = ThisExport.LuaExportStop
+	LuaExportAfterNextFrame = ThisExport.LuaExportAfterNextFrame
+	LuaExportBeforeNextFrame = ThisExport.LuaExportBeforeNextFrame
+	LuaExportActivityNextEvent = ThisExport.LuaExportActivityNextEvent
+	gAircraft = nil
+end
+LuaExportAfterNextFrame = function()
+if scriptDebug then WriteToHeliosLog(thisScript,"LuaExportAfterNextFrame() invoked.") end
 
-function LuaExportActivityNextEvent(t)
-	t = t + gExportInterval
-
-	gTickCount = gTickCount + 1
-
-	local lDevice = GetDevice(0)
-	if type(lDevice) == "table" then
-		lDevice:update_arguments()
-
-		ProcessArguments(lDevice, gEveryFrameArguments)
-		ProcessHighImportance(lDevice)
-
-		if gTickCount >= gExportLowTickInterval then
-			ProcessArguments(lDevice, gArguments)
-			ProcessLowImportance(lDevice)
-			gTickCount = 0
+	if PrevExport.LuaExportAfterNextFrame then
+		PrevExport.LuaExportAfterNextFrame()
+	end
+end
+LuaExportBeforeNextFrame = function()
+if scriptDebug then WriteToHeliosLog(thisScript,"LuaExportBeforeNextFrame() invoked.") end
+    -- the only reason for code in this function is to catch a later
+	-- aircraft selection and invokve the necessary child scripts.
+	if gAircraft == nil then
+    	WriteToHeliosLog(thisScript,"Invoking child exports from LuaExportBeforeNextFrame()")
+		InvokeChildExports()
+		if gAircraft == nil then
+		   WriteToHeliosLog(thisScript,"Aircraft remains NIL after InvokeChildExports() called from LuaExportBeforeNextFrame().")
+		else 
+		   LuaExportStart() -- If we are successful at catching a late Aircraft selection then we need to call LuaExportStart() to allow them to set their UDP connections
 		end
-
-		FlushData()
-	end
-
-	return t
-end
-
--- Helper Functions
-function StrSplit(str, delim, maxNb)
-    -- Eliminate bad cases...
-    if string.find(str, delim) == nil then
-        return { str }
-    end
-    if maxNb == nil or maxNb < 1 then
-        maxNb = 0    -- No limit
-    end
-    local result = {}
-    local pat = "(.-)" .. delim .. "()"
-    local nb = 0
-    local lastPos
-    for part, pos in string.gfind(str, pat) do
-        nb = nb + 1
-        result[nb] = part
-        lastPos = pos
-        if nb == maxNb then break end
-    end
-    -- Handle the last field
-    if nb ~= maxNb then
-        result[nb + 1] = string.sub(str, lastPos)
-    end
-    return result
-end
-
-function round(num, idp)
-  local mult = 10^(idp or 0)
-  return math.floor(num * mult + 0.5) / mult
-end
-
-function check(s)
-    if type(s) == "string" then 
-        return s
-    else
-	    return "*"
-    end
-end
--- Status Gathering Functions
-function ProcessArguments(device, arguments)
-	local lArgument , lFormat , lArgumentValue
-		
-	for lArgument, lFormat in pairs(arguments) do 
-		lArgumentValue = string.format(lFormat,device:get_argument_value(lArgument))
-		SendData(lArgument, lArgumentValue)
-	end
-end
-
-function parse_indication(indicator_id)  -- Thanks to [FSF]Ian code
-	local ret = {}
-	local li = list_indication(indicator_id)
-	if li == "" then return nil end
-	local m = li:gmatch("-----------------------------------------\n([^\n]+)\n([^\n]*)\n")
-	while true do
-	local name, value = m()
-	if not name then break end
-		ret[name] = value
-	end
-	return ret
-end
-
--- Network Functions
-function SendData(id, value)	
-	if string.len(value) > 3 and value == string.sub("-0.00000000",1, string.len(value)) then
-		value = value:sub(2)
-	end
-	
-	if gLastData[id] == nil or gLastData[id] ~= value then
-		local data =  id .. "=" .. value
-		local dataLen = string.len(data)
-
-		if dataLen + gPacketSize > 576 then
-			FlushData()
+	else
+	local DCSInfo = LoGetSelfData()
+	if DCSInfo.Name ~= gAircraft then
+		-- if the aircraft name does not match the one that we previously had
+		-- then we need to unhook the existing exports and reattach some new ones.
+		WriteToHeliosLog(thisScript,"Aircraft change from " .. gAircraft .. " to " .. DCSInfo.Name)
+		InvokeChildExports()
+		if gAircraft == nil then
+		   WriteToHeliosLog(thisScript,"Aircraft remains NIL after InvokeChildExports() called from LuaExportBeforeNextFrame().")
 		end
-
-		table.insert(gSendStrings, data)
-		gLastData[id] = value	
-		gPacketSize = gPacketSize + dataLen + 1
-	end	
-end
-
-function FlushData()
-	if #gSendStrings > 0 then
-		local packet = gSimID .. table.concat(gSendStrings, ":") .. "\n"
-		socket.try(c:sendto(packet, gHost, gPort))
-		gSendStrings = {}
-		gPacketSize = 0
 	end
 end
-
-function ResetChangeValues()
-	gLastData = {}
-	gTickCount = 10
+if PrevExport.LuaExportBeforeNextFrame then 
+	PrevExport.LuaExportBeforeNextFrame()
+end
+end
+LuaExportActivityNextEvent = function(t)
+	if scriptDebug then WriteToHeliosLog(thisScript,"LuaExportActivityNextEvent() invoked.") end
+	local lt = t + lInterval
+    local lot = lt
+	if PrevExport.LuaExportActivityNextEvent then
+		lt = PrevExport.LuaExportActivityNextEvent(t)
+	end
+	if  lt > lot then 
+        lt = lot -- take the lesser of the next event times
+    end
+	return lt
+end
+--
+-- save away the stub routines in this script so that they can be restored
+-- on exit
+--
+ThisExport.LuaExportStart = LuaExportStart
+ThisExport.LuaExportStop = LuaExportStop
+ThisExport.LuaExportAfterNextFrame = LuaExportAfterNextFrame
+ThisExport.LuaExportBeforeNextFrame = LuaExportBeforeNextFrame
+ThisExport.LuaExportActivityNextEvent = LuaExportActivityNextEvent
+--
+-- Everything prepared so attempt to set up the scripting
+--
+WriteToHeliosLog(thisScript,"Script Path: " .. thisPath)
+if gAircraft == nil then
+	InvokeChildExports()
+	if gAircraft == nil then
+	   WriteToHeliosLog(thisScript,"Aircraft remains NIL after InvokeChildExports().")
+	end
 end

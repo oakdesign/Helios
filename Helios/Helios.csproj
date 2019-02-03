@@ -747,6 +747,7 @@
     <None Include="Fonts\Helios font registration.reg" />
     <None Include="Fonts\Hornet UFC.ttf" />
     <None Include="Fonts\MS33558.ttf" />
+    <None Include="Interfaces\DCS\Common\ExportHelios.lua" />
     <None Include="Templates\Base\A-10\0.htpl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -3544,6 +3545,7 @@
     <Resource Include="Images\FA-18C\UFC Button Up WPN.png" />
     <Resource Include="Images\FA-18C\UFC Faceplate.png" />
     <Resource Include="Images\AV-8B\ODU.png" />
+    <Content Include="Interfaces\DCS\Common\aircraftTypes.txt" />
     <Content Include="_Documents\changelog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

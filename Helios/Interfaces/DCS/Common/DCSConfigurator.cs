@@ -71,7 +71,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         }
 
         public DCSConfigurator(string preferencesPrefix, string defaultAppPath, bool allowDCSWorld)
-            : this(preferencesPrefix, "pack://application:,,,/Helios;component/Interfaces/DCS/Common/Export.lua", defaultAppPath, allowDCSWorld)
+            : this(preferencesPrefix, "pack://application:,,,/Helios;component/Interfaces/DCS/Common/ExportHelios.lua", defaultAppPath, allowDCSWorld)
         {
         }
 
@@ -400,7 +400,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         #endregion
         public bool UpdateExportConfig()
         {
-            return UpdateExportConfig("Export.lua");
+            return UpdateExportConfig("ExportHelios.lua");
         }
 
         public bool UpdateExportConfig(String exportFile)
@@ -489,7 +489,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private bool CheckConfig()
         {
-            return CheckConfig("Export.lua");
+            return CheckConfig("ExportHelios.lua");
         }
         private bool CheckConfig(String exportFile)
         {
@@ -529,10 +529,21 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 int lowExportTickInterval = Math.Min(1, (int)Math.Floor(0.250d / exportInterval));
 
                 StringWriter configFile = new StringWriter();
-                configFile.WriteLine("gHost = \"" + IPAddress + "\"");
-                configFile.WriteLine("gPort = " + Port.ToString(CultureInfo.InvariantCulture));
-                configFile.WriteLine("gExportInterval = " + exportInterval.ToString(CultureInfo.InvariantCulture));
-                configFile.WriteLine("gExportLowTickInterval = " + lowExportTickInterval.ToString(CultureInfo.InvariantCulture));
+
+                configFile.WriteLine("--");
+                configFile.WriteLine("-- This is the template for the aircraft specific Exports file that previously was installed");
+                configFile.WriteLine("-- by the aircraft specific interface in the profile editor.");
+                configFile.WriteLine("--");
+                configFile.WriteLine("-- The Aircraft specifc Exports file lives in a sub directory of the saved games Scripts directory");
+                configFile.WriteLine("-- and the name of the directory is the same as the DCS name for the aircraft.");
+                configFile.WriteLine("--");
+                configFile.WriteLine("local lAircraft = \"FA - 18C_hornet\"");
+                configFile.WriteLine("if gAircraft == lAircraft then");
+                configFile.WriteLine("do");
+                configFile.WriteLine("local lHost = \"" + IPAddress + "\"");
+                configFile.WriteLine("local lPort = " + Port.ToString(CultureInfo.InvariantCulture));
+                configFile.WriteLine("local lExportInterval = " + exportInterval.ToString(CultureInfo.InvariantCulture));
+                configFile.WriteLine("local lExportLowTickInterval = " + lowExportTickInterval.ToString(CultureInfo.InvariantCulture));
                 bool addEveryFrameComma = false;
                 bool addComma = false;
                 StringBuilder everyFrameArguments = new StringBuilder();
@@ -575,11 +586,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     }
                 }
 
-                configFile.Write("gEveryFrameArguments = {");
+                configFile.Write("local lEveryFrameArguments = {");
                 configFile.Write(everyFrameArguments.ToString());
                 configFile.WriteLine("}");
 
-                configFile.Write("gArguments = {");
+                configFile.Write("local lArguments = {");
                 configFile.Write(arguments.ToString());
                 configFile.WriteLine("}");
 

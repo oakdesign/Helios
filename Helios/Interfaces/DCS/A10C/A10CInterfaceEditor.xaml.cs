@@ -140,7 +140,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.RestoreConfig();
+            Configuration.RestoreConfig("ExportHelios.lua");
+            Configuration.RestoreConfig("Export.lua");
         }
     }
 }
