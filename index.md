@@ -8,6 +8,8 @@ The Helios **Control Center** program executes the profile that was created by t
 
 When the aircraft specific interface is deployed from the **Profile Editor**, it creates an **exports.lua** script file in the %userprofile%\saved games\DCS\Scripts\ directory, and this is the code that is invoked by DCS at aircraft start-up, and communicates with the **Control Center** over a UDP link.
 
+There is a very short, basic overview of Helios on [YouTube](https://youtu.be/78to_NENQT8)
+
 ### Recent Change History
 
 * March 2019 - Autobinding and Hornet IFEI & UFC demonstration [YouTube](https://www.youtube.com/watch?v=lEhG-TtENWc)
