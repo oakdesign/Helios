@@ -89,7 +89,7 @@ namespace GadrocsWorkshop.Helios.Gauges.FA18C
 
         public override string BezelImage
         {
-            get { return "{Helios}/Images/FA-18C/UFC Faceplate.png"; }
+            get { return "{Helios}/Images/FA-18C/UFC Faceplate No Reflections.png"; }
         }
 
         private void AddPot(string name, Point posn, Size size, string interfaceElementName)

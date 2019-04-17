@@ -3659,6 +3659,9 @@
     <Resource Include="Images\FA-18C\UFC Button Up WOF.png" />
     <Resource Include="Images\FA-18C\UFC Button Up WPN.png" />
     <Resource Include="Images\AV-8B\ODU.png" />
+    <Resource Include="Images\FA-18C\UFC Faceplate No Reflections.png" />
+    <Resource Include="Images\FA-18C\UFC Faceplate Reflections.png" />
+    <Content Include="Images\FA-18C\MFD Screen Overlay.png" />
     <Content Include="_Documents\changelog.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
