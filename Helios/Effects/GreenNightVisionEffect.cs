@@ -55,8 +55,23 @@ namespace GadrocsWorkshop.Helios.Effects
 
         public double Brightness
         {
-            get { return (double)GetValue(BrightnessProperty); }
-            set { SetValue(BrightnessProperty, value); }
+            get {
+                return (double)GetValue(BrightnessProperty);
+            }
+            set {
+                // this is sometimes accessed from a worker thread during XML processing
+                if (Dispatcher.CheckAccess())
+                {
+                    SetValue(BrightnessProperty, value);
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        SetValue(BrightnessProperty, value);
+                    });
+                }
+            }
         }
 
         public static readonly DependencyProperty BrightnessProperty =
