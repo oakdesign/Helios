@@ -35,11 +35,13 @@ namespace GadrocsWorkshop.Helios.ControlCenter
     using System.Windows.Navigation;
     using System.Windows.Shapes;
     using System.Windows.Threading;
+    using GadrocsWorkshop.Helios.Effects;
+    using System.Windows.Media.Effects;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMonitorEffects
     {
         private IntPtr HWND_TOPMOST = new IntPtr(-1);
         private const long TOPMOST_TICK_COUNT = 3 * TimeSpan.TicksPerSecond;
@@ -817,6 +819,26 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Minimize();
+        }
+
+        FrameworkElement IMonitorEffects.findEffectTarget(Monitor monitor, LEVEL level)
+        {
+            foreach (MonitorWindow monitorViewer in _windows)
+            {
+                if (monitorViewer.Monitor == monitor)
+                {
+                    switch (level)
+                    {
+                        case LEVEL.COLOR:
+                            return monitorViewer;
+                        case LEVEL.LIGHT:
+                            return monitorViewer.LightEffectTarget();
+                        default:
+                            return null;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

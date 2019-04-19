@@ -75,6 +75,11 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
             IBindingAction action;
             IBindingTrigger trigger;
 
+            if (dropItem == null)
+            {
+                // ignore, since this can happen
+                return;
+            }
             if (dropItem.ItemType.HasFlag(ProfileExplorerTreeItemType.Trigger))
             {
                 action = (IBindingAction)obj.GetData("Helios.Action");

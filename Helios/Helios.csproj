@@ -178,6 +178,16 @@
       <DependentUpon>LineDecorationAppearancePropertyEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LineDecorationRenderer.cs" />
+    <Compile Include="Effects\DesignModeRectangleRenderer.cs" />
+    <Compile Include="Effects\EffectControl.cs" />
+    <Compile Include="Effects\Blackout.cs" />
+    <Compile Include="Effects\BlackoutEffect.cs" />
+    <Compile Include="Effects\GreenNightVisionEffect.cs" />
+    <Compile Include="Effects\GreenNightVision.cs" />
+    <Compile Include="Effects\GreenNightVisionAppearanceEditor.xaml.cs">
+      <DependentUpon>GreenNightVisionAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Effects\IMonitorEffects.cs" />
     <Compile Include="FontManager.cs" />
     <Compile Include="Gauges\A-10\A10CDevice\A10CDevice.cs" />
     <Compile Include="Gauges\A-10\A10CDevice\A10CDeviceRenderer.cs" />
@@ -346,6 +356,8 @@
     <Compile Include="Gauges\FA-18C\UFC\UFC.cs" />
     <Compile Include="Gauges\FA-18C\IFEI\IFEI.cs" />
     <Compile Include="Gauges\FA-18C\VVI\VVI.cs" />
+    <Resource Include="Effects\GreenNightVisionEffect.fx.ps" />
+    <Resource Include="Effects\BlackoutEffect.fx.ps" />
     <None Include="Gauges\GaugeTextDisplay.cs" />
     <Compile Include="Gauges\KA-50\EGT\EGT.cs" />
     <Compile Include="Gauges\F-16\ADI\ADI.cs" />
@@ -763,6 +775,9 @@
     <Resource Include="Interfaces\DCS\M2000CSimple\ExportFunctions.lua" />
     <Resource Include="Interfaces\DCS\Mi8Simple\ExportFunctions.lua" />
     <None Include="Fonts\Helios font registration.reg" />
+    <None Include="Effects\GreenNightVisionEffect.fx" />
+    <None Include="Effects\compile_shaders.cmd" />
+    <None Include="Effects\BlackoutEffect.fx" />
     <Content Include="Fonts\Hornet IFEI.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1518,6 +1533,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Effects\GreenNightVisionAppearanceEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Gauges\A-10\HSI\HSIBehaviorEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

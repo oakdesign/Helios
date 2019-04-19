@@ -222,6 +222,14 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             return controlLocation;
         }
 
+        #region Effects Support
+        public FrameworkElement LightEffectTarget()
+        {
+            // we cannot reach into this object from the outside, so we need this access method
+            return _viewer;
+        }
+        #endregion
+
         //protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         //{
         //    Point location = e.GetPosition(this);

@@ -20,6 +20,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
     using GadrocsWorkshop.Helios.ProfileEditor.UndoEvents;
     using GadrocsWorkshop.Helios.ProfileEditor.ViewModel;
     using GadrocsWorkshop.Helios.Windows.Controls;
+    using GadrocsWorkshop.Helios.Effects;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -34,11 +35,13 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
     using System.Windows.Threading;
     using Xceed.Wpf.AvalonDock.Layout;
     using Xceed.Wpf.AvalonDock.Layout.Serialization;
+    using System.Windows.Media.Effects;
+    using System.Windows.Media;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMonitorEffects
     {
         /// <summary>
         /// Internal Class used to track open documents
@@ -922,6 +925,30 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
         private void Explorer_ItemDeleting(object sender, ItemDeleteEventArgs e)
         {
             CloseProfileItem(e.DeletedItem);
+        }
+
+        FrameworkElement IMonitorEffects.findEffectTarget(Monitor monitor, LEVEL level)
+        {
+            foreach (DocumentMeta meta in _documents)
+            {
+                if (meta.editor is MonitorDocument)
+                {
+                    MonitorDocument monitorViewer = meta.editor as MonitorDocument;
+                    if (monitorViewer.Monitor == monitor)
+                    {
+                        switch (level)
+                        {
+                            case LEVEL.COLOR:
+                                return monitorViewer.MonitorEditor;
+                            case LEVEL.LIGHT:
+                                return monitorViewer.MonitorEditor.LightEffectTarget();
+                            default:
+                                return null;
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

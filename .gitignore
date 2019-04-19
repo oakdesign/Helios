@@ -12,3 +12,5 @@ Helios *.zip
 Helios*.msi
 setup.exe
 Helios/Gauges/FA-18C/UFCv2/UFC_v2.cs
+*.cod
+/UpgradeLog2.htm

@@ -21,6 +21,12 @@ namespace GadrocsWorkshop.Helios.Windows.Controls
     using System.Windows.Input;
     using System.Windows.Media;
 
+    /// <summary>
+    /// This is a System Window that occupies a place in the windows hierarchy.  It is a proxy for one Control or other 
+    /// visual element of type HeliosVisual (which is itself not a Window).
+    /// 
+    /// Rendering is performed by deferring it to this.Visual.Renderer
+    /// </summary>
     public class HeliosVisualView : FrameworkElement
     {
         private List<HeliosVisualView> _children;
