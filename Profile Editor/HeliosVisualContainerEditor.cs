@@ -197,24 +197,6 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
         public static readonly DependencyProperty PreviewModeProperty =
             DependencyProperty.Register("PreviewMode", typeof(bool), typeof(HeliosVisualContainerEditor), new PropertyMetadata(false));
 
-#if false
-        public Effect ColorEffect
-        {
-            get { return (Effect)GetValue(ColorEffectProperty); }
-            set { SetValue(ColorEffectProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Monitor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ColorEffectProperty =
-            DependencyProperty.Register("ColorEffect", typeof(Effect), typeof(HeliosVisualContainerEditor), new PropertyMetadata(null, new PropertyChangedCallback(ColorEffectChanged)));
-
-        private static void ColorEffectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            HeliosVisualContainerEditor target = d as HeliosVisualContainerEditor;
-            target.Effect = e.NewValue as Effect;
-        }
-
-#endif
         #endregion
 
         #region Effects Support
