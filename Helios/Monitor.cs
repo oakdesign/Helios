@@ -246,7 +246,10 @@ namespace GadrocsWorkshop.Helios
 
             writer.WriteElementString("Orientation", Orientation.ToString());
             writer.WriteElementString("AlwaysOnTop", bc.ConvertToInvariantString(AlwaysOnTop));
-            writer.WriteElementString("SuppressMouseAfterTouchDuration", ic.ConvertToInvariantString(_suppressMouseAfterTouchDuration));
+            if (_suppressMouseAfterTouchDuration > 0)
+            {
+                writer.WriteElementString("SuppressMouseAfterTouchDuration", ic.ConvertToInvariantString(_suppressMouseAfterTouchDuration));
+            }
 
             writer.WriteStartElement("Background");
             if (!string.IsNullOrWhiteSpace(BackgroundImage))
