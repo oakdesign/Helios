@@ -927,7 +927,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
             CloseProfileItem(e.DeletedItem);
         }
 
-        FrameworkElement IMonitorEffects.findEffectTarget(Monitor monitor, LEVEL level)
+        FrameworkElement IMonitorEffects.FindEffectTarget(Monitor monitor, LEVEL level)
         {
             foreach (DocumentMeta meta in _documents)
             {
@@ -938,10 +938,12 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                     {
                         switch (level)
                         {
-                            case LEVEL.COLOR:
+                            case LEVEL.PERCEPTION:
                                 return monitorViewer.MonitorEditor;
-                            case LEVEL.LIGHT:
-                                return monitorViewer.MonitorEditor.LightEffectTarget();
+                            case LEVEL.OPTICS:
+                                return monitorViewer.MonitorEditor.SecondEffectTarget();
+                            case LEVEL.LIGHTING:
+                                // XXX find another framework element to attach to or add framework element to assembly
                             default:
                                 return null;
                         }

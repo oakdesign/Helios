@@ -821,7 +821,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             Minimize();
         }
 
-        FrameworkElement IMonitorEffects.findEffectTarget(Monitor monitor, LEVEL level)
+        FrameworkElement IMonitorEffects.FindEffectTarget(Monitor monitor, LEVEL level)
         {
             foreach (MonitorWindow monitorViewer in _windows)
             {
@@ -829,10 +829,12 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 {
                     switch (level)
                     {
-                        case LEVEL.COLOR:
+                        case LEVEL.PERCEPTION:
                             return monitorViewer;
-                        case LEVEL.LIGHT:
-                            return monitorViewer.LightEffectTarget();
+                        case LEVEL.OPTICS:
+                            return monitorViewer.SecondEffectTarget();
+                        case LEVEL.LIGHTING:
+                            // XXX find another framework element to attach to or add framework element to assembly
                         default:
                             return null;
                     }

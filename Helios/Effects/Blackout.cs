@@ -13,7 +13,7 @@
         private HeliosValue _intensityValue;
 
         public Blackout()
-            : base("Blackout", LEVEL.LIGHT)
+            : base("Blackout", LEVEL.PERCEPTION)
         {
             _effect = new BlackoutEffect() { Intensity = 0.0 };
             FillColor = Colors.Black;

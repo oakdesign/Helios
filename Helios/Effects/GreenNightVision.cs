@@ -16,7 +16,7 @@
         private double _brightness = DEFAULT_BRIGHTNESS;
 
         public GreenNightVision()
-            : base("Green Night Vision", LEVEL.COLOR)
+            : base("Green Night Vision", LEVEL.OPTICS)
         {
             _effect = new GreenNightVisionEffect() { Brightness = DEFAULT_BRIGHTNESS };
         }

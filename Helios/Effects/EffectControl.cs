@@ -85,7 +85,7 @@ namespace GadrocsWorkshop.Helios.Effects
                 // ignore functionality not supported in this context
                 return;
             }
-            FrameworkElement target = monitorEffects.findEffectTarget(Monitor, _effectLevel);
+            FrameworkElement target = monitorEffects.FindEffectTarget(Monitor, _effectLevel);
             if (target == null)
             {
                 return;
@@ -100,7 +100,7 @@ namespace GadrocsWorkshop.Helios.Effects
                 // ignore functionality not supported in this context
                 return false;
             }
-            FrameworkElement target = monitorEffects.findEffectTarget(Monitor, _effectLevel);
+            FrameworkElement target = monitorEffects.FindEffectTarget(Monitor, _effectLevel);
             if (target == null)
             {
                 return false;

@@ -218,7 +218,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
         #endregion
 
         #region Effects Support
-        public FrameworkElement LightEffectTarget()
+        public FrameworkElement SecondEffectTarget()
         {
             // we cannot reach into this object from the outside, so we need this access method
             return _view;
