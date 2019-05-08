@@ -106,6 +106,9 @@ namespace KeyPressReceiver
             TCPClient TCPClient = TCPClient.Instance;
             TCPClient.DataReceived += OnTCPDataReceived;
             TCPClient.StatusChanged += OnTCPStatusChanged;
+            tbSvrAddress.Text = Properties.Settings.Default.ServerAddress;
+            tbSvrPort.Text = "5009";//  Properties.Settings.Default.ServerPort.ToString();
+            this.Hide();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -158,7 +161,7 @@ namespace KeyPressReceiver
         private void bnCancel_Click(object sender, EventArgs e)
         {
             tbSvrAddress.Text = Properties.Settings.Default.ServerAddress;
-            tbSvrPort.Text = Properties.Settings.Default.ServerPort.ToString();
+            tbSvrPort.Text = "5009";//  Properties.Settings.Default.ServerPort.ToString();
             this.Hide();
         }
 
