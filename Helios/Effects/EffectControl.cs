@@ -63,6 +63,7 @@ namespace GadrocsWorkshop.Helios.Effects
         {
             get;
         }
+
         #endregion
 
         #region Actions
@@ -113,6 +114,20 @@ namespace GadrocsWorkshop.Helios.Effects
             // uninstall but do not deallocate effect
             target.Effect = null;
             return true;
+        }
+
+        public void StartDesignModeDemo()
+        {
+            // temporarily activate effect
+            IsEffectActive = true;
+            ConfigManager.LogManager.LogDebug("Effect temporarily installed");
+        }
+
+        public void StopDesignModeDemo()
+        {
+            // if temporarily activated, undo it
+            IsEffectActive = false;
+            ConfigManager.LogManager.LogDebug("Effect uninstalled");
         }
     }
 }

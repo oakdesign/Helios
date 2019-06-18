@@ -5,12 +5,12 @@
     using System.Windows;
 
     /// <summary>
-    /// Interaction logic for GreenNightVisionAppearanceEditor.xaml
+    /// Interaction logic for NightInstrumentsAppearanceEditor.xaml
     /// </summary>
-    [HeliosPropertyEditor("Helios.Effects.GreenNightVision", "Appearance")]
-    public partial class GreenNightVisionAppearanceEditor : HeliosPropertyEditor
+    [HeliosPropertyEditor("Helios.Effects.NightInstruments", "Appearance")]
+    public partial class NightInstrumentsAppearanceEditor : HeliosPropertyEditor
     {
-        public GreenNightVisionAppearanceEditor()
+        public NightInstrumentsAppearanceEditor()
         {
             InitializeComponent();
         }

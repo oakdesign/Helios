@@ -182,6 +182,11 @@
     <Compile Include="Effects\EffectControl.cs" />
     <Compile Include="Effects\Blackout.cs" />
     <Compile Include="Effects\BlackoutEffect.cs" />
+    <Compile Include="Effects\NightInstruments.cs" />
+    <Compile Include="Effects\NightInstrumentsAppearanceEditor.xaml.cs">
+      <DependentUpon>NightInstrumentsAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Effects\NightInstrumentsEffect.cs" />
     <Compile Include="Effects\GreenNightVisionEffect.cs" />
     <Compile Include="Effects\GreenNightVision.cs" />
     <Compile Include="Effects\GreenNightVisionAppearanceEditor.xaml.cs">
@@ -358,6 +363,7 @@
     <Compile Include="Gauges\FA-18C\VVI\VVI.cs" />
     <Resource Include="Effects\GreenNightVisionEffect.fx.ps" />
     <Resource Include="Effects\BlackoutEffect.fx.ps" />
+    <Resource Include="Effects\NightInstrumentsEffect.fx.ps" />
     <None Include="Gauges\GaugeTextDisplay.cs" />
     <Compile Include="Gauges\KA-50\EGT\EGT.cs" />
     <Compile Include="Gauges\F-16\ADI\ADI.cs" />
@@ -778,6 +784,7 @@
     <None Include="Effects\GreenNightVisionEffect.fx" />
     <None Include="Effects\compile_shaders.cmd" />
     <None Include="Effects\BlackoutEffect.fx" />
+    <None Include="Effects\NightInstrumentsEffect.fx" />
     <Content Include="Fonts\Hornet IFEI.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1533,6 +1540,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Effects\NightInstrumentsAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Effects\GreenNightVisionAppearanceEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
