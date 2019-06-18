@@ -834,7 +834,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                         case LEVEL.OPTICS:
                             return monitorViewer.SecondEffectTarget();
                         case LEVEL.LIGHTING:
-                            // XXX find another framework element to attach to or add framework element to assembly
+                            return monitorViewer.FirstEffectTarget();
                         default:
                             return null;
                     }

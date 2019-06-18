@@ -943,7 +943,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                             case LEVEL.OPTICS:
                                 return monitorViewer.MonitorEditor.SecondEffectTarget();
                             case LEVEL.LIGHTING:
-                                // XXX find another framework element to attach to or add framework element to assembly
+                                return monitorViewer.MonitorEditor.FirstEffectTarget();
                             default:
                                 return null;
                         }

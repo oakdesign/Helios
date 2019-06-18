@@ -51,6 +51,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
 
         private CalibrationPointCollectionDouble _zoomCalibration;
 
+        private FrameworkElement _effectFrame;
         private HeliosVisualView _view;
 
         static HeliosVisualContainerEditor()
@@ -94,7 +95,10 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
             _view = new HeliosVisualView();
             _view.IgnoreHidden = true;
             _view.DisplayRotation = false;
-            AddVisualChild(_view);
+
+            // contain the top level view in an extra frame used for effects
+            _effectFrame = new System.Windows.Controls.Decorator() { Child = _view };
+            AddVisualChild(_effectFrame);
 
             SelectedItems = new HeliosVisualCollection();
             _zoomCalibration = new CalibrationPointCollectionDouble(-4d, 0.25d, 4d, 4d);
@@ -135,7 +139,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                 throw new ArgumentOutOfRangeException();
             }
 
-            return _view;
+            return _effectFrame;
         }
 
         #endregion
@@ -201,6 +205,11 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
 
         #region Effects Support
         public FrameworkElement SecondEffectTarget()
+        {
+            // we cannot reach into this object from the outside, so we need this access method
+            return _effectFrame;
+        }
+        public FrameworkElement FirstEffectTarget()
         {
             // we cannot reach into this object from the outside, so we need this access method
             return _view;

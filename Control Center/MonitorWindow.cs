@@ -28,6 +28,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         private Monitor _display;
         private bool _needsDisplay;
         private bool _autoInvalidate;
+        private FrameworkElement _effectFrame;
         private HeliosVisualView _viewer;
         private WindowInteropHelper _helper;
 
@@ -42,7 +43,9 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         {
             _viewer = new HeliosVisualView();
             _viewer.Visual = monitor;
-            Content = _viewer;
+
+            _effectFrame = new System.Windows.Controls.Decorator() { Child = _viewer };
+            Content = _effectFrame;
 
             _display = monitor;
             _autoInvalidate = autoInvalidate;
@@ -224,6 +227,11 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         #region Effects Support
         public FrameworkElement SecondEffectTarget()
+        {
+            // we cannot reach into this object from the outside, so we need this access method
+            return _effectFrame;
+        }
+        public FrameworkElement FirstEffectTarget()
         {
             // we cannot reach into this object from the outside, so we need this access method
             return _viewer;
