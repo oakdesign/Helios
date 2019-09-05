@@ -1,4 +1,4 @@
-#Notes on Auto Binding#
+#Notes on Auto Binding
 
 The "device" and the "name" from then interface AddFunction need to match exactly with the InterfaceDeviceName and the InterfaceElementName used on the CompositeVisual object that is defined in your device.
 Within the code for the device component, the "name" used on the Addcontrol needs to be unique, and the "Name" for the control should have the base class name for the device component prepended (with a trailing underscore).
@@ -9,12 +9,13 @@ The HeliosControlAttribute "name" is not used in the autobinding.
 Make sure that you are not adding actions or triggers in the device component code.  These are added by CompositeVisual.  Likewise do not do a child add in the device component code.
 
 
-##Example:##
+##Example:
 
-in AV8BInterface.cs
+###in AV8BInterface.cs
 		AddFunction(new PushButton(this, SMC, "3407", "407", "Stores Management", "Station 1 Button"));
 
-in SMC.cs (the code for the component device)
+###in SMC.cs (the code for the component device)
+
         public SMC_AV8B()
             : base("SMC", new Size(1231, 470))
 
@@ -37,7 +38,7 @@ in SMC.cs (the code for the component device)
             button.Name = "SMC_" + "Station 1";
         }
 
-##Problem Solving:##
+##Problem Solving:
 
 Setting a stop in CompositeVisual.cs around line 231 "ConfigManager.LogManager.LogError("Cannot find child " + defaultBinding.ChildName);" gives you a view of what is not binding.
 		
