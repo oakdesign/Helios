@@ -10,6 +10,10 @@ When the aircraft specific interface is deployed from the **Profile Editor**, it
 
 There is a very short, basic overview of Helios on [YouTube](https://youtu.be/78to_NENQT8)
 
+### Notes about developing the Helios Codebase
+
+The list of topics is [here](developer_notes.md) This should probably be a wiki but we'll see how this gets on.
+
 ### Recent Change History
 
 * March 2019 - Autobinding and Hornet IFEI & UFC demonstration [YouTube](https://www.youtube.com/watch?v=lEhG-TtENWc)
