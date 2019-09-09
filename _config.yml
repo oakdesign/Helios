@@ -2,7 +2,7 @@ title: Helios
 description: Virtual Cockpit System
 google_analytics: 
 show_downloads: true
-theme: jekyll-theme-slate
+remote_theme: bluefinbima/slate
 
 gems:
    - jekyll-mentions
