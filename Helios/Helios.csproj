@@ -108,6 +108,22 @@
     <Compile Include="CalibrationPointDouble.cs" />
     <Compile Include="CalibrationPointLong.cs" />
     <Compile Include="Gauges\AV-8B\Small Panels\Slip Turn Panel.cs" />
+    <Compile Include="Gauges\F-16C\ADI\ADI.cs" />
+    <Compile Include="Gauges\F-16C\Airspeed\Airspeed.cs" />
+    <Compile Include="Gauges\F-16C\Altimeter\Altimeter.cs" />
+    <Compile Include="Gauges\F-16C\AOA\AOA.cs" />
+    <Compile Include="Gauges\F-16C\F16CDevice\F16CCompositeVisual.cs" />
+    <Compile Include="Gauges\F-16C\F16CDevice\F16CDevice.cs" />
+    <Compile Include="Gauges\F-16C\F16CDevice\F16CDeviceRenderer.cs" />
+    <Compile Include="Gauges\F-16C\FTIT\FTIT.cs" />
+    <Compile Include="Gauges\F-16C\FuelFlow\FuelFlow.cs" />
+    <Compile Include="Gauges\F-16C\HSI\HSI.cs" />
+    <Compile Include="Gauges\F-16C\Nozzle\Nozzle.cs" />
+    <Compile Include="Gauges\F-16C\OilPressure\OilPressure.cs" />
+    <Compile Include="Gauges\F-16C\RPM\RPM.cs" />
+    <Compile Include="Gauges\F-16C\Trim\PitchTrim.cs" />
+    <Compile Include="Gauges\F-16C\Trim\RollTrim.cs" />
+    <Compile Include="Gauges\F-16C\VVI\VVI.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumGauge.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CNeedle.cs" />
     <Compile Include="Gauges\M2000C\ECMBox\ECM_Box.cs" />
@@ -125,6 +141,11 @@
     <Compile Include="Gauges\M2000C\Miscellaneous\FireWarning_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\PCI_Panel.cs" />
     <Compile Include="Gauges\M2000C\VorIlsChannel\VorIls_Panel.cs" />
+    <Compile Include="Interfaces\DCS\F16C\F16CInterface.cs" />
+    <Compile Include="Interfaces\DCS\F16C\F16CInterfaceEditor.xaml.cs">
+      <DependentUpon>F16CInterfaceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\DCS\F16C\Functions\Altimeter.cs" />
     <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />
     <Compile Include="Collections\KeyedObservableCollection.cs" />
@@ -840,11 +861,21 @@
     <Resource Include="Images\Buttons\green-push-in.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_bezel.png" />
+    <Resource Include="Gauges\F-16C\AOA\aoa_bezel.png" />
+    <Resource Include="Gauges\F-16C\Common\f16_engine_bezel.png" />
+    <Resource Include="Gauges\F-16C\Common\f16_gauge_bezel.png" />
+    <Resource Include="Gauges\F-16C\FuelFlow\fuelflow_bezel.png" />
+    <Resource Include="Gauges\F-16C\HSI\hsi_bezel.png" />
+    <Resource Include="Gauges\F-16C\VVI\vvi_bezel.png" />
     <Content Include="Templates\Base\Panels\Empty Panel.htpl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions - New - Post.lua" />
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions - New - Pre.lua" />
+    <Resource Include="Interfaces\DCS\F16C\ExportFunctions - New - Post.lua" />
+    <Resource Include="Interfaces\DCS\F16C\ExportFunctions - New - Pre.lua" />
+    <Resource Include="Interfaces\DCS\F16C\ExportFunctions.lua" />
     <None Include="_Documents\Helios Release 1.4 Users Guide.docx" />
     <None Include="_Documents\Helios Release 1.4 Users Guide.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -2888,6 +2919,210 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Resource Include="Gauges\F-16C\ADI\adi_aux_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_ball.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_gs_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_guides.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_ils_bar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_ils_scale_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_inner_ring.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_loc_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_off_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_outer_ring.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\ADI\adi_slip_ball.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Airspeed\asi_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Airspeed\asi_inner_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Airspeed\asi_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Altimeter\alt_drum_tape.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Altimeter\altimeter_backplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Altimeter\altimeter_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Altimeter\altimeter_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\AOA\aoa_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\AOA\aoa_off_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\AOA\aoa_tape.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Common\drum_tape.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\FTIT\ftit_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\FTIT\ftit_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\FuelFlow\fuelflow_labels.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_background.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_bearing_needle_f16.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_compass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_course_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_course_needle_f16.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_deviation_card.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_deviation_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_dme_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_from_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_heading_bug.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_off_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\HSI\hsi_to_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Nozzle\nozzle_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Nozzle\nozzle_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\OilPressure\oil_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\OilPressure\oil_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\RPM\rpm_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\RPM\rpm_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Trim\pitchtrim_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Trim\pitchtrim_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Trim\rolltrim_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\Trim\rolltrim_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\VVI\vvi_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\VVI\vvi_off_flag.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16C\VVI\vvi_tape.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Gauges\FA-18C\IFEI\IFEI Nozzle Gauge Marks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2945,6 +3180,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Interfaces\DCS\F16C\F16CInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

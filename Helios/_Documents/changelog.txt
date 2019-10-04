@@ -1,5 +1,6 @@
 1.4.2019.xxxx Release
 ----------------------------
+* Fix for duplicate bindings stored in profiles for auto-boud devices
 
 
 1.4.2019.0930 Release
