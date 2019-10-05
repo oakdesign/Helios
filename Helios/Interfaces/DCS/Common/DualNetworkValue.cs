@@ -15,52 +15,56 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     using GadrocsWorkshop.Helios.UDPInterface;
     using System.Globalization;
 
-    public class ScaledNetworkValue : NetworkFunction
+    public class DualNetworkValue : NetworkFunction
     {
         private string _id;
-        private string _format;
+        private string _format, _pure_name;
 
         private double _baseValue;
 
         private CalibrationPointCollectionDouble _calibratedScale;
         private double _scale;
 
-        private HeliosValue _value;
+        private HeliosValue _value, _pure_value;
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
+        public DualNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
             : this(sourceInterface, id, scale, device, name, description, valueDescription, unit, "%.4f")
         {
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
+        public DualNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
             : this(sourceInterface, id, device, name, description, valueDescription, unit, 0d, exportFormat)
         {
             _calibratedScale = scale;
             _scale = 0d;
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
+        public DualNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
             : this(sourceInterface, id, scale, device, name, description, valueDescription, unit, 0d, "%.4f")
         {
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
+        public DualNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
             : this(sourceInterface, id, device, name, description, valueDescription, unit, baseValue, exportFormat)
         {
             _calibratedScale = null;
             _scale = scale;
         }
 
-        private ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
+        private DualNetworkValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
             : base(sourceInterface)
         {
+			_pure_name = "Pure " + name;
             _id = id;
             _format = exportFormat;
             _baseValue = baseValue;
             _value = new HeliosValue(sourceInterface, BindingValue.Empty, device, name, description, valueDescription, unit);
-            Values.Add(_value);
+			_pure_value = new HeliosValue(sourceInterface, BindingValue.Empty, device, _pure_name, "Pure value in DCS", "pure value", unit);
+			Values.Add(_value);
             Triggers.Add(_value);
-        }
+			Values.Add(_pure_value);
+			Triggers.Add(_pure_value);
+		}
 
 
         public override void ProcessNetworkData(string id, string value)
@@ -76,11 +80,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 {
                     _value.SetValue(new BindingValue((scaledValue * _scale) + _baseValue), false);
                 }
-                if(id=="334")
-                {
-                    id = id;
-                }
-            }
+
+				_pure_value.SetValue(new BindingValue(scaledValue), false);
+			}
         }
 
         public override ExportDataElement[] GetDataElements()
@@ -91,7 +93,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         public override void Reset()
         {
             _value.SetValue(BindingValue.Empty, true);
-        }
+			_pure_value.SetValue(BindingValue.Empty, true);
+		}
 
     }
 }
