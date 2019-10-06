@@ -101,7 +101,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.F16C
             : base("DCS F-16C")
         {
             DCSConfigurator config = new DCSConfigurator("DCS F-16C", DCSPath);
-            config.ExportConfigPath = "Scripts";
+            config.ExportConfigPath = "Config\\Export";
             config.ExportFunctionsPath = "pack://application:,,,/Helios;component/Interfaces/DCS/F16C/ExportFunctions.lua";
             Port = config.Port;
             _phantomFix = config.PhantomFix;
