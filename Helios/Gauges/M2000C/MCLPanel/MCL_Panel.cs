@@ -33,8 +33,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
             : base("Master Caution Lights Panel", new Size(66, 66))
         {
 
-            AddIndicatorPushButton("Panne Yellow", "panne-yellow", new Point(7, 10), new Size(50, 24));
-            AddIndicatorPushButton("Panne Red", "panne-red", new Point(7, 36), new Size(49, 24));
+            AddIndicator("Panne Yellow", "panne-yellow", new Point(7, 10), new Size(50, 24));
+            AddIndicatorPushButton("Panne Red", "panne-red", new Point(7, 10), new Size(50, 49));
         }
 
         #region Properties
@@ -55,6 +55,24 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 _scaledScreenRect.Scale(scaleX, scaleY);
             }
             base.OnPropertyChanged(args);
+        }
+
+        private void AddIndicator(string name, string imagePrefix, Point posn, Size size)
+        {
+            AddIndicator(
+                name: name,
+                posn: posn,
+                size: size,
+                onImage: "{M2000C}/Images/MCLPanel/" + imagePrefix + "-on.png",
+                offImage: "{M2000C}/Images/MCLPanel/" + imagePrefix + "-off.png",
+                onTextColor: Color.FromArgb(0xff, 0x7e, 0xde, 0x72), //don’t need it because not using text
+                offTextColor: Color.FromArgb(0xff, 0x7e, 0xde, 0x72), //don’t need it because not using text
+                font: "", //don’t need it because not using text
+                vertical: false, //don’t need it because not using text
+                interfaceDeviceName: _interfaceDeviceName,
+                interfaceElementName: name,
+                fromCenter: false,
+                withText: false); //added in Composite Visual as an optional value with a default value set to true
         }
 
         private void AddIndicatorPushButton(string name, string imagePrefix, Point pos, Size size)

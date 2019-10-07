@@ -66,7 +66,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
         #region Ids
         private const string CMD = "3";
         private const string UVHF_PRESET_DISPLAY = "436";
-        private const string UVHF_PRESET_KNOB = "445";
+        private const string UVHF_PRESET_KNOB = "435";
         private const string VORILS_DISPLAY = "611";
         private const string VORILS_FREQUENCY_CHANGE_WHOLE = "616";
         private const string VORILS_FREQUENCY_CHANGE_DECIMAL = "618";
@@ -88,6 +88,42 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             _phantomLeft = config.PhantomFixLeft;
             _phantomTop = config.PhantomFixTop;
 
+            #region Altitude Panel
+            AddFunction(new ScaledNetworkValue(this, "305", 1d, "Altimeter Panel", "Altitude Needle", "Altitude Needle.", "0 - 10", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new ScaledNetworkValue(this, "306", 1d, "Altimeter Panel", "Altitude (Hundreds)", "Altitude (Hundreds).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new ScaledNetworkValue(this, "307", 1d, "Altimeter Panel", "Altitude (Tens)", "Altitude (Tens).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new ScaledNetworkValue(this, "308", 1d, "Altimeter Panel", "Altitude (Ones)", "Altitude (Ones).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new Axis(this, FLIGHTINST, "3309", "309", 0.015d, 0d, 1d, "Altimeter Panel", "Barometric Pressure Calibration"));
+            AddFunction(new ScaledNetworkValue(this, "310", 1d, "Altimeter Panel", "Pressure (Thousands)", "Pressure (Thousands).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new ScaledNetworkValue(this, "311", 1d, "Altimeter Panel", "Pressure (Hundreds)", "Pressure (Hundreds).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new ScaledNetworkValue(this, "312", 1d, "Altimeter Panel", "Pressure (Tens)", "Pressure (Tens).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            AddFunction(new ScaledNetworkValue(this, "313", 1d, "Altimeter Panel", "Pressure (Ones)", "Pressure (Ones).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
+            #endregion
+            #region Autopilot Panel
+            AddFunction(new PushButton(this, AFCS, "3302", "302", "Autopilot Panel", "Lights Test Button"));
+
+            AddFunction(new PushButton(this, AFCS, "3282", "282", "Autopilot Panel", "Master Button"));
+            AddFunction(new FlagValue(this, "283", "Autopilot Panel", "Master", "Master Yellow"));
+            AddFunction(new FlagValue(this, "284", "Autopilot Panel", "Master Green", "AUTOPILOT A"));
+
+            AddFunction(new PushButton(this, AFCS, "3285", "285", "Autopilot Panel", "Altitude Hold Button"));
+            AddFunction(new FlagValue(this, "286", "Autopilot Panel", "Altitude Green", "AUTOPILOT Alt 1"));
+            AddFunction(new FlagValue(this, "287", "Autopilot Panel", "Altitude Hold", "AUTOPILOT blank Alt"));
+
+            AddFunction(new PushButton(this, AFCS, "3288", "288", "Autopilot Panel", "Altitude Set Button"));
+            AddFunction(new FlagValue(this, "289", "Autopilot Panel", "Altitude Set Green", "AUTOPILOT Alt 2"));
+            AddFunction(new FlagValue(this, "290", "Autopilot Panel", "Altitude Set", "AUTOPILOT AFF"));
+
+            AddFunction(new PushButton(this, AFCS, "3291", "291", "Autopilot Panel", "Not Working Button"));
+            AddFunction(new FlagValue(this, "292", "Autopilot Panel", "Not Working Green", "AUTOPILOT blank1"));
+            AddFunction(new FlagValue(this, "293", "Autopilot Panel", "Not Working", "AUTOPILOT blank2"));
+
+            AddFunction(new PushButton(this, AFCS, "3294", "294", "Autopilot Panel", "Localizer Right Button"));
+            AddFunction(new FlagValue(this, "295", "Autopilot Panel", "Localizer Left Green", "AUTOPILOT left"));
+            AddFunction(new FlagValue(this, "296", "Autopilot Panel", "Localizer Left", "AUTOPILOT blank L"));
+            AddFunction(new FlagValue(this, "297", "Autopilot Panel", "Localizer Right Green", "AUTOPILOT G"));
+            AddFunction(new FlagValue(this, "298", "Autopilot Panel", "Localizer Right", "AUTOPILOT blank G"));
+            #endregion
             #region Caution Panel
             AddFunction(new FlagValue(this, "525", "Caution Panel", "BATT", "WP BATT"));
             AddFunction(new FlagValue(this, "526", "Caution Panel", "TR", "TR"));
@@ -312,9 +348,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new PushButton(this, PCA_PPA, "3409", "409", "Landing Gear Panel", "Emergency Jettison Lever"));
             #endregion
             #region MCL Panel
-            AddFunction(new FlagValue(this, "199", "Master Caution Lights Panel", "Panne Yellow", "Master-warning"));
-            AddFunction(new FlagValue(this, "200", "Master Caution Lights Panel", "Panne Red", "Master-caution"));
-            AddFunction(new PushButton(this, SYSLIGHTS, "3191", "191", "Master Caution Lights Panel", "Acknowledge alarms"));
+            AddFunction(new PushButton(this, SYSLIGHTS, "3191", "191", "Master Caution Lights Panel", "Panne Red Button"));
+            AddFunction(new FlagValue(this, "199", "Master Caution Lights Panel", "Panne Yellow", "Master Warning"));
+            AddFunction(new FlagValue(this, "200", "Master Caution Lights Panel", "Panne Red", "Master Caution"));
             #endregion
             #region Miscellaneous Panels and indicators
             AddFunction(new FlagValue(this, "229", "RWR Panel", "RWR V", "RWR V"));
@@ -524,6 +560,33 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
                 new SwitchPosition("1.0", "BD", "3619")},
                 "VOR/ILS Panel", "Mode Selector", "%0.1f"));
             #endregion
+            #region U/VHF Panel
+            AddFunction(new ScaledNetworkValue(this, "435", 2d, "UHF Panel", "Preset output for display", "Current preset channel", "use rotary encoder with initial 1, min1, max 20, step 0.05", BindingValueUnits.Numeric, 0d, "%.4f"));
+            AddFunction(new Axis(this, UVHF, "3436", "436", 0.05d, 0d, 1.0d, "UHF Panel", "Channel Selector"));
+            AddFunction(new Switch(this, UVHF, "429", new SwitchPosition[] {
+                new SwitchPosition("0.0", "5W", "3429"),
+                new SwitchPosition("1.0", "25W", "3429") },
+                "UHF Panel", "5W/25W Selector", " %0.1f"));
+            AddFunction(new Switch(this, UVHF, "430", new SwitchPosition[] {
+                new SwitchPosition("1.0", "ON", "3430"),
+                new SwitchPosition("0.0", "OFF", "3430") },
+                "UHF Panel", "Squelch Switch", " %0.1f"));
+            AddFunction(new Switch(this, UVHF, "431", new SwitchPosition[] {
+                new SwitchPosition("1.0", "Pos 1", "3431"),
+                new SwitchPosition("0.0", "ON", "3431"),
+                new SwitchPosition("-1.0", "Pos 2", "3431") },
+                "UHF Panel", "Encryption Switch", " %0.1f"));
+            AddFunction(new PushButton(this, UVHF, "3432", "432", "UHF Panel", "Encryption Light Button"));
+            AddFunction(new FlagValue(this, "677", "UHF Panel", "Encryption Light", "Encryption Light"));
+            AddFunction(new Switch(this, UVHF, "433", new SwitchPosition[] {
+                new SwitchPosition("0.0", "AR", "3433"),
+                new SwitchPosition("0.3", "M", "3433"),
+                new SwitchPosition("0.5", "FI", "3433"),
+                new SwitchPosition("0.8", "H", "3433") },
+                "UHF Panel", "Mode Selector", " %0.1f"));
+            AddFunction(new PushButton(this, UVHF, "3434", "434", "UHF Panel", "Test Button"));
+            AddFunction(new FlagValue(this, "675", "UHF Panel", "Test", "Test Light"));
+            #endregion
             #region Indicators
             // !!!! Any duplicate "name" values in a function will cause Helios to go bang.  Make sure that when you change the name, that it is unique
             AddFunction(new FlagValue(this, "185", "Indicators", "Indicators 185", "LIM, MIP,"));
@@ -531,20 +594,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new FlagValue(this, "187", "Indicators", "Indicators 187", "LED green, ADI"));
             AddFunction(new FlagValue(this, "188", "Indicators", "Indicators 188", "LED green, ADI"));
             AddFunction(new FlagValue(this, "321", "Indicators", "Indicators 321", "ADI ILS light"));
-            AddFunction(new FlagValue(this, "283", "Indicators", "Indicators 283", "AUTOPILOT P"));
-            AddFunction(new FlagValue(this, "284", "Indicators", "Indicators 284", "AUTOPILOT A"));
-            AddFunction(new FlagValue(this, "286", "Indicators", "Indicators 286", "AUTOPILOT Alt 1"));
-            AddFunction(new FlagValue(this, "287", "Indicators", "Indicators 287", "AUTOPILOT blank Alt"));
-            AddFunction(new FlagValue(this, "289", "Indicators", "Indicators 289", "AUTOPILOT Alt 2"));
-            AddFunction(new FlagValue(this, "290", "Indicators", "Indicators 290", "AUTOPILOT AFF"));
-            AddFunction(new FlagValue(this, "292", "Indicators", "Indicators 292", "AUTOPILOT blank1"));
-            AddFunction(new FlagValue(this, "293", "Indicators", "Indicators 293", "AUTOPILOT blank2"));
-            AddFunction(new FlagValue(this, "295", "Indicators", "Indicators 295", "AUTOPILOT left"));
-            AddFunction(new FlagValue(this, "296", "Indicators", "Indicators 296", "AUTOPILOT blank L"));
-            AddFunction(new FlagValue(this, "297", "Indicators", "Indicators 297", "AUTOPILOT G"));
-            AddFunction(new FlagValue(this, "298", "Indicators", "Indicators 298", "AUTOPILOT blank G"));
             AddFunction(new FlagValue(this, "405", "Indicators", "Indicators 405", "Gearhandle Innenleuchte, red"));
-            AddFunction(new FlagValue(this, "677", "Indicators", "Indicators 677", "COM left green lamp"));
             AddFunction(new FlagValue(this, "519", "Indicators", "Indicators 519", "Oxy flow lamp"));
             AddFunction(new FlagValue(this, "490", "Indicators", "Indicators 490", "Left consule VAL"));
             AddFunction(new FlagValue(this, "492", "Indicators", "Indicators 492", "Left consule A"));
@@ -553,7 +603,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new FlagValue(this, "505", "Indicators", "Indicators 505", "Left consule PSIC"));
             AddFunction(new FlagValue(this, "632", "Indicators", "Indicators 632", "TACAN C"));
             AddFunction(new FlagValue(this, "634", "Indicators", "Indicators 634", "TACAN F"));
-            AddFunction(new FlagValue(this, "675", "Indicators", "Indicators 675", "COM Panel, lamp red"));
             AddFunction(new FlagValue(this, "676", "Indicators", "Indicators 676", "COM Panel, lamp red, over COM"));
             #endregion
             #region Displays
@@ -607,20 +656,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new PushButton(this, ENGPANEL, "3475", "475", "Engine Start Panel", "Engine Emergency Control Cover"));    // elements["PTN_475"] = default_2_position_tumb(_("Engine Emergency Control Cover"), devices.ENGPANEL, device_commands.Button_475, 475)
             AddFunction(new Switch(this, ENGPANEL, "476", new SwitchPosition[] { }, "Engine Start Panel", "Engine Emergency Control Switch", "%0.1f"));    // elements["PTN_476"] = multiposition_switch_limited(_("Engine Emergency Control Switch"), devices.ENGPANEL, device_commands.Button_476, 476,3, 0.5, true, 0)
             #endregion  
-            #region U/VHF Panel
-            AddFunction(new ScaledNetworkValue(this, UVHF_PRESET_DISPLAY, 0d, "U/VHF", "Preset output for display", "Current preset channel", "use rotary encoder with initial 0, min0, max 20, step 0.1", BindingValueUnits.Numeric, 0d, "%.4f"));
-            AddFunction(new Axis(this, UVHF, UVHF_PRESET_KNOB, CMD + UVHF_PRESET_KNOB, 0.05d, 0d, 1.0d, "U/VHF", "Preset frequency change"));
-//            AddFunction(new RotaryEncoder(this, UVHF, UVHF_PRESET_KNOB, CMD + UVHF_PRESET_KNOB, 0.1d, "U/VHF", "Preset frequency change"));
-/*            AddFunction(new Switch(this, UVHF, UVHF_CHANNEL, new SwitchPosition[] { 
-                new SwitchPosition("0.05", "Channel 1", CMD+UVHF_CHANNEL), new SwitchPosition("0.1", "Channel 2", CMD+UVHF_CHANNEL), new SwitchPosition("0.15", "Channel 3", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.2", "Channel 4", CMD+UVHF_CHANNEL), new SwitchPosition("0.25", "Channel 5", CMD+UVHF_CHANNEL), new SwitchPosition("0.3", "Channel 6", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.35", "Channel 7", CMD+UVHF_CHANNEL), new SwitchPosition("0.4", "Channel 8", CMD+UVHF_CHANNEL) , new SwitchPosition("0.45", "Channel 9", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.5", "Channel 10", CMD+UVHF_CHANNEL), new SwitchPosition("0.55", "Channel 11", CMD+UVHF_CHANNEL) , new SwitchPosition("0.66", "Channel 12", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.65", "Channel 13", CMD+UVHF_CHANNEL), new SwitchPosition("0.7", "Channel 14", CMD+UVHF_CHANNEL) , new SwitchPosition("0.75", "Channel 15", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.8", "Channel 16", CMD+UVHF_CHANNEL), new SwitchPosition("0.85", "Channel 17", CMD+UVHF_CHANNEL) , new SwitchPosition("0.9", "Channel 18", CMD+UVHF_CHANNEL),
-                new SwitchPosition("0.95", "Channel 19", CMD+UVHF_CHANNEL), new SwitchPosition("1", "Channel 20", CMD+UVHF_CHANNEL)}, "Radio Panel", "U/VHF Channel Selector", "%0.2f"));
-                */
-            #endregion
             #region  HUD/VTB"
             AddFunction(new Switch(this, VTH_VTB, "201", new SwitchPosition[] { }, "HUD/VTB", "HUD Power Switch", "%0.1f"));    // elements["PTN_201"] = multiposition_switch_limited(_("HUD Power Switch"), devices.VTH_VTB, device_commands.Button_201, 201, 3, 0.5, false, 0)
             //AddFunction(Switch.CreateToggleSwitch(this, VTH_VTB, "3203", "203", "HUD/VTB", "HUD Declutter Switch", "%0.1f"));    // elements["PTN_203"] = default_2_way_spring_switch(_("HUD Declutter Switch"), devices.VTH_VTB, device_commands.Button_203, 203, true)
@@ -651,11 +686,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
 
             #endregion
             #region  AFCS
-            AddFunction(new PushButton(this, AFCS, "3282", "282", "AFCS", "Autopilot Master Button"));    // elements["PTN_282"] = default_button(_("Autopilot Master Button"), devices.AFCS, device_commands.Button_282, 282, 0, 1)
-            AddFunction(new PushButton(this, AFCS, "3285", "285", "AFCS", "Altitude Hold Button"));    // elements["PTN_285"] = default_button(_("Altitude Hold Button"), devices.AFCS, device_commands.Button_285, 285, 0, 1)
-            AddFunction(new PushButton(this, AFCS, "3288", "288", "AFCS", "Selected Altitude Hold Button"));    // elements["PTN_288"] = default_button(_("Selected Altitude Hold Button"), devices.AFCS, device_commands.Button_288, 288, 0, 1)
-            AddFunction(new PushButton(this, AFCS, "3294", "294", "AFCS", "Approach Hold Button"));    // elements["PTN_294"] = default_button(_("Approach Hold Button"), devices.AFCS, device_commands.Button_294, 294, 0, 1)
-            AddFunction(new PushButton(this, AFCS, "3302", "302", "AFCS", "Autopilot Lights Test Button"));    // elements["PTN_302"] = default_button(_("Autopilot Lights Test Button"), devices.AFCS, device_commands.Button_302, 302, 0, 1)
             AddFunction(new Switch(this, AFCS, "299", new SwitchPosition[] { }, "AFCS", "Altitude 10 000 ft Selector", "%0.1f"));    // elements["PTN_299"] = default_multiposition_knob(_("Altitude 10,000 ft Selector"), devices.AFCS, device_commands.Button_299, 299,  6, 0.1, false, 0)
             AddFunction(new Switch(this, AFCS, "300", new SwitchPosition[] { }, "AFCS", "Altitude 1 000 ft Selector", "%0.1f"));    // elements["PTN_300"] = default_multiposition_knob(_("Altitude 1,000 ft Selector"),  devices.AFCS, device_commands.Button_300, 300, 10, 0.1, false, 0)
             AddFunction(new Switch(this, AFCS, "301", new SwitchPosition[] { }, "AFCS", "Altitude 100 ft Selector", "%0.1f"));    // elements["PTN_301"] = default_multiposition_knob(_("Altitude 100 ft Selector"),  devices.AFCS, device_commands.Button_301, 301, 10, 0.1, false4, 0)
@@ -746,13 +776,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new Switch(this, INSTPANEL, "361", new SwitchPosition[] { }, "Fuel Panel", "Bingo Fuel 100 kg Selector", "%0.1f"));    // elements["PTN_361"] = default_multiposition_knob(_("Bingo Fuel 100 kg Selector"), devices.INSTPANEL, device_commands.Button_361, 361,  10, 0.1, false, 0)
             #endregion  
             #region  Radio Panel
-//            AddFunction(new PushButton(this, UHF, "3429", "429", "Radio Panel", "UHF Power 5W/25W Switch"));    // elements["PTN_429"] = default_2_position_tumb(_("UHF Power 5W/25W Switch"), devices.UHF, device_commands.Button_429, 429)
-//            AddFunction(new PushButton(this, UHF, "3430", "430", "Radio Panel", "UHF SIL Switch"));    // elements["PTN_430"] = default_2_position_tumb(_("UHF SIL Switch"), devices.UHF, device_commands.Button_430, 430)
-            //AddFunction(Switch.CreateToggleSwitch(this, UHF, "3431", "431", "Radio Panel", "UHF E+A2 Switch", "%0.1f"));    // elements["PTN_431"] = default_2_way_spring_switch(_("UHF E+A2 Switch"), devices.UHF, device_commands.Button_431, 431, true)
-//            AddFunction(new PushButton(this, UHF, "3432", "432", "Radio Panel", "UHF CDE Switch"));    // elements["PTN_432"] = default_button(_("UHF CDE Switch"), devices.UHF, device_commands.Button_432, 432)
-//            AddFunction(new Switch(this, UHF, "433", new SwitchPosition[] { }, "Radio Panel", "UHF Mode Switch", "%0.1f"));    // elements["PTN_433"] = multiposition_switch_limited(_("UHF Mode Switch"), devices.UHF, device_commands.Button_433, 433, 4, 0.25, false, 0)
-  //          AddFunction(new PushButton(this, UHF, "3434", "434", "Radio Panel", "UHF TEST Switch"));    // elements["PTN_434"] = default_button(_("UHF TEST Switch"), devices.UHF, device_commands.Button_434, 434)
-//            AddFunction(new Switch(this, UHF, "435", new SwitchPosition[] { }, "Radio Panel", "UHF Knob", "%0.1f"));    // elements["PTN_435"] = default_multiposition_knob(_("UHF Knob"), devices.UHF, device_commands.Button_435, 435, 20, 0.05,false,0.05)
 //            AddFunction(new PushButton(this, UVHF, "3437", "437", "Radio Panel", "U/VHF TEST Switch"));    // elements["PTN_437"] = default_button(_("U/VHF TEST Switch"), devices.UVHF, device_commands.Button_437, 437)
             //AddFunction(Switch.CreateToggleSwitch(this, UVHF, "3438", "438", "Radio Panel", "U/VHF E+A2 Switch", "%0.1f"));    // elements["PTN_438"] = default_2_way_spring_switch(_("U/VHF E+A2 Switch"), devices.UVHF, device_commands.Button_438, 438, true)
 //            AddFunction(new PushButton(this, UVHF, "3439", "439", "Radio Panel", "U/VHF SIL Switch"));    // elements["PTN_439"] = default_2_position_tumb(_("U/VHF SIL Switch"), devices.UVHF, device_commands.Button_439, 439)
@@ -803,7 +826,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new Axis(this, SYSLIGHTS, "3707", "707", 0.15d, 0d, 1d, "Sound Panel", "V/UHF Radio Volume Knob"));    // elements["PTN_707"] = default_axis_limited(_("V/UHF Radio Volume Knob"), devices.SYSLIGHTS, device_commands.Button_707, 707, 0.8, 0.5, true, false, {0.0, 1.0})
             #endregion  
             #region  Flight Instruments
-            AddFunction(new Axis(this, FLIGHTINST, "3309", "309", 0.15d, 0d, 1d, "Flight Instruments", "Barometric Pressure Calibration"));    // elements["PTN_309"] = default_axis(_("Barometric Pressure Calibration"),devices.FLIGHTINST,device_commands.Button_309,309)
             AddFunction(new PushButton(this, FLIGHTINST, "3314", "314", "Flight Instruments", "ADI Cage Lever"));    // elements["PTN_314"] = default_2_position_tumb(_("ADI Cage Lever"),devices.FLIGHTINST, device_commands.Button_314, 314)
             AddFunction(new PushButton(this, FLIGHTINST, "3315", "315", "Flight Instruments", "ADI Backlight Switch"));    // elements["PTN_315"] = default_2_position_tumb(_("ADI Backlight Switch"),devices.FLIGHTINST,device_commands.Button_315,315)
             #endregion  
