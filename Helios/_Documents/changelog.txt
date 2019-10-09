@@ -2,6 +2,9 @@
 
 ### 1.4.2019.xxxx Release
 ----------------------------
+* M2000C Interface 
+	* What’s new 
+		* Added the Accelerometer Gauge with the accelerometer needle and the potentiometer
 		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
 * Known issues: 
 		* Fuel Panel: the Fuel CrossFeed Switch doesn’t work from Helios to DCS, the two toggle switches don’t work (seem not to be used in DCS)

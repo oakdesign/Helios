@@ -115,6 +115,7 @@
       <DependentUpon>PotentiometerEndlessBehaviorEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Gauges\AV-8B\Small Panels\Slip Turn Panel.cs" />
+    <Compile Include="Gauges\M2000C\AccelerometerPanel\Accelerometer_Panel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumTacanChannel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumGauge.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CNeedle.cs" />

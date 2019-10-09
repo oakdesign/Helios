@@ -89,7 +89,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             _phantomLeft = config.PhantomFixLeft;
             _phantomTop = config.PhantomFixTop;
 
-            #region Altitude Panel
+            #region Accelerator Gauge
+            AddFunction(new ScaledNetworkValue(this, "347", 1d, "Accelerometer Gauge", "Accelerometer Needle", "Accelerometer Needle.", "0 - 360", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new Axis(this, FLIGHTINST, "3348", "348", 0.015d, 0d, 1d, "Accelerometer Gauge", "Accelerometer knob"));//not used in DCS
+            #endregion
+            #region Altitude Gauge
             AddFunction(new ScaledNetworkValue(this, "305", 1d, "Altimeter Panel", "Altitude Needle", "Altitude Needle.", "0 - 10", BindingValueUnits.Degrees, 0d, "%.4f"));
             AddFunction(new ScaledNetworkValue(this, "306", 1d, "Altimeter Panel", "Altitude (Hundreds)", "Altitude (Hundreds).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
             AddFunction(new ScaledNetworkValue(this, "307", 1d, "Altimeter Panel", "Altitude (Tens)", "Altitude (Tens).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));

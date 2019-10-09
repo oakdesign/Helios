@@ -47,9 +47,12 @@ What’s new DCS M2000C
 		- the 2 push buttons with their indicator
 		- the rotary switch
 		- the drum
-	* Added the Altimeter Panel
+	* Added the Altimeter Gauge
 		- the pressure and the altitude drums
 		- the altitude needle
+		- the potentiometer
+	* Added the Accelerometer Gauge
+		- the accelerometer needle
 		- the potentiometer
 	* Improvement of guards on the Test and LG Panels
 		- Made all 4 guards on this 2 panels working
