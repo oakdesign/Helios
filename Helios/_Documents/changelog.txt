@@ -9,8 +9,9 @@
 		* Improvement of the Tacan Panel: add the 2 potentiometers and made them continuous and working
 		* Improvement of VOR/ILS Panel: added the 2 potentiometers and made them continuous and working and made the Mode Selector working
 		* Improvement of the HSI Panel: all the needles are working
+		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
 * Known issues: 
-		* Fuel Panel: the Fuel CrossFeed Switch doesn’t work, the two toggle switches don’t work (seem not to be used in DCS)
+		* Fuel Panel: the Fuel CrossFeed Switch doesn’t work from Helios to DCS, the two toggle switches don’t work (seem not to be used in DCS)
 		* Master Caution lights Panel: the click on the 2 indicators doesn’t work
 		* HSI Panel: the potentiometer doesn’t work properly
 		* ECM Box: the potentiometer is not working

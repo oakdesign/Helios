@@ -31,7 +31,7 @@ relevant then open a new issue.
   
 
 * * * Working Elements on M2000C * * *
-* * *      4th October 2019      * * *
+* * *      9th October 2019      * * *
 
 * * * * * * * * * * * * * * * * * * * * * * * *
 * * * Next Release Helios v1.4.2019.xxxx  * * *
@@ -61,11 +61,12 @@ What’s new DCS M2000C
 		- made the Mode Selector working
 	* Improvement of the HSI Panel
 		- all the needles are working
+	* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
 
 Known issues DCS M2000C
 -----------------------
 	* Fuel Panel
-		- the Fuel CrossFeed Switch doesn’t work
+		- the Fuel CrossFeed Switch doesn’t work from Helios to DCS
 		- the two toggle switches don’t work (seems not to be used in DCS)
     * Master Caution lights Panel
 		- the click on the 2 indicators doesn’t work

@@ -32,7 +32,7 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
         public M2000C_AOAPanel()
             : base("AOA Panel", new Size(79, 260))
         {
-            AddRectangleFill("AOA Needle", new Point(43, 55));
+            AddRectangleFill("AOA Needle", new Point(43, 55), new Size(9, 158), Color.FromArgb(0xff, 0xff, 0xff, 0xff), 0d, _interfaceDeviceName, "AOA Needle", false);
         }
 
         #region Properties
@@ -53,18 +53,6 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 _scaledScreenRect.Scale(scaleX, scaleY);
             }
             base.OnPropertyChanged(args);
-        }
-
-        private void AddRectangleFill(string name, Point posn)
-        {
-            AddRectangleFill(name: name,
-                posn: posn,
-                size: new Size(9,158),
-                color: Color.FromArgb(0xff, 0xff, 0xff, 0xff),
-                initialValue: 0d,
-                interfaceDeviceName: _interfaceDeviceName,
-                interfaceElementName: name,
-                fromCenter: false);
         }
 
         public override bool HitTest(Point location)

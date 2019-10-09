@@ -28,50 +28,65 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
         private static readonly Rect SCREEN_RECT = new Rect(0, 0, 223, 396);
         private string _interfaceDeviceName = "Fuel Panel";
         private Rect _scaledScreenRect = SCREEN_RECT;
+        string _pathToImages = "{M2000C}/Images/FuelPanel/";
 
         public M2000C_FuelPanel()
             : base("Fuel Panel", new Size(223, 396))
         {
             int row1 = 6, row2 = 178, row3 = 199, row4 = 220, row5 = 163, row6 = 71;
             int column1 = 93, column2 = 81, column3 = 102, column4 = 122;
+            string commonDrumTape = "{Helios}/Gauges/M2000C/Common/drum_tape.xaml";
+
             //First row
-            AddIndicator("Air Refueling", "air-refueling", new Point(column1, row1), new Size(28, 28));
+            AddIndicator("Air Refueling", new Point(column1, row1), new Size(28, 28), _pathToImages + "air-refueling-on.png", _pathToImages + "air-refueling-off.png", 
+                default, default, "", false, _interfaceDeviceName, "Air Refueling", false, false);
             //Second row
-            AddIndicator("left-rl", "rl", new Point(column2, row2), new Size(21, 21));
-            AddIndicator("center-rl", "rl", new Point(column3, row2), new Size(21, 21));
-            AddIndicator("right-rl", "rl", new Point(column4, row2), new Size(21, 21));
+            AddIndicator("left-rl", new Point(column2, row2), new Size(21, 21), _pathToImages + "rl-on.png", _pathToImages + "rl-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
+            AddIndicator("center-rl", new Point(column3, row2), new Size(21, 21), _pathToImages + "rl-on.png", _pathToImages + "rl-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
+            AddIndicator("right-rl", new Point(column4, row2), new Size(21, 21), _pathToImages + "rl-on.png", _pathToImages + "rl-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
             //Third row
-            AddIndicator("left-av", "av", new Point(column2, row3), new Size(21, 21));
-            AddIndicator("right-av", "av", new Point(column4, row3), new Size(21, 21));
+            AddIndicator("left-av", new Point(column2, row3), new Size(21, 21), _pathToImages + "av-on.png", _pathToImages + "av-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
+            AddIndicator("right-av", new Point(column4, row3), new Size(21, 21), _pathToImages + "av-on.png", _pathToImages + "av-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
             //Forth row
-            AddIndicator("left-v", "v", new Point(column2, row4), new Size(21, 21));
-            AddIndicator("right-v", "v", new Point(column4, row4), new Size(21, 21));
+            AddIndicator("left-v", new Point(column2, row4), new Size(21, 21), _pathToImages + "v-on.png", _pathToImages + "v-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
+            AddIndicator("right-v", new Point(column4, row4), new Size(21, 21), _pathToImages + "v-on.png", _pathToImages + "v-off.png",
+                default, default, "", false, _interfaceDeviceName, "left-rl", false, false);
 
-            //            AddPot();
-            AddSwitch("Fuel CrossFeed Switch", new Point(112, 360), ToggleSwitchPosition.Two, ToggleSwitchType.OnOn);
+            RotarySwitch rSwitch = AddRotarySwitch("Fuel CrossFeed Switch", new Point(112, 360), new Size(45, 45), _pathToImages + "fuel-transfer-knob.png", 0,  ClickType.Touch,
+                _interfaceDeviceName, "Fuel CrossFeed Switch", true);
+            rSwitch.Positions.Clear();
+            rSwitch.Positions.Add(new RotarySwitchPosition(rSwitch, 1, "OFF", 0d));
+            rSwitch.Positions.Add(new RotarySwitchPosition(rSwitch, 2, "ON", 90d));
+            rSwitch.DefaultPosition = 1;
 
-            AddRectangleFill("Internal Fuel Quantity Needle", new Point(41, row5));
-            AddRectangleFill("Total Fuel Quantity Needle", new Point(192, row5));
+            AddRectangleFill("Internal Fuel Quantity Needle", new Point(41, row5), new Size(5, 182), Color.FromArgb(0xff, 0xff, 0xff, 0xff), 0d, _interfaceDeviceName, "Internal Fuel Quantity Needle", false);
+            AddRectangleFill("Total Fuel Quantity Needle", new Point(192, row5), new Size(5, 182), Color.FromArgb(0xff, 0xff, 0xff, 0xff), 0d, _interfaceDeviceName, "Total Fuel Quantity Needle", false);
 
-            AddDrum("Internal Fuel Quantity (Tens)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "tens quantity", "(0 - 10)", "#",
-                new Point(82, row6), new Size(10d, 15d), new Size(12d, 19d));
-            AddDrum("Internal Fuel Quantity (Hundreds)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "hundreds quantity", "(0 - 10)", "#",
-                new Point(55, row6), new Size(10d, 15d), new Size(12d, 19d));
-            AddDrum("Internal Fuel Quantity (Thousands)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "thousands quantity", "(0 - 10)", "#",
-                new Point(29, row6), new Size(10d, 15d), new Size(12d, 19d));
-            AddDrum("Total Fuel Quantity (Tens)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "tens quantity", "(0 - 10)", "#",
-                new Point(178, row6), new Size(10d, 15d), new Size(12d, 19d));
-            AddDrum("Total Fuel Quantity (Hundreds)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "hundreds quantity", "(0 - 10)", "#",
-                new Point(154, row6), new Size(10d, 15d), new Size(12d, 19d));
-            AddDrum("Total Fuel Quantity (Thousands)", "{Helios}/Gauges/M2000C/Common/drum_tape.xaml", "thousands quantity", "(0 - 10)", "#",
-                new Point(129, row6), new Size(10d, 15d), new Size(12d, 19d));
+            AddDrumGauge("Internal Fuel Quantity (Tens)", commonDrumTape, new Point(82, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName,
+                "Internal Fuel Quantity (Tens)", "tens quantity", "(0 - 10)", false);
+            AddDrumGauge("Internal Fuel Quantity (Hundreds)", commonDrumTape, new Point(55, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName,
+                "Internal Fuel Quantity (Hundreds)", "hundreds quantity", "(0 - 10)", false);
+            AddDrumGauge("Internal Fuel Quantity (Thousands)", commonDrumTape, new Point(29, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName,
+                "Internal Fuel Quantity (Thousands)", "thousands quantity", "(0 - 10)", false);
+            AddDrumGauge("Total Fuel Quantity (Tens)", commonDrumTape, new Point(178, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName,
+                "Total Fuel Quantity (Tens)", "tens quantity", "(0 - 10)", false);
+            AddDrumGauge("Total Fuel Quantity (Hundreds)", commonDrumTape, new Point(154, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName,
+                "Total Fuel Quantity (Hundreds)", "hundreds quantity", "(0 - 10)", false);
+            AddDrumGauge("Total Fuel Quantity (Thousands)", commonDrumTape, new Point(129, row6), new Size(10d, 15d), new Size(12d, 19d), "#", _interfaceDeviceName, 
+                "Total Fuel Quantity (Thousands)", "thousands quantity", "(0 - 10)", false);
         }
 
         #region Properties
 
         public override string BezelImage
         {
-            get { return "{M2000C}/Images/FuelPanel/fuel-panel.png"; }
+            get { return _pathToImages + "fuel-panel.png"; }
         }
 
         #endregion
@@ -85,73 +100,6 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 _scaledScreenRect.Scale(scaleX, scaleY);
             }
             base.OnPropertyChanged(args);
-        }
-
-        private void AddIndicator(string name, string imagePrefix, Point posn, Size size)
-        {
-            AddIndicator(
-                name: name,
-                posn: posn,
-                size: size,
-                onImage: "{M2000C}/Images/FuelPanel/" + imagePrefix + "-on.png",
-                offImage: "{M2000C}/Images/FuelPanel/" + imagePrefix + "-off.png",
-                onTextColor: Color.FromArgb(0xff, 0x7e, 0xde, 0x72), //don’t need it because not using text
-                offTextColor: Color.FromArgb(0xff, 0x7e, 0xde, 0x72), //don’t need it because not using text
-                font: "", //don’t need it because not using text
-                vertical: false, //don’t need it because not using text
-                interfaceDeviceName: _interfaceDeviceName,
-                interfaceElementName: name,
-                fromCenter: false,
-                withText: false); //added in Composite Visual as an optional value with a default value set to true
-        }
-
-        private void AddSwitch(string name, Point posn, ToggleSwitchPosition defaultPosition, ToggleSwitchType defaultType)
-        {
-            AddToggleSwitch(name: name,
-                posn: posn,
-                size: new Size(45, 45),
-                defaultPosition: defaultPosition,
-                positionOneImage: "{M2000C}/Images/FuelPanel/fuel-transfer-knob-on.png",
-                positionTwoImage: "{M2000C}/Images/FuelPanel/fuel-transfer-knob-off.png",
-                defaultType: defaultType,
-                interfaceDeviceName: _interfaceDeviceName,
-                interfaceElementName: name,
-                horizontal: true,
-                horizontalRender: true,
-                nonClickableZones: null,
-                fromCenter: true);
-        }
-
-        private void AddPot()
-        {
-            AddPot("Fuel CrossFeed Switch", new Point(112, 360), new Size(45, 45), "{M2000C}/Images/FuelPanel/fuel-transfer-knob.png", 90d, 180d, 0d, 1d, 0d, 0.1d, _interfaceDeviceName, "Fuel CrossFeed Switch", true);
-        }
-
-        private void AddRectangleFill(string name, Point posn)
-        {
-            AddRectangleFill(name: name,
-                posn: posn,
-                size: new Size(5,182),
-                color: Color.FromArgb(0xff, 0xff, 0xff, 0xff),
-                initialValue: 0d,
-                interfaceDeviceName: _interfaceDeviceName,
-                interfaceElementName: name,
-                fromCenter: false);
-        }
-
-        private void AddDrum(string name, string gaugeImage, string actionIdentifier, string valueDescription, string format, Point posn, Size size, Size renderSize)
-        {
-            AddDrumGauge(name: name,
-                gaugeImage: gaugeImage,
-                posn: posn,
-                size: size,
-                renderSize: renderSize,
-                interfaceDeviceName: _interfaceDeviceName,
-                interfaceElementName: name,
-                actionIdentifier: actionIdentifier,
-                valueDescription: valueDescription,
-                format: format,
-                fromCenter: false);
         }
 
         public override bool HitTest(Point location)

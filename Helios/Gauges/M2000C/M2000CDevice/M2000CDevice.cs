@@ -16,6 +16,7 @@
 namespace GadrocsWorkshop.Helios.Gauges.M2000C
 {
     using System.Windows;
+    using System.Windows.Media;
     using GadrocsWorkshop.Helios.M2000C;
 
     abstract class M2000CDevice : M2000CCompositeVisual

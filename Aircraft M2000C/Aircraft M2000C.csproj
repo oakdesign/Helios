@@ -494,7 +494,7 @@
     <Resource Include="Images\FuelPanel\fuel-panel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\FuelPanel\fuel-transfer-knob-off.png">
+    <Resource Include="Images\FuelPanel\fuel-transfer-knob.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\FuelPanel\rl-off.png">
@@ -585,9 +585,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Miscellaneous\rwr-light-on.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\FuelPanel\fuel-transfer-knob-on.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\PPAPanel\aut-on.png">
