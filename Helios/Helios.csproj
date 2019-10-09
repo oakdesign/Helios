@@ -107,6 +107,13 @@
     <Compile Include="CalibrationPointCollectionLong.cs" />
     <Compile Include="CalibrationPointDouble.cs" />
     <Compile Include="CalibrationPointLong.cs" />
+    <Compile Include="Controls\PotentiometerEndless.cs" />
+    <Compile Include="Controls\PotentiometerEndlessAppearanceEditor.xaml.cs">
+      <DependentUpon>PotentiometerEndlessAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PotentiometerEndlessBehaviorEditor.xaml.cs">
+      <DependentUpon>PotentiometerEndlessBehaviorEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Gauges\AV-8B\Small Panels\Slip Turn Panel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumTacanChannel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumGauge.cs" />
@@ -569,6 +576,8 @@
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder3.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder4.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
+    <Compile Include="Interfaces\DCS\Common\DualNetworkValue.cs" />
+    <Compile Include="Interfaces\DCS\Common\DualRocker.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml.cs">
       <DependentUpon>F14BInterfaceEditor.xaml</DependentUpon>
@@ -830,6 +839,9 @@
       <DependentUpon>TextStaticEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Controls\TypefaceListItem.cs" />
+    <Content Include="_Documents\HeliosDiag.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Gauges\M2000C\Common\needleA.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
@@ -841,6 +853,7 @@
     <Resource Include="Interfaces\DCS\Common\Export_Stub.lua" />
     <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Post.lua" />
     <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Pre.lua" />
+    <Resource Include="Images\Toggles\guard-up-empty.png" />
     <Resource Include="Images\Buttons\green-push-in.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -1293,6 +1306,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CustomGaugeBehaviorEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PotentiometerEndlessAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PotentiometerEndlessBehaviorEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
