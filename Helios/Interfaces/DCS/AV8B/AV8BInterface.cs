@@ -81,6 +81,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
         public AV8BInterface()
             : base("DCS AV-8B")
         {
+            AlternateName = "AV8BNA";  // this is the name that DCS uses to describe the aircraft being flown
             DCSConfigurator config = new DCSConfigurator("DCSAV8B", DCSPath);
             config.ExportConfigPath = "Config\\Export";
             config.ExportFunctionsPath = "pack://application:,,,/Helios;component/Interfaces/DCS/AV8B/ExportFunctions.lua";
@@ -661,6 +662,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
                 return _dcsPath;
             }
         }
+       
 
         protected override void OnProfileChanged(HeliosProfile oldProfile)
         {

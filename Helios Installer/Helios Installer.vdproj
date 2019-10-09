@@ -291,11 +291,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BF479CAA025B4D81BB1616CA6D48F634"
+        "MsmKey" = "8:_B3F350392E2043689F87D29BFD8B7FBF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
+        {
+
         {
         "MsmKey" = "8:_CA5D295B54864BC8ACE27922958E407C"
         "OwnerKey" = "8:_UNDEFINED"
@@ -1130,7 +1132,47 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BBD01F1F2CAB406FBC39642D2C723667"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3F350392E2043689F87D29BFD8B7FBF"
+            {
+            "SourcePath" = "8:..\\Helios\\_Documents\\HeliosDiag.cmd"
+            "TargetName" = "8:HeliosDiag.cmd"
+            "Tag" = "8:"
+            "Folder" = "8:_99D248ECE7CA4B17A15B204984A6573C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF479CAA025B4D81BB1616CA6D48F634"
+            {
+            "SourcePath" = "8:..\\..\\Iris-Screen-Exporter\\Installer\\Iris Setup\\Release\\Iris Screen Exporter Setup.exe"
+            "TargetName" = "8:Iris Screen Exporter Setup.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_99D248ECE7CA4B17A15B204984A6573C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D0FAAD4EC4E4B246B7C81F36F92A0E75"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
