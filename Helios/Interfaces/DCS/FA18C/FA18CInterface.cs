@@ -121,6 +121,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             _phantomLeft = config.PhantomFixLeft;
             _phantomTop = config.PhantomFixTop;
 
+
+
             #region Caution Indicators
             // Caution Light Indicator Panel
             AddFunction(new FlagValue(this, "298", "Caution Indicators", "CK_SEAT", ""));       // create_caution_lamp(298,CautionLights.CPT_LTS_CK_SEAT)
