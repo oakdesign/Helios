@@ -2,6 +2,68 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.F16C
 {
+    enum devices : int
+    {
+        FM_PROXY = 1
+        , CONTROL_INTERFACE
+        , ELEC_INTERFACE
+        , FUEL_INTERFACE
+        , HYDRO_INTERFACE
+        , ENGINE_INTERFACE
+        , GEAR_INTERFACE
+        , OXYGEN_INTERFACE
+        , HEARING_SENS
+        , CPT_MECH
+        , EXTLIGHTS_SYSTEM
+        , CPTLIGHTS_SYSTEM
+        , ECS_INTERFACE
+        , INS
+        , RALT
+        , HOTAS
+        , UFC
+        , MUX
+        , MMC
+        , CADC
+        , FLCC
+        , SMS
+        , HUD
+        , MFD_LEFT
+        , MFD_RIGHT
+        , DED
+        , PFLD
+        , EHSI
+        , NVG
+        , HMCS
+        , FCR
+        , CMDS
+        , RWR
+        , IFF
+        , IFF_CONTROL_PANEL
+        , UHF_RADIO
+        , UHF_CONTROL_PANEL
+        , VHF_RADIO
+        , INTERCOM
+        , MIDS_RT
+        , MIDS
+        , KY58
+        , ILS
+        , AOA_INDICATOR
+        , AAU34
+        , AMI
+        , SAI
+        , VVI
+        , STANDBY_COMPASS
+        , ADI
+        , CLOCK
+        , MACROS
+        , AIHelper
+        , KNEEBOARD
+        , ARCADE
+        , TACAN_CTRL_PANEL
+        , SIDEWINDER_INTERFACE
+        , TGP_INTERFACE
+        , HMD
+    }
     enum Keys : int
     {
         iCommandPlaneWheelBrakeOn		= 74,

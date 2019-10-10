@@ -37,6 +37,16 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosAction _incrementAction;
         private HeliosAction _decrementAction;
 
+        public Axis(BaseUDPInterface sourceInterface, int deviceId, int buttonId, string argId, string device, string name)
+        : this(sourceInterface, deviceId.ToString(), buttonId.ToString(), argId, 0.05d, -1.0d, 1.0d, device, name, false, "%.3f")
+        {
+        }
+
+        public Axis(BaseUDPInterface sourceInterface, int deviceId, int buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
+    : this(sourceInterface, deviceId.ToString(), buttonId.ToString(), argId, argValue, argMin, argMax, device, name, false, "%.3f")
+        {
+        }
+
         public Axis(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
             : this(sourceInterface, deviceId, buttonId, argId, argValue, argMin, argMax, device, name, false, "%.3f")
         {

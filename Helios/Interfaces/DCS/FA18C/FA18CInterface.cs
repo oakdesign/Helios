@@ -121,8 +121,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             _phantomLeft = config.PhantomFixLeft;
             _phantomTop = config.PhantomFixTop;
 
-
-
             #region Caution Indicators
             // Caution Light Indicator Panel
             AddFunction(new FlagValue(this, "298", "Caution Indicators", "CK_SEAT", ""));       // create_caution_lamp(298,CautionLights.CPT_LTS_CK_SEAT)
@@ -478,7 +476,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             AddFunction(new Switch(this, MDI_LEFT, "312", new SwitchPosition[] { new SwitchPosition("1", "+ve", "3004", "3004", "0"), new SwitchPosition("0", "Off", "3005"), new SwitchPosition("-1", "-ve", "3005", "3005", "0") }, "AMPCD", "Heading Set Switch", "%1d")); // elements["pnt_312"]     = springloaded_3_pos_tumb2(_("Heading Set Switch"),devices.MDI_LEFT, MDI_commands.MDI_Left_HDG_Negative, MDI_commands.MDI_Left_HDG_Positive, 312)
             AddFunction(new Switch(this, MDI_LEFT, "313", new SwitchPosition[] { new SwitchPosition("1", "+ve", "3006", "3006", "0"), new SwitchPosition("0", "Off", "3007"), new SwitchPosition("-1", "-ve", "3007", "3007", "0") }, "AMPCD", "Course Set Switch", "%1d"));  // elements["pnt_313"]= springloaded_3_pos_tumb(_("Course Set Switch"),devices.MDI_LEFT, MDI_commands.MDI_Left_CRS_Negative, MDI_commands.MDI_Left_CRS_Positive, 313)
             #endregion
-
             #region  Integrated Fuel/Engine Indicator (IFEI)
             AddFunction(new PushButton(this, IFEI, "3001", "168", "IFEI", "IFEI Mode Button", "1", "0", "%1d"));    // elements["pnt_168"] = short_way_button(_("IFEI Mode Button"),           devices.IFEI, IFEI_commands.IFEI_BTN_MODE,          168)
             AddFunction(new PushButton(this, IFEI, "3002", "169", "IFEI", "IFEI QTY Button", "1", "0", "%1d"));    // elements["pnt_169"] = short_way_button(_("IFEI QTY Button"),            devices.IFEI, IFEI_commands.IFEI_BTN_QTY,           169)

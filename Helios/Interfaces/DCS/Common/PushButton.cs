@@ -30,8 +30,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosTrigger _releasedTrigger;
         private HeliosValue _value;
 
-    public PushButton(BaseUDPInterface sourceInterface, string deviceId, int buttonId, string argId, string device, string name)
-    : this(sourceInterface, deviceId, buttonId.ToString(), argId, device, name, "1.0", "0.0", "%.1f")
+    public PushButton(BaseUDPInterface sourceInterface, int deviceId, int buttonId, string argId, string device, string name)
+    : this(sourceInterface, deviceId.ToString(), buttonId.ToString(), argId, device, name, "1.0", "0.0", "%.1f")
         {
         }
 
@@ -39,8 +39,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             : this(sourceInterface, deviceId, buttonId, argId, device, name, "1.0", "0.0", "%.1f")
         {
         }
-        public PushButton(BaseUDPInterface sourceInterface, string deviceId, int buttonId, string argId, string device, string name, string pushValue, string releaseValue, string exportFormat)
-            : this(sourceInterface, deviceId, buttonId.ToString(), argId, device, name, pushValue, releaseValue, exportFormat)
+        public PushButton(BaseUDPInterface sourceInterface, int deviceId, int buttonId, string argId, string device, string name, string pushValue, string releaseValue, string exportFormat)
+            : this(sourceInterface, deviceId.ToString(), buttonId.ToString(), argId, device, name, pushValue, releaseValue, exportFormat)
         {
 
         }
