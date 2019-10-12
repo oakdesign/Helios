@@ -37,6 +37,15 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #region Static Factories
 
+        public static Switch CreateToggleSwitch(BaseUDPInterface sourceInterface, int deviceId, int action, string argId,
+                                            string position1Value, string position1Name,
+                                            string position2Value, string position2Name,
+                                            string device, string name, string exportFormat)
+            =>CreateToggleSwitch(sourceInterface, ((int) deviceId).ToString(), ((int) action).ToString(), argId,
+                                                    position1Value, position1Name,
+                                                    position2Value, position2Name,
+                                                    device, name, exportFormat);
+
         public static Switch CreateToggleSwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId, 
                                                     string position1Value, string position1Name, 
                                                     string position2Value, string position2Name, 
