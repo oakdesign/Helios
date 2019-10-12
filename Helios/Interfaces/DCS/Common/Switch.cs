@@ -81,6 +81,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #endregion
 
+        public Switch(BaseUDPInterface sourceInterface, int deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat)
+            : this(sourceInterface, ((int)deviceId).ToString(), argId, positions, device, name, exportFormat, false)
+        {
+        }
+
         public Switch(BaseUDPInterface sourceInterface, string deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat)
             : this(sourceInterface, deviceId, argId, positions, device, name, exportFormat, false)
         {

@@ -22,8 +22,15 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private string _stopActionValue;
         private string _exitValue;
 
+
+
         public SwitchPosition(string argValue, string name, string action)
             : this(argValue, name, action, null, null)
+        {
+        }
+
+        public SwitchPosition(string argValue, string name, int action)
+            : this(argValue, name, ((int)action).ToString(), null, null)
         {
         }
 
