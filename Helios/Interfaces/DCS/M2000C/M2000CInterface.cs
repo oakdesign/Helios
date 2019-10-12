@@ -93,6 +93,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new ScaledNetworkValue(this, "347", 1d, "Accelerometer Gauge", "Accelerometer Needle", "Accelerometer Needle.", "0 - 360", BindingValueUnits.Degrees, 0d, "%.4f"));
             AddFunction(new Axis(this, FLIGHTINST, "3348", "348", 0.015d, 0d, 1d, "Accelerometer Gauge", "Accelerometer knob"));//not used in DCS
             #endregion
+            #region Airspeed Gauge
+            AddFunction(new ScaledNetworkValue(this, "303", 1d, "Airspeed Gauge", "Airspeed Needle", "Airspeed Needle.", "0 - 360", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new ScaledNetworkValue(this, "304", 1d, "Airspeed Gauge", "Airspeed Mach wheel", "Airspeed Mach wheel.", "0 - 360", BindingValueUnits.Degrees, 0d, "%.4f"));
+            #endregion
             #region Altitude Gauge
             AddFunction(new ScaledNetworkValue(this, "305", 1d, "Altimeter Panel", "Altitude Needle", "Altitude Needle.", "0 - 10", BindingValueUnits.Degrees, 0d, "%.4f"));
             AddFunction(new ScaledNetworkValue(this, "306", 1d, "Altimeter Panel", "Altitude (Hundreds)", "Altitude (Hundreds).", "0 - 9", BindingValueUnits.Numeric, 0d, "%.1f"));
@@ -190,6 +194,19 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
                 new SwitchPosition("0.0", "OFF", "3524"),
                 new SwitchPosition("-1.0", "2", "3524")},
                 "Caution Panel", "Lights Test Switch", "%0.1f"));
+            #endregion
+            #region Clock Panel
+            AddFunction(new ScaledNetworkValue(this, "401", 1d, "Clock Panel", "Hours Needle", "Clock Hours Needle.", "0 - 12", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new ScaledNetworkValue(this, "402", 1d, "Clock Panel", "Minutes Needle", "Clock Minutes Needle.", "0 - 60", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new ScaledNetworkValue(this, "403", 1d, "Clock Panel", "Little Needle", "Clock Little Needle.", "0 - 15", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new ScaledNetworkValue(this, "921", 1d, "Clock Panel", "Seconds Needle", "Clock Seconds Needle.", "0 - 60", BindingValueUnits.Degrees, 0d, "%.4f"));
+            AddFunction(new Axis(this, MISCPANELS, "3922", "922", 0.1d, 0d, 1d, "Clock Panel", "Rotary Switch")); //Not used in DCS
+            AddFunction(new PushButton(this, MISCPANELS, "3923", "923", "Clock Panel", "Push Button")); //Not used in DCS
+            AddFunction(new Switch(this, MISCPANELS, "924", new SwitchPosition[] {
+                new SwitchPosition("0.0", "Pushed", "3924"),
+                new SwitchPosition("1.0", "Released", "3924")},
+                "Clock Panel", "Tige", "%0.1f")); //Not used in DCS
+            AddFunction(new ScaledNetworkValue(this, "925", 1d, "Clock Panel", "Clock Rose", "Clock Rose Needle.", "0 - 360", BindingValueUnits.Degrees, 0d, "%.4f")); //Not used in DCS
             #endregion
             #region  ECM BOX
             AddFunction(new Switch(this, RWR, "194", new SwitchPosition[] {
@@ -358,6 +375,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new FlagValue(this, "200", "Master Caution Lights Panel", "Panne Red", "Master Caution"));
             #endregion
             #region Miscellaneous Panels and indicators
+            AddFunction(new FlagValue(this, "185", "LIM Indicator Panel", "LIM Indicator", "LIM, MIP,"));
+            AddFunction(new FlagValue(this, "186", "IFF Indicator Panel", "IFF Indicator", "IFF, MIP, Acc"));
             AddFunction(new FlagValue(this, "229", "RWR Panel", "RWR V", "RWR V"));
             AddFunction(new FlagValue(this, "230", "RWR Panel", "RWR BR", "RWR BR"));
             AddFunction(new FlagValue(this, "231", "RWR Panel", "RWR DA", "RWR DA"));
@@ -549,22 +568,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
                 new SwitchPosition("1.0", "OFF", "3480"), },
                 "Test Panel", "FBW Channel 5 Switch", "%0.1f"));
             #endregion
-            #region VOR.ILS Panel
-            AddFunction(new ScaledNetworkValue(this, "615", 1d, "VOR/ILS Panel", "Channel output for display (Decimal Ones)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
-            AddFunction(new ScaledNetworkValue(this, "614", 1d, "VOR/ILS Panel", "Channel output for display (Decimal Tens)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
-            AddFunction(new ScaledNetworkValue(this, "613", 1d, "VOR/ILS Panel", "Channel output for display (Ones)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
-            AddFunction(new ScaledNetworkValue(this, "612", 1d, "VOR/ILS Panel", "Channel output for display (Tens)", "Current channel", "0 - 1", BindingValueUnits.Numeric));
-            AddFunction(new Axis(this, VORILS, CMD + VORILS_FREQUENCY_CHANGE_WHOLE, VORILS_FREQUENCY_CHANGE_WHOLE, 0.1d, 0.0d, 1.0d, "VOR/ILS Panel", "Frequency Change whole"));
-            AddFunction(new Axis(this, VORILS, CMD + VORILS_FREQUENCY_CHANGE_DECIMAL, VORILS_FREQUENCY_CHANGE_DECIMAL, 0.05d, 0.0d, 1.0d, "VOR/ILS Panel", "Frequency Change Decimal"));
-            AddFunction(new Switch(this, VORILS, VORILS_POWER, new SwitchPosition[] {
-                new SwitchPosition("0.0", "ON", CMD + VORILS_POWER),
-                new SwitchPosition("1.0", "OFF", CMD + VORILS_POWER)},
-                "VOR/ILS Panel", "Power Selector", "%0.1f"));
-            AddFunction(new Switch(this, VORILS, "619", new SwitchPosition[] {
-                new SwitchPosition("0.0", "HG", "3619"),
-                new SwitchPosition("1.0", "BD", "3619")},
-                "VOR/ILS Panel", "Mode Selector", "%0.1f"));
-            #endregion
             #region U/VHF Panel
             AddFunction(new ScaledNetworkValue(this, "435", 2d, "UHF Panel", "Preset output for display", "Current preset channel", "use rotary encoder with initial 1, min1, max 20, step 0.05", BindingValueUnits.Numeric, 0d, "%.4f"));
             AddFunction(new Axis(this, UVHF, "3436", "436", 0.05d, 0d, 1.0d, "UHF Panel", "Channel Selector"));
@@ -592,10 +595,27 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new PushButton(this, UVHF, "3434", "434", "UHF Panel", "Test Button"));
             AddFunction(new FlagValue(this, "675", "UHF Panel", "Test", "Test Light"));
             #endregion
+            #region VOR.ILS Panel
+            AddFunction(new ScaledNetworkValue(this, "615", 1d, "VOR/ILS Panel", "Channel output for display (Decimal Ones)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "614", 1d, "VOR/ILS Panel", "Channel output for display (Decimal Tens)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "613", 1d, "VOR/ILS Panel", "Channel output for display (Ones)", "Current channel", "0 - 9", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "612", 1d, "VOR/ILS Panel", "Channel output for display (Tens)", "Current channel", "0 - 1", BindingValueUnits.Numeric));
+            AddFunction(new Axis(this, VORILS, CMD + VORILS_FREQUENCY_CHANGE_WHOLE, VORILS_FREQUENCY_CHANGE_WHOLE, 0.1d, 0.0d, 1.0d, "VOR/ILS Panel", "Frequency Change whole"));
+            AddFunction(new Axis(this, VORILS, CMD + VORILS_FREQUENCY_CHANGE_DECIMAL, VORILS_FREQUENCY_CHANGE_DECIMAL, 0.05d, 0.0d, 1.0d, "VOR/ILS Panel", "Frequency Change Decimal"));
+            AddFunction(new Switch(this, VORILS, VORILS_POWER, new SwitchPosition[] {
+                new SwitchPosition("0.0", "ON", CMD + VORILS_POWER),
+                new SwitchPosition("1.0", "OFF", CMD + VORILS_POWER)},
+                "VOR/ILS Panel", "Power Selector", "%0.1f"));
+            AddFunction(new Switch(this, VORILS, "619", new SwitchPosition[] {
+                new SwitchPosition("0.0", "HG", "3619"),
+                new SwitchPosition("1.0", "BD", "3619")},
+                "VOR/ILS Panel", "Mode Selector", "%0.1f"));
+            #endregion
+            #region VVI Gauge
+            AddFunction(new ScaledNetworkValue(this, "324", 1d, "VVI Gauge", "VVI Needle", "VVI Needle.", "-5 - +5", BindingValueUnits.Degrees, 0d, "%.4f"));
+            #endregion
             #region Indicators
             // !!!! Any duplicate "name" values in a function will cause Helios to go bang.  Make sure that when you change the name, that it is unique
-            AddFunction(new FlagValue(this, "185", "Indicators", "Indicators 185", "LIM, MIP,"));
-            AddFunction(new FlagValue(this, "186", "Indicators", "Indicators 186", "IFF, MIP, Acc"));
             AddFunction(new FlagValue(this, "187", "Indicators", "Indicators 187", "LED green, ADI"));
             AddFunction(new FlagValue(this, "188", "Indicators", "Indicators 188", "LED green, ADI"));
             AddFunction(new FlagValue(this, "321", "Indicators", "Indicators 321", "ADI ILS light"));

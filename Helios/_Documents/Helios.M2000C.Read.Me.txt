@@ -31,7 +31,7 @@ relevant then open a new issue.
   
 
 * * * Working Elements on M2000C * * *
-* * *      9th October 2019      * * *
+* * *      11th October 2019      * * *
 
 * * * * * * * * * * * * * * * * * * * * * * * *
 * * * Next Release Helios v1.4.2019.xxxx  * * *
@@ -54,6 +54,19 @@ What’s new DCS M2000C
 	* Added the Accelerometer Gauge
 		- the accelerometer needle
 		- the potentiometer
+	* Added the VVI Gauge
+		- the VVI needle
+	* Added the Airspeed Gauge
+		- the Airspeed needle
+	* Added the clock
+		- the 4 needles
+		- the rose (not used in DCS)
+		- the rotary switch (not used in DCS)
+		- the pushed button (not used in DCS)
+		- the toggle switch (not used in DCS)
+	* Added in the Miscellaneous Panels
+       - Added the IFF Indicator
+       - Added the LIM Indicator
 	* Improvement of guards on the Test and LG Panels
 		- Made all 4 guards on this 2 panels working
 	* Improvement of the Tacan Panel
@@ -64,6 +77,9 @@ What’s new DCS M2000C
 		- made the Mode Selector working
 	* Improvement of the HSI Panel
 		- all the needles are working
+	* Improvement of the HSI Gauge
+		- the VAD selector now works
+		- the rose has been redesign
 	* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
 
 Known issues DCS M2000C
@@ -73,13 +89,12 @@ Known issues DCS M2000C
 		- the two toggle switches don’t work (seems not to be used in DCS)
     * Master Caution lights Panel
 		- the click on the 2 indicators doesn’t work
-	* HSI Panel
-		- the compass rose need to be redisign
-		- the potentiometer doesn’t work properly
 	* ECM Box
 		- the potentiometer is not working
 	* UHF Panel
 		- nothing is working from Helios to DCS
+	* Airspeed Gauge
+		- the mach wheel is missing
 	* Miscellaneous Panels
 	   - I don’t know how to test the Fire Warning Indicators. Does someone has a match? :-)
 	   

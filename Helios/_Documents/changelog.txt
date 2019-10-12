@@ -5,13 +5,18 @@
 * M2000C Interface 
 	* What’s new 
 		* Added the Accelerometer Gauge with the accelerometer needle and the potentiometer
-		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
+		* Added the VVI Gauge with the VVI needle
+		* Added the Airspeed Gauge with the Airspeed needle
+		* Added in the Miscellaneous Panels the IFF Indicator and the LIM Indicator
+		* Added the clock with the 4 needles. Added too even if not used in DCS the rose, the rotary switch, the pushed button and the toggle switch
+		* Improvement of the HSI gauge. The VAD selector now works and the rose has been redesign
+		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA, Fuel and HSI panels
 * Known issues: 
 		* Fuel Panel: the Fuel CrossFeed Switch doesn’t work from Helios to DCS, the two toggle switches don’t work (seem not to be used in DCS)
 		* Master Caution lights Panel: the click on the 2 indicators doesn’t work
-		* HSI Panel: the potentiometer doesn’t work properly
 		* ECM Box: the potentiometer is not working
 		* UHF Panel: nothing is working from Helios to DCS
+		* Airspeed Gauge: the mach wheel is missing
 		
 ### 1.4.2019.1005 Release
 ----------------------------

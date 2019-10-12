@@ -19,11 +19,11 @@ namespace GadrocsWorkshop.Helios.M2000C
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Media;
-    using GadrocsWorkshop.Helios.ComponentModel;
     using GadrocsWorkshop.Helios.Controls;
     using GadrocsWorkshop.Helios.Gauges.M2000C.Mk2CDrumGauge;
     using GadrocsWorkshop.Helios.Gauges.M2000C.Mk2CNeedle;
     using GadrocsWorkshop.Helios.Gauges.M2000C.Mk2CDrumTacanChannel;
+    using GadrocsWorkshop.Helios.Gauges.M2000C.Mk2CGaugeImage;
 
     public abstract partial class M2000CCompositeVisual : CompositeVisual
     {
@@ -486,6 +486,19 @@ namespace GadrocsWorkshop.Helios.M2000C
                 deviceActionName: "set.position");
 
             return toggle;
+        }
+
+        protected Mk2CGaugeImage AddImage(string name, string image, Point posn, Size size, bool fromCenter)
+        {
+            if (fromCenter)
+                posn = FromCenter(posn, size);
+            string componentName = GetComponentName(name);
+
+            Mk2CGaugeImage newImage = new Mk2CGaugeImage(componentName, image, posn, size);
+
+            Children.Add(newImage);
+
+            return newImage;
         }
     }
 }
