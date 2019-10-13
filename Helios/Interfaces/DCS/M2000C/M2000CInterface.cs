@@ -264,6 +264,92 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
                 new SwitchPosition("0.0", "ON", "3652")},
                 "Engine Start Panel", "Fuel Shut-Off Switch", "%0.1f"));
             #endregion
+            #region  EW PANEL
+            AddFunction(new Switch(this, RADAR, "598", new SwitchPosition[] {
+                new SwitchPosition("0.0", "1", "3598"),
+                new SwitchPosition("0.2", "4", "3598"),
+                new SwitchPosition("0.4", "3/2", "3598"),
+                new SwitchPosition("0.6", "3/3", "3598"),
+                new SwitchPosition("0.8", "3/4", "3598"),
+                new SwitchPosition("1.0", "2", "3598"),
+                }, "EW Panel", "Mode Switch", "%0.1f"));
+            AddFunction(new Switch(this, RADAR, "599", new SwitchPosition[] {
+                new SwitchPosition("0.0", "G", "3599"),
+                new SwitchPosition("1.0", "D", "3599"),
+                }, "EW Panel", "L/R Selector", "%0.1f"));
+            AddFunction(new Switch(this, RADAR, "600", new SwitchPosition[] {
+                new SwitchPosition("0.0", "OFF", "3600"),
+                new SwitchPosition("0.5", "SECT", "3600"),
+                new SwitchPosition("1.0", "CONT", "3600"),
+                }, "EW Panel", "Power Mode Switch", "%0.1f"));
+            AddFunction(new ScaledNetworkValue(this, "601", 1d, "EW Panel", "Mode Drum (Thousands)", "Mode Drum (Thousands)", "(0-9)", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "602", 1d, "EW Panel", "Mode Drum (Hundreds)", "Mode Drum (Hundreds)", "(0-9)", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "603", 1d, "EW Panel", "Mode Drum (Tens)", "Mode Drum (Tens)", "(0-9)", BindingValueUnits.Numeric));
+            AddFunction(new ScaledNetworkValue(this, "604", 1d, "EW Panel", "Mode Drum (Ones)", "Mode Drum (Ones)", "(0-9)", BindingValueUnits.Numeric));
+            /*            AddFunction(new Axis(this, RADAR, "3601", "601", 0.1d, 0d, 1d, "EW Panel", "IFF Thousand Selector"));
+                        AddFunction(new Axis(this, RADAR, "3602", "602", 0.1d, 0d, 1d, "EW Panel", "IFF Hundreds Selector"));
+                        AddFunction(new Axis(this, RADAR, "3603", "603", 0.1d, 0d, 1d, "EW Panel", "IFF Tens Selector"));
+                        AddFunction(new Axis(this, RADAR, "3604", "604", 0.1d, 0d, 1d, "EW Panel", "IFF Ones Selector"));
+            /*            AddFunction(new Switch(this, RADAR, "601", new SwitchPosition[] { }, "EW Panel", "Radar IFF Code-4 Selector", "%0.1f"));    // elements["PTN_601"] = default_multiposition_knob(_("Radar IFF Code-4 Selector"), devices.RADAR, device_commands.Button_601, 601, 10, 0.1, false, 0)
+                        AddFunction(new Switch(this, RADAR, "602", new SwitchPosition[] { }, "EW Panel", "Radar IFF Code-3 Selector", "%0.1f"));    // elements["PTN_602"] = default_multiposition_knob(_("Radar IFF Code-3 Selector"), devices.RADAR, device_commands.Button_602, 602, 10, 0.1, false, 0)
+                        AddFunction(new Switch(this, RADAR, "603", new SwitchPosition[] { }, "EW Panel", "Radar IFF Code-2 Selector", "%0.1f"));    // elements["PTN_603"] = default_multiposition_knob(_("Radar IFF Code-2 Selector"), devices.RADAR, device_commands.Button_603, 603, 10, 0.1, false, 0)
+                        AddFunction(new Switch(this, RADAR, "604", new SwitchPosition[] { }, "EW Panel", "Radar IFF Code-1 Selector", "%0.1f"));    // elements["PTN_604"] = default_multiposition_knob(_("Radar IFF Code-1 Selector"), devices.RADAR, device_commands.Button_604, 604, 10, 0.1, false, 0)
+              */
+            AddFunction(new Switch(this, RWR, "605", new SwitchPosition[] {
+                new SwitchPosition("-1.0", "VEI", "3605"),
+                new SwitchPosition("0.0", "NORMAL", "3605"),
+                new SwitchPosition("1.0", "PCM", "3605"),
+                }, "EW Panel", "ECM Mode Switch", "%0.1f"));
+            AddFunction(new Switch(this, RWR, "606", new SwitchPosition[] {
+                new SwitchPosition("1.0", "OFF", "3606"),
+                new SwitchPosition("0.5", "ON", "3606"),
+                new SwitchPosition("0.0", "TEST", "3606"),
+                }, "EW Panel", "BR Power Switch", "%0.1f"));
+            AddFunction(new Switch(this, RWR, "607", new SwitchPosition[] {
+                new SwitchPosition("1.0", "OFF", "3607"),
+                new SwitchPosition("0.5", "ON", "3607"),
+                new SwitchPosition("0.0", "TEST", "3607"),
+                }, "EW Panel", "RWR Power Switch", "%0.1f"));
+            AddFunction(new Switch(this, DDM_IND, "608", new SwitchPosition[] {
+                new SwitchPosition("1.0", "OFF", "3608"),
+                new SwitchPosition("0.5", "ON", "3608"),
+                new SwitchPosition("0.0", "TEST", "3608"),
+                }, "EW Panel", "D2M Power Switch", "%0.1f"));
+            AddFunction(new Switch(this, RWR, "609", new SwitchPosition[] {
+                new SwitchPosition("1.0", "A", "3609"),
+                new SwitchPosition("0.5", "SA", "3609"),
+                new SwitchPosition("0.0", "AU   ", "3609"),
+                }, "EW Panel", "Decoy Release Mode Switch", "%0.1f"));
+            AddFunction(new Switch(this, RWR, "610", new SwitchPosition[] {
+                new SwitchPosition("0.0", "A", "3610"),
+                new SwitchPosition("0.1", "1", "3610"),
+                new SwitchPosition("0.2", "2", "3610"),
+                new SwitchPosition("0.3", "3", "3610"),
+                new SwitchPosition("0.4", "4", "3610"),
+                new SwitchPosition("0.5", "5", "3610"),
+                new SwitchPosition("0.6", "6", "3610"),
+                new SwitchPosition("0.7", "7", "3610"),
+                new SwitchPosition("0.8", "8", "3610"),
+                new SwitchPosition("0.9", "9", "3610"),
+                new SwitchPosition("1.0", "10", "3610"),
+                }, "EW Panel", "Decoy Release Program Knob", "%0.1f"));
+            AddFunction(new Switch(this, ENGINE, "657", new SwitchPosition[] {
+                new SwitchPosition("1.0", "OFF", "3657"),
+                new SwitchPosition("0.0", "ON", "3657"),
+                }, "EW Panel", "Emergency Hydraulic Pump Switch", "%0.1f"));
+            AddFunction(new Switch(this, SYSLIGHTS, "658", new SwitchPosition[] {
+                new SwitchPosition("1.0", "OFF", "3658"),
+                new SwitchPosition("0.0", "ON", "3658"),
+                }, "EW Panel", "Audio Warning Switch", "%0.1f"));
+            AddFunction(new Switch(this, MISCPANELS, "659", new SwitchPosition[] {
+                new SwitchPosition("0.0", "UP", "3659"),
+                new SwitchPosition("1.0", "DOWN", "3659"),
+                }, "EW Panel", "Pitot Heat Guard", "%0.1f"));
+            AddFunction(new Switch(this, MISCPANELS, "660", new SwitchPosition[] {
+                new SwitchPosition("0.0", "OFF", "3660"),
+                new SwitchPosition("1.0", "ON", "3660"),
+                }, "EW Panel", "Pitot Heat Switch", "%0.1f"));
+            #endregion  
             #region Fuel Panel
             AddFunction(new FlagValue(this, "198", "Fuel Panel", "Air Refueling", "Air Refueling"));
             AddFunction(new FlagValue(this, "362", "Fuel Panel", "left-rl", "Fuel Left RL"));
@@ -753,16 +839,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new PushButton(this, RADAR, "3710", "710", "RADAR", "TDC Mode Switch"));    // elements["PTN_710"] = default_2_position_tumb(_("TDC Mode Switch"), devices.RADAR, device_commands.Button_710, 710, 0, 1)
 
             #endregion
-            #region  RADAR IFF
-            AddFunction(new Switch(this, RADAR, "598", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Mode Switch", "%0.1f"));    // elements["PTN_598"] = multiposition_switch_limited(_("Radar IFF Mode Switch"),   devices.RADAR, device_commands.Button_598, 598, 6, 0.2, false, 0)
-            AddFunction(new PushButton(this, RADAR, "3599", "599", "RADAR IFF", "Radar IFF L/R Selector"));    // elements["PTN_599"] = default_2_position_tumb(_("Radar IFF L/R Selector"),       devices.RADAR, device_commands.Button_599, 599, 0, 1)
-            AddFunction(new Switch(this, RADAR, "600", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Power Switch", "%0.1f"));    // elements["PTN_600"] = multiposition_switch_limited(_("Radar IFF Power Switch"),  devices.RADAR, device_commands.Button_600, 600, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, RADAR, "601", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Code-4 Selector", "%0.1f"));    // elements["PTN_601"] = default_multiposition_knob(_("Radar IFF Code-4 Selector"), devices.RADAR, device_commands.Button_601, 601, 10, 0.1, false, 0)
-            AddFunction(new Switch(this, RADAR, "602", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Code-3 Selector", "%0.1f"));    // elements["PTN_602"] = default_multiposition_knob(_("Radar IFF Code-3 Selector"), devices.RADAR, device_commands.Button_602, 602, 10, 0.1, false, 0)
-            AddFunction(new Switch(this, RADAR, "603", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Code-2 Selector", "%0.1f"));    // elements["PTN_603"] = default_multiposition_knob(_("Radar IFF Code-2 Selector"), devices.RADAR, device_commands.Button_603, 603, 10, 0.1, false, 0)
-            AddFunction(new Switch(this, RADAR, "604", new SwitchPosition[] { }, "RADAR IFF", "Radar IFF Code-1 Selector", "%0.1f"));    // elements["PTN_604"] = default_multiposition_knob(_("Radar IFF Code-1 Selector"), devices.RADAR, device_commands.Button_604, 604, 10, 0.1, false, 0)
-                                                                                                                                         // 
-            #endregion
             #region  ELECTRICAL PANEL
             AddFunction(new PushButton(this, PWRPNL, "3654", "654", "ELECTRICAL PANEL", "Alert Network (QRA) Switch"));    // elements["PTN_654"] = default_2_position_tumb(_("Alert Network (QRA) Switch"),devices.PWRPNL, device_commands.Button_654, 654)
 
@@ -771,15 +847,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new Switch(this, PCN_NAV, "665", new SwitchPosition[] { }, "PSM", "INS Auxiliary Heading/Horizon", "%0.1f"));    // elements["PTN_665"] = multiposition_switch_limited(_("INS Auxiliary Heading/Horizon"), devices.PCN_NAV, device_commands.Button_665, 665, 3, 0.5, false, 0)
                                                                                                                                          // 
             #endregion
-            #region  EW PANEL
-            AddFunction(new Axis(this, SYSLIGHTS, "3228", "228", 0.15d, 0d, 1d, "EW PANEL", "RWR Light Brightnes Control"));    // elements["PTN_228"] = default_axis_limited(_("RWR Light Brightnes Control"), devices.SYSLIGHTS, device_commands.Button_228, 228, 10, 0.1, false, 0)
-            AddFunction(new Switch(this, RWR, "605", new SwitchPosition[] { }, "EW PANEL", "EW Mode Selector Switch", "%0.1f"));    // elements["PTN_605"] = default_3_position_tumb(_("EW Mode Selector Switch"), devices.RWR, device_commands.Button_605, 605, false, true)
-            AddFunction(new Switch(this, RWR, "606", new SwitchPosition[] { }, "EW PANEL", "BR Power Switch", "%0.1f"));    // elements["PTN_606"] = multiposition_switch_limited(_("BR Power Switch"), devices.RWR, device_commands.Button_606, 606, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, RWR, "607", new SwitchPosition[] { }, "EW PANEL", "RWR Power Switch", "%0.1f"));    // elements["PTN_607"] = multiposition_switch_limited(_("RWR Power Switch"), devices.RWR, device_commands.Button_607, 607, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, DDM_IND, "608", new SwitchPosition[] { }, "EW PANEL", "D2M Power Switch", "%0.1f"));    // elements["PTN_608"] = multiposition_switch_limited(_("D2M Power Switch"), devices.DDM_IND, device_commands.Button_608, 608, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, RWR, "609", new SwitchPosition[] { }, "EW PANEL", "Decoy Release Mode Switch", "%0.1f"));    // elements["PTN_609"] = multiposition_switch_limited(_("Decoy Release Mode Switch"), devices.RWR, device_commands.Button_609, 609, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, RWR, "610", new SwitchPosition[] { }, "EW PANEL", "Decoy Release Program Knob", "%0.1f"));    // elements["PTN_610"] = multiposition_switch_limited(_("Decoy Release Program Knob"), devices.RWR, device_commands.Button_610, 610, 11, 0.1, false, 0)
-            #endregion  
             #region  Panel Lights
             AddFunction(new PushButton(this, SYSLIGHTS, "3449", "449", "Panel Lights", "Police Lights Switch"));    // elements["PTN_449"] = default_2_position_tumb(_("Police Lights Switch"), devices.SYSLIGHTS, device_commands.Button_449, 449)
             AddFunction(new Switch(this, SYSLIGHTS, "450", new SwitchPosition[] { }, "Panel Lights", "Landing Lights Switch", "%0.1f"));    // elements["PTN_450"] = multiposition_switch_limited(_("Landing Lights Switch"), devices.SYSLIGHTS, device_commands.Button_450, 450, 3, 0.5, false, 0)
@@ -830,10 +897,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new PushButton(this, MISCPANELS, "3909", "909", "Miscellaneous Left Panel", "Mirror Rendering Toggle"));    // elements["PTN_909"] = default_2_position_tumb(_("Mirror Rendering Toggle"), devices.MISCPANELS, device_commands.Button_909, 909)
             #endregion  
             #region  Miscellaneous Right Panel
-            AddFunction(new Switch(this, ENGINE, "657", new SwitchPosition[] { }, "Miscellaneous Right Panel", "Emergency Hydraulic Pump Switch", "%0.1f"));    // elements["PTN_657"] = multiposition_switch_spring(_("Emergency Hydraulic Pump Switch"), devices.ENGINE, device_commands.Button_657, device_commands.Button_657, 657)
-            AddFunction(new PushButton(this, SYSLIGHTS, "3658", "658", "Miscellaneous Right Panel", "Audio Warning Switch"));    // elements["PTN_658"] = default_2_position_tumb(_("Audio Warning Switch"), devices.SYSLIGHTS, device_commands.Button_658, 658)
-            AddFunction(new PushButton(this, MISCPANELS, "3659", "659", "Miscellaneous Right Panel", "Pitot Heat Cover"));    // elements["PTN_659"] = default_2_position_tumb(_("Pitot Heat Cover"), devices.MISCPANELS, device_commands.Button_659, 659)
-            AddFunction(new PushButton(this, MISCPANELS, "3660", "660", "Miscellaneous Right Panel", "Pitot Heat Switch"));    // elements["PTN_660"] = default_2_position_tumb(_("Pitot Heat Switch"), devices.MISCPANELS, device_commands.Button_660, 660)
+            AddFunction(new Axis(this, SYSLIGHTS, "3228", "228", 0.15d, 0d, 1d, "EW PANEL", "RWR Light Brightnes Control"));    // elements["PTN_228"] = default_axis_limited(_("RWR Light Brightnes Control"), devices.SYSLIGHTS, device_commands.Button_228, 228, 10, 0.1, false, 0)
             #endregion  
             #region  Miscellaneous Seat
             //AddFunction(Switch.CreateToggleSwitch(this, MISCPANELS, "3900", "900", "Miscellaneous Seat", "Seat Adjustment Switch", "%0.1f"));    // elements["PTN_900"] = default_2_way_spring_switch(_("Seat Adjustment Switch"), devices.MISCPANELS, device_commands.Button_900, 900,true)

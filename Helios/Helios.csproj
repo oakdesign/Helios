@@ -119,6 +119,7 @@
     <Compile Include="Gauges\M2000C\AirspeedGauge\Airspeed_Gauge.cs" />
     <Compile Include="Gauges\M2000C\ClockPanel\Clock_Panel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CGaugeImage.cs" />
+    <Compile Include="Gauges\M2000C\EWPanel\EW_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\Lim_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\IFF_Panel.cs" />
     <Compile Include="Gauges\M2000C\VVIGauge\VVI_Gauge.cs" />
@@ -2953,10 +2954,6 @@
       <SubType>Designer</SubType>
     </Resource>
     <Resource Include="Gauges\M2000C\Common\needleB.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\M2000C\HSIPanel\compass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>

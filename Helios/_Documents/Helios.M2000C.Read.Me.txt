@@ -64,6 +64,11 @@ What’s new DCS M2000C
 		- the rotary switch (not used in DCS)
 		- the pushed button (not used in DCS)
 		- the toggle switch (not used in DCS)
+	* Added the IFF Panel
+		- the 8 switches
+		- the 4 rotary switches
+		- the guard for the pitot switch
+		- the 4 drums
 	* Added in the Miscellaneous Panels
        - Added the IFF Indicator
        - Added the LIM Indicator
@@ -95,6 +100,9 @@ Known issues DCS M2000C
 		- nothing is working from Helios to DCS
 	* Airspeed Gauge
 		- the mach wheel is missing
+	* IFF Panel
+		- the ECM Mode switch doesn’t work from Helios to DCS
+		- the 4 potentiometers to change the value of the 4 drums don’t work
 	* Miscellaneous Panels
 	   - I don’t know how to test the Fire Warning Indicators. Does someone has a match? :-)
 	   

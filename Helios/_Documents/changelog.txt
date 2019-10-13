@@ -9,6 +9,7 @@
 		* Added the Airspeed Gauge with the Airspeed needle
 		* Added in the Miscellaneous Panels the IFF Indicator and the LIM Indicator
 		* Added the clock with the 4 needles. Added too even if not used in DCS the rose, the rotary switch, the pushed button and the toggle switch
+		* Added the IFF Panel with the 8 switches, the 4 rotary switches, the guard for the pitot switch and the 4 drums
 		* Improvement of the HSI gauge. The VAD selector now works and the rose has been redesign
 		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA, Fuel and HSI panels
 * Known issues: 
@@ -17,6 +18,7 @@
 		* ECM Box: the potentiometer is not working
 		* UHF Panel: nothing is working from Helios to DCS
 		* Airspeed Gauge: the mach wheel is missing
+		* IFF Panel: the ECM Mode switch doesn’t work from Helios to DCS and the 4 potentiometer to change the value of the 4 drums don’t work
 		
 ### 1.4.2019.1005 Release
 ----------------------------
