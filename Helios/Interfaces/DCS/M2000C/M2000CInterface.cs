@@ -133,6 +133,14 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new FlagValue(this, "297", "Autopilot Panel", "Localizer Right Green", "AUTOPILOT G"));
             AddFunction(new FlagValue(this, "298", "Autopilot Panel", "Localizer Right", "AUTOPILOT blank G"));
             #endregion
+            #region Canopy Panel
+            AddFunction(new PushButton(this, SUBSYSTEMS, "3655", "655", "Canopy Panel", "Canopy Hold"));
+            AddFunction(new Switch(this, SUBSYSTEMS, "656", new SwitchPosition[] {
+                new SwitchPosition("0.0", "OPEN", "3656"),
+                new SwitchPosition("0.5", "NEUTRAL", "3656"),
+                new SwitchPosition("1.0", "CLOSE", "3656"),
+            }, "Canopy Panel", "Canopy Lever", "%0.1f"));
+            #endregion
             #region Caution Panel
             AddFunction(new FlagValue(this, "525", "Caution Panel", "BATT", "WP BATT"));
             AddFunction(new FlagValue(this, "526", "Caution Panel", "TR", "TR"));
@@ -889,8 +897,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             //AddFunction(Switch.CreateToggleSwitch(this, SUBSYSTEMS, "3456", "456", "Miscellaneous Left Panel", "Canopy Jettison", "%0.1f"));    // elements["PTN_456"] = default_animated_lever(_("Canopy Jettison"),devices.SUBSYSTEMS, device_commands.Button_456, 456,5.0)
             //AddFunction(Switch.CreateToggleSwitch(this, MISCPANELS, "3457", "457", "Miscellaneous Left Panel", "Drag Chute Lever", "%0.1f"));    // elements["PTN_457"] = default_animated_lever(_("Drag Chute Lever"), devices.MISCPANELS, device_commands.Button_457, 457,5.0)
             //AddFunction(Switch.CreateToggleSwitch(this, MISCPANELS, "3807", "807", "Miscellaneous Left Panel", "Nose Wheel Steering / IFF Interrogation Button", "%0.1f"));    // elements["PTN_807"] = default_2_way_spring_switch(_("Nose Wheel Steering / IFF Interrogation Button"), devices.MISCPANELS, device_commands.Button_807, 807)
-            AddFunction(new PushButton(this, SUBSYSTEMS, "3655", "655", "Miscellaneous Left Panel", "Canopy Rest"));    // elements["PTN_655"] = default_2_position_tumb(_("Canopy Rest"),devices.SUBSYSTEMS, device_commands.Button_655, 655)
-            //AddFunction((this, SUBSYSTEMS, "3656", "656", "Miscellaneous Left Panel", "Canopy Lock/Neutral/Lower Lever"));    // elements["PTN_656"] = default_multiposition_animated_lever(_("Canopy Lock/Neutral/Lower Lever"), devices.SUBSYSTEMS, device_commands.Button_656, 656, 3, 0.5, false, 0,2.5)
             AddFunction(new PushButton(this, PCN_NAV, "3905", "905", "Miscellaneous Left Panel", "Emergency Compass"));    // elements["PTN_905"] = default_2_position_tumb(_("Emergency Compass"),devices.PCN_NAV, device_commands.Button_905, 905)
             AddFunction(new PushButton(this, SUBSYSTEMS, "3907", "907", "Miscellaneous Left Panel", "Canopy Handle"));    // elements["PTN_907"] = default_2_position_tumb(_("Canopy Handle"),devices.SUBSYSTEMS, device_commands.Button_907, 907)
             AddFunction(new PushButton(this, SUBSYSTEMS, "3908", "908", "Miscellaneous Left Panel", "Canopy Handle (alt?)"));    // elements["PTN_908"] = default_2_position_tumb(_("Canopy Handle"),devices.SUBSYSTEMS, device_commands.Button_908, 908)

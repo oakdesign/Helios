@@ -69,6 +69,9 @@ What’s new DCS M2000C
 		- the 4 rotary switches
 		- the guard for the pitot switch
 		- the 4 drums
+	* Added the Canopy Panel
+		- the push handle button
+		- the canopy lever
 	* Added in the Miscellaneous Panels
        - Added the IFF Indicator
        - Added the LIM Indicator

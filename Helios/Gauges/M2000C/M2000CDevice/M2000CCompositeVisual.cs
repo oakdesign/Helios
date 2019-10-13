@@ -437,7 +437,7 @@ namespace GadrocsWorkshop.Helios.M2000C
             string positionThreeImage = "{Helios}/Images/Toggles/round-down.png",
             ClickType clickType = ClickType.Swipe,
             bool horizontal = false,
-            bool horizontalRender = false)
+            bool horizontalRender = false, NonClickableZone[] nonClickableZones = null)
         {
             string componentName = GetComponentName(name);
             ThreeWayToggleSwitch toggle = new ThreeWayToggleSwitch
@@ -454,6 +454,7 @@ namespace GadrocsWorkshop.Helios.M2000C
                 Name = componentName
             };
             toggle.ClickType = clickType;
+            toggle.NonClickableZones = nonClickableZones;
             if (horizontal)
             {
                 toggle.Orientation = ToggleSwitchOrientation.Horizontal;

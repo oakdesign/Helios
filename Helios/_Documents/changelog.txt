@@ -10,6 +10,7 @@
 		* Added in the Miscellaneous Panels the IFF Indicator and the LIM Indicator
 		* Added the clock with the 4 needles. Added too even if not used in DCS the rose, the rotary switch, the pushed button and the toggle switch
 		* Added the IFF Panel with the 8 switches, the 4 rotary switches, the guard for the pitot switch and the 4 drums
+		* Added the Canopy Panel with the push handle button and the canopy lever
 		* Improvement of the HSI gauge. The VAD selector now works and the rose has been redesign
 		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA, Fuel and HSI panels
 * Known issues: 

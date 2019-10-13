@@ -332,6 +332,21 @@ namespace GadrocsWorkshop.Helios.Controls
             }
         }
 
+        public override void MouseDown(System.Windows.Point location)
+        {
+            if (NonClickableZones != null)
+            {
+                foreach (NonClickableZone zone in NonClickableZones)
+                {
+                    if (zone.isClickInZone(location))
+                    {
+                        zone.ChildVisual.MouseDown(new System.Windows.Point(location.X - (zone.ChildVisual.Left - this.Left), location.Y - (zone.ChildVisual.Top - this.Top)));
+                        return; //we get out to let the ChildVisual using the click
+                    }
+                }
+            }
+            base.MouseDown(location);
+        }
         public override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
