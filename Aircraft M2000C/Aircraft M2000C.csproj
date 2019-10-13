@@ -1026,6 +1026,9 @@
     <Resource Include="Images\CanopyPanel\canopy-handle-mid.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Miscellaneous\bingo-panel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Templates\CautionPanelRedIndicator.htpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

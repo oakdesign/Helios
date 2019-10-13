@@ -42,7 +42,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDevice: _interfaceDeviceName,
                 interfaceElement: "Missile Selector Switch",
                 fromCenter: true,
-                horizontal: true
+                horizontal: true,
+                horizontalRender: true
                 );
             Add3PosnToggle(
                 name: "Test Switch",
@@ -54,7 +55,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDevice: _interfaceDeviceName,
                 interfaceElement: "Test Switch",
                 fromCenter: true,
-                horizontal: false
+                horizontal: false,
+                horizontalRender: false
                 );
             Add3PosnToggle(
                 name: "Bomb Fuse Selector",
@@ -66,7 +68,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDevice: _interfaceDeviceName,
                 interfaceElement: "Bomb Fuse Selector",
                 fromCenter: true,
-                horizontal: false
+                horizontal: false,
+                horizontalRender: false
                 );
             Add3PosnToggle(
                 name: "Release Quantity Selector",
@@ -78,7 +81,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDevice: _interfaceDeviceName,
                 interfaceElement: "Release Quantity Selector",
                 fromCenter: true,
-                horizontal: true
+                horizontal: true,
+                horizontalRender: true
                 );
             Add3PosnToggle(
                 name: "Bomb Drop Interval",
@@ -90,7 +94,8 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDevice: _interfaceDeviceName,
                 interfaceElement: "Bomb Drop Interval",
                 fromCenter: true,
-                horizontal: true
+                horizontal: true,
+                horizontalRender: true
                 );
 
             AddPushButton("S530 Missile Enabler Button", new Point(113, 12), "ppa-p-mis");
@@ -131,7 +136,7 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
         }
 
         private void Add3PosnToggle(string name, Point posn, Size size, string image, ThreeWayToggleSwitchType switchType, ThreeWayToggleSwitchPosition defaultPosition,
-            string interfaceDevice, string interfaceElement, bool fromCenter, bool horizontal)
+            string interfaceDevice, string interfaceElement, bool fromCenter, bool horizontal, bool horizontalRender)
         {
             AddThreeWayToggle(
                 name: name,
@@ -145,10 +150,9 @@ namespace GadrocsWorkshop.Helios.Gauges.M2000C
                 interfaceDeviceName: interfaceDevice,
                 interfaceElementName: interfaceElement,
                 horizontal: horizontal,
-                horizontalRender: horizontal,
+                horizontalRender: horizontalRender,
                 clickType: ClickType.Touch,
-                fromCenter: false
-                );
+                fromCenter: false);
         }
 
         private void AddPushButton(string name, Point posn, string imagePrefix)

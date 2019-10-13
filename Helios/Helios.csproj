@@ -123,6 +123,7 @@
     <Compile Include="Gauges\M2000C\EWPanel\EW_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\Lim_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\IFF_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\Bingo_Panel.cs" />
     <Compile Include="Gauges\M2000C\VVIGauge\VVI_Gauge.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumTacanChannel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CDrumGauge.cs" />

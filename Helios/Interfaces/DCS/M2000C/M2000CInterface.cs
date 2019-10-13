@@ -476,6 +476,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             AddFunction(new FlagValue(this, "231", "RWR Panel", "RWR DA", "RWR DA"));
             AddFunction(new FlagValue(this, "232", "RWR Panel", "RWR D2M", "RWR D2M"));
             AddFunction(new FlagValue(this, "233", "RWR Panel", "RWR LL", "RWR LL"));
+            AddFunction(new ScaledNetworkValue(this, "360", 1d, "Bingo Panel", "Bingo Fuel 1 000 kg", "Bingo Fuel 1 000 kg", "0 - 9", BindingValueUnits.Numeric , 0d, "%0.1f"));
+            AddFunction(new ScaledNetworkValue(this, "361", 1d, "Bingo Panel", "Bingo Fuel 100 kg", "Bingo Fuel 100 kg", "0 - 9", BindingValueUnits.Numeric, 0d, "%0.1f"));
             AddFunction(new FlagValue(this, "373", "Post Combustion Indicator Panel", "pc", "Post Combustion"));
             AddFunction(new FlagValue(this, "374", "Fire Warning Panel", "fire-warning-engine-chamber", "Fire Warning Engine Chamber"));
             AddFunction(new FlagValue(this, "375", "Fire Warning Panel", "fire-warning-afterburner-chamber", "Fire Warning Afterburner Chamber"));
@@ -872,8 +874,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
             #endregion  
             #region  Fuel Panel 2
             AddFunction(new Switch(this, ENGPANEL, "193", new SwitchPosition[] { }, "Fuel Panel", "Refuel Transfer Switch", "%0.1f"));    // elements["PTN_193"] = multiposition_switch_limited(_("Refuel Transfer Switch"), devices.ENGPANEL, device_commands.Button_193, 193, 3, 0.5, false, 0)
-            AddFunction(new Switch(this, INSTPANEL, "360", new SwitchPosition[] { }, "Fuel Panel", "Bingo Fuel 1 000 kg Selector", "%0.1f"));    // elements["PTN_360"] = default_multiposition_knob(_("Bingo Fuel 1,000 kg Selector"), devices.INSTPANEL, device_commands.Button_360, 360,  10, 0.1, false, 0)
-            AddFunction(new Switch(this, INSTPANEL, "361", new SwitchPosition[] { }, "Fuel Panel", "Bingo Fuel 100 kg Selector", "%0.1f"));    // elements["PTN_361"] = default_multiposition_knob(_("Bingo Fuel 100 kg Selector"), devices.INSTPANEL, device_commands.Button_361, 361,  10, 0.1, false, 0)
             #endregion  
             #region  Radio Panel
 //            AddFunction(new PushButton(this, UVHF, "3437", "437", "Radio Panel", "U/VHF TEST Switch"));    // elements["PTN_437"] = default_button(_("U/VHF TEST Switch"), devices.UVHF, device_commands.Button_437, 437)
