@@ -75,6 +75,7 @@ What’s new DCS M2000C
 	* Added in the Miscellaneous Panels
        - Added the IFF Indicator
        - Added the LIM Indicator
+	   - Added the Parking Brake
 	* Improvement of guards on the Test and LG Panels
 		- Made all 4 guards on this 2 panels working
 	* Improvement of the Tacan Panel

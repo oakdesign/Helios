@@ -7,7 +7,7 @@
 		* Added the Accelerometer Gauge with the accelerometer needle and the potentiometer
 		* Added the VVI Gauge with the VVI needle
 		* Added the Airspeed Gauge with the Airspeed needle
-		* Added in the Miscellaneous Panels the IFF Indicator and the LIM Indicator
+		* Added in the Miscellaneous Panels the IFF Indicator, the LIM Indicator and the Parking Brake
 		* Added the clock with the 4 needles. Added too even if not used in DCS the rose, the rotary switch, the pushed button and the toggle switch
 		* Added the IFF Panel with the 8 switches, the 4 rotary switches, the guard for the pitot switch and the 4 drums
 		* Added the Canopy Panel with the push handle button and the canopy lever

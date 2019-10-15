@@ -1029,6 +1029,12 @@
     <Resource Include="Images\Miscellaneous\bingo-panel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Miscellaneous\parking-brake-down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Miscellaneous\parking-brake-up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Templates\CautionPanelRedIndicator.htpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
