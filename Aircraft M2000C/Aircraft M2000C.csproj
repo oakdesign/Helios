@@ -1035,6 +1035,12 @@
     <Resource Include="Images\Miscellaneous\parking-brake-up.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\VTBPanel\vtb-panel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Switches\short-black-mid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Templates\CautionPanelRedIndicator.htpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

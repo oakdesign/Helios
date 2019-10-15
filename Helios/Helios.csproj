@@ -120,6 +120,7 @@
     <Compile Include="Gauges\M2000C\ClockPanel\Clock_Panel.cs" />
     <Compile Include="Gauges\M2000C\Common\Mk2CGaugeImage.cs" />
     <Compile Include="Gauges\M2000C\CanopyPanel\CanopyPanel.cs" />
+    <Compile Include="Gauges\M2000C\VTBPanel\VTB_Panel.cs" />
     <Compile Include="Gauges\M2000C\EWPanel\EW_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\ParkingBrake_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\Lim_Panel.cs" />

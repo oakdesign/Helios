@@ -72,6 +72,8 @@ What’s new DCS M2000C
 	* Added the Canopy Panel
 		- the push handle button
 		- the canopy lever
+	* Added the VTB Panel
+		- the 11 switches
 	* Added in the Miscellaneous Panels
        - Added the IFF Indicator
        - Added the LIM Indicator
