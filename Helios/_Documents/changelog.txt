@@ -12,7 +12,9 @@
 		* Added the IFF Panel with the 8 switches, the 4 rotary switches, the guard for the pitot switch and the 4 drums
 		* Added the Canopy Panel with the push handle button and the canopy lever
 		* Added the VTB Panel with the 11 switches
+		* Added the VTH Control Panel with the 6 switches, the 2 potentiometers and the push button
 		* Improvement of the HSI gauge. The VAD selector now works and the rose has been redesign
+		* Improvement of the cockpit image
 		* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA, Fuel and HSI panels
 * Known issues: 
 		* Fuel Panel: the Fuel CrossFeed Switch doesn’t work from Helios to DCS, the two toggle switches don’t work (seem not to be used in DCS)
@@ -21,6 +23,7 @@
 		* UHF Panel: nothing is working from Helios to DCS
 		* Airspeed Gauge: the mach wheel is missing
 		* IFF Panel: the ECM Mode switch doesn’t work from Helios to DCS and the 4 potentiometer to change the value of the 4 drums don’t work
+		* VTH Control Panel: the Target Wingspan potentiometer doesn’t work properly
 		
 ### 1.4.2019.1005 Release
 ----------------------------

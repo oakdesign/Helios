@@ -31,7 +31,7 @@ relevant then open a new issue.
   
 
 * * * Working Elements on M2000C * * *
-* * *      11th October 2019      * * *
+* * *      18th October 2019      * * *
 
 * * * * * * * * * * * * * * * * * * * * * * * *
 * * * Next Release Helios v1.4.2019.xxxx  * * *
@@ -74,6 +74,10 @@ What’s new DCS M2000C
 		- the canopy lever
 	* Added the VTB Panel
 		- the 11 switches
+	* Added the VTH Control Panel
+		- the 6 switches
+		- the 2 potentiometers
+		- the push button
 	* Added in the Miscellaneous Panels
        - Added the IFF Indicator
        - Added the LIM Indicator
@@ -91,6 +95,7 @@ What’s new DCS M2000C
 	* Improvement of the HSI Gauge
 		- the VAD selector now works
 		- the rose has been redesign
+	* Improvement of the cockpit image
 	* Other: began to simplify the use of M2000CCompositeVisual.cs in AOA and Fuel panels
 
 Known issues DCS M2000C
@@ -109,6 +114,8 @@ Known issues DCS M2000C
 	* IFF Panel
 		- the ECM Mode switch doesn’t work from Helios to DCS
 		- the 4 potentiometers to change the value of the 4 drums don’t work
+	* VTH Control Panel
+		- the Target Wingspan potentiometer doesn’t work properly
 	* Miscellaneous Panels
 	   - I don’t know how to test the Fire Warning Indicators. Does someone has a match? :-)
 	   
