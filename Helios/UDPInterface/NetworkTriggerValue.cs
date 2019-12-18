@@ -42,7 +42,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             BindingValue bound = new BindingValue(value);
             _value.SetValue(bound, false);
             _receivedTrigger.FireTrigger(bound);
-            ValueReceived(this, new Value() { Text = value });
+            ValueReceived?.Invoke(this, new Value() { Text = value });
         }
 
         public override ExportDataElement[] GetDataElements()

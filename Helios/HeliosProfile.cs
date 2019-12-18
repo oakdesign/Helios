@@ -396,12 +396,12 @@ namespace GadrocsWorkshop.Helios
 
         private void Interface_ProfileConfirmationReceived(object sender, ProfileConfirmation e)
         {
-            ProfileConfirmationReceived(this, e);
+            ProfileConfirmationReceived?.Invoke(this, e);
         }
 
         private void Interface_ProfileHintReceived(object sender, ProfileHint e)
         {
-            ProfileHintReceived(this, e);
+            ProfileHintReceived?.Invoke(this, e);
         }
 
         void Monitors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

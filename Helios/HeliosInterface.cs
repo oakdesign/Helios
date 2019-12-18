@@ -83,12 +83,12 @@ namespace GadrocsWorkshop.Helios
 
         protected void OnProfileHintReceived(string tag)
         {
-            ProfileHintReceived(this, new ProfileHint() { Tag = tag });
+            ProfileHintReceived?.Invoke(this, new ProfileHint() { Tag = tag });
         }
 
         protected void OnProfileConfirmationReceived(string name)
         {
-            ProfileConfirmationReceived(this, new ProfileConfirmation() { Name = name });
+            ProfileConfirmationReceived?.Invoke(this, new ProfileConfirmation() { Name = name });
         }
     }
 }
