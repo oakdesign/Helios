@@ -575,6 +575,9 @@
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
     <Compile Include="Interfaces\DCS\Common\DualNetworkValue.cs" />
     <Compile Include="Interfaces\DCS\Common\DualRocker.cs" />
+    <Compile Include="UDPInterface\NetworkTriggerValue.cs" />
+    <Compile Include="UDPInterface\NetworkTrigger.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml.cs">
       <DependentUpon>F14BInterfaceEditor.xaml</DependentUpon>
