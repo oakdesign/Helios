@@ -161,7 +161,7 @@ function helios_impl.dispatchCommand(command)
             lDevice:performClickableAction(lCommandArgs[2], lCommandArgs[3])
         end
     elseif (lCommand == "P") then
-        local profileName = string.sub(command, 2)
+        local profileName = command:sub(2):match("^(.-)%s*$")
         helios_impl.loadProfile(helios.selfName(), profileName)
     end
 end
@@ -224,9 +224,17 @@ function helios_impl.loadProfile(selfName, profileName)
         return
     else
         -- now try to load specific profile
-        local driverPath = string.format("%s/Scripts/Helios/%s/%s.lua", lfs.writedir(), selfName, profileName)
+        local driverPath = string.format("%sScripts\\Helios\\%s\\%s.lua", lfs.writedir(), selfName, profileName)
         success, result = pcall(dofile, driverPath)
 
+        -- check result for nil, since profile may not have returned anything
+        if success and result == nil then
+            success = false
+            result = string.format("driver %s did not return a profile object; incompatible with this export script",
+                driverPath
+            )
+        end
+        
         -- sanity check, make sure profile is for correct selfName, since race condition is possible
         if success and result.selfName ~= selfName then
             success = false
@@ -277,7 +285,7 @@ end
 function helios_private.findProfiles(selfName)
     local numProfiles = 0
     local firstProfile = nil
-    for path in lfs.dir(string.format("%s/Scripts/Helios/%s", lfs.writedir(), selfName)) do
+    for path in lfs.dir(string.format("%sScripts\\Helios\\%s", lfs.writedir(), selfName)) do
         if path:match(".lua$") then
             log.write(
                 "HELIOS.EXPORT",

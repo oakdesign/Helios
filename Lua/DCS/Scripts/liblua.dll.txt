@@ -1,0 +1,11 @@
+XXX HACK
+
+You have to carefully place liblua.dll here to use the vscode lua 
+debugger extension.
+
+This is a gruesome hack that may break things.  It needs to be a copy
+of the lua51.dll file from the runtime of LUA 5.1 in the vscode lua-debug 
+extension.  It is placed here so that socket/core.dll will link to it instead
+of its liblua.dll, to enable the use of luasocket in the LUA debugger.
+
+This hack will be removed when a better solution is found.
