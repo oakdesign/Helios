@@ -15,12 +15,12 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.ComponentModel;
+    using GadrocsWorkshop.Helios.ProfileAwareInterface;
     using GadrocsWorkshop.Helios.UDPInterface;
     using Microsoft.Win32;
     using System;
 
-    public class DCSInterface : BaseUDPInterface
+    public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
     {
         protected string _dcsPath;
 
@@ -47,14 +47,26 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             activeProfile.ValueReceived += ActiveProfile_ValueReceived;
         }
 
+        #region Events
+        // this event indicates that the interface received an indication that a profile that 
+        // matches the specified hint should be loaded
+        [field: NonSerialized]
+        public event EventHandler<ProfileHint> ProfileHintReceived;
+
+        // this event indicates that the interface received an indication that the specified
+        // profile name is loaded on the other side of the interface
+        [field: NonSerialized]
+        public event EventHandler<ProfileConfirmation> ProfileConfirmationReceived;
+        #endregion
+
         private void ActiveProfile_ValueReceived(object sender, NetworkTriggerValue.Value e)
         {
-            OnProfileConfirmationReceived(e.Text);
+            ProfileConfirmationReceived?.Invoke(this, new ProfileConfirmation() { Name = e.Text });
         }
 
         private void ActiveVehicle_ValueReceived(object sender, NetworkTriggerValue.Value e)
         {
-            OnProfileHintReceived(e.Text);
+            ProfileHintReceived?.Invoke(this, new ProfileHint() { Tag = e.Text });
         }
 
         private string DCSPath

@@ -26,6 +26,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
     using System.Windows.Interop;
     using System.Windows.Threading;
     using GadrocsWorkshop.Helios.Splash;
+    using GadrocsWorkshop.Helios.ProfileAwareInterface;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

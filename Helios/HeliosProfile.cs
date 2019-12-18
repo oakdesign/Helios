@@ -21,6 +21,7 @@ namespace GadrocsWorkshop.Helios
     using System.Windows.Threading;
 
     using GadrocsWorkshop.Helios.ComponentModel;
+    using GadrocsWorkshop.Helios.ProfileAwareInterface;
 
     public class HeliosProfile : NotificationObject
     {
@@ -375,8 +376,12 @@ namespace GadrocsWorkshop.Helios
                     heliosInterface.Profile = this;
                     heliosInterface.ReconnectBindings();
                     heliosInterface.PropertyChanged += new PropertyChangedEventHandler(Child_PropertyChanged);
-                    heliosInterface.ProfileHintReceived += Interface_ProfileHintReceived;
-                    heliosInterface.ProfileConfirmationReceived += Interface_ProfileConfirmationReceived;
+                    IProfileAwareInterface profileAware = heliosInterface as IProfileAwareInterface;
+                    if (profileAware != null)
+                    {
+                        profileAware.ProfileHintReceived += Interface_ProfileHintReceived;
+                        profileAware.ProfileConfirmationReceived += Interface_ProfileConfirmationReceived;
+                    }
                 }
             }
 
@@ -388,8 +393,12 @@ namespace GadrocsWorkshop.Helios
                     heliosInterface.Profile = null;
                     heliosInterface.DisconnectBindings();
                     heliosInterface.PropertyChanged -= new PropertyChangedEventHandler(Child_PropertyChanged);
-                    heliosInterface.ProfileHintReceived -= Interface_ProfileHintReceived;
-                    heliosInterface.ProfileConfirmationReceived -= Interface_ProfileConfirmationReceived;
+                    IProfileAwareInterface profileAware = heliosInterface as IProfileAwareInterface;
+                    if (profileAware != null)
+                    {
+                        profileAware.ProfileHintReceived -= Interface_ProfileHintReceived;
+                        profileAware.ProfileConfirmationReceived -= Interface_ProfileConfirmationReceived;
+                    }
                 }
         }
         }
