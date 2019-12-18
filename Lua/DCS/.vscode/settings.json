@@ -1,0 +1,7 @@
+{
+    // WARNING: to luacheck files that are not in the root of Scripts/, you 
+    // must configure an absolute path here, since luacheck is executed in each
+    // file's local folder.  ${workspaceFolder} does NOT work in this setting
+    "lua.luacheckPath": "d:\\lua51\\bin\\luacheck.exe",
+    "lua.debug.settings.luaVersion": "5.1"
+}

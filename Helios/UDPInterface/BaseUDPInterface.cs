@@ -358,6 +358,8 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 _startuptimer.Start();
                 ConfigManager.LogManager.LogInfo("Startup timer started.");
                 WaitForData();
+
+                OnProfileStarted();
             }
             catch (System.Net.Sockets.SocketException se)
             {
@@ -404,6 +406,19 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 function.Reset();
             }
             SendData("R");
+        }
+
+        protected bool CanSend
+        {
+            get
+            {
+                return (_socket != null && _started);
+            }
+        }
+
+        protected virtual void OnProfileStarted()
+        {
+            // no code in base implementation
         }
     }
 }

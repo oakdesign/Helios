@@ -19,20 +19,25 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     using GadrocsWorkshop.Helios.UDPInterface;
     using Microsoft.Win32;
     using System;
+    using System.Collections.Generic;
+    using System.Timers;
 
     public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
     {
         protected string _dcsPath;
-
         protected bool _phantomFix;
         protected int _phantomLeft;
         protected int _phantomTop;
-
         protected long _nextCheck = 0;
+        protected string _exportDeviceName;
+        protected Timer _retryRequestExportProfile = new Timer();
+        protected string _requestedExportProfile;
 
-        public DCSInterface(string name)
+        public DCSInterface(string name, string exportDeviceName)
             : base(name)
         {
+            _exportDeviceName = exportDeviceName;
+
             DCSConfigurator config = new DCSConfigurator(name, DCSPath);
             Port = config.Port;
             _phantomFix = config.PhantomFix;
@@ -45,6 +50,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             NetworkTriggerValue activeProfile = new NetworkTriggerValue(this, "ACTIVE_PROFILE", "ActiveExportProfile", "Export profile running on DCS.", "Short name of profile");
             AddFunction(activeProfile);
             activeProfile.ValueReceived += ActiveProfile_ValueReceived;
+
+            // REVISIT: configurable?
+            _retryRequestExportProfile.Interval = 3000;
+            _retryRequestExportProfile.Elapsed += OnRetryRequestExportProfile;
         }
 
         #region Events
@@ -58,16 +67,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         [field: NonSerialized]
         public event EventHandler<ProfileConfirmation> ProfileConfirmationReceived;
         #endregion
-
-        private void ActiveProfile_ValueReceived(object sender, NetworkTriggerValue.Value e)
-        {
-            ProfileConfirmationReceived?.Invoke(this, new ProfileConfirmation() { Name = e.Text });
-        }
-
-        private void ActiveVehicle_ValueReceived(object sender, NetworkTriggerValue.Value e)
-        {
-            ProfileHintReceived?.Invoke(this, new ProfileHint() { Tag = e.Text });
-        }
 
         private string DCSPath
         {
@@ -88,6 +87,14 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     }
                 }
                 return _dcsPath;
+            }
+        }
+
+        // we only support selection based on aircraft type
+        public IEnumerable<string> Tags {
+            get
+            {
+                return new string[] { _exportDeviceName };
             }
         }
 
@@ -123,6 +130,62 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     }
                 }
                 _nextCheck = System.Environment.TickCount + 5000;
+            }
+        }
+
+        private void ActiveProfile_ValueReceived(object sender, NetworkTriggerValue.Value e)
+        {
+            if (e.Text == _requestedExportProfile)
+            {
+                // this acknowledges our attempt to load this profile, if the name matches what we are trying to load
+                // cancel retries of "P" command
+                _requestedExportProfile = null;
+
+                // stop, if running
+                _retryRequestExportProfile.Stop();
+            }
+            ProfileConfirmationReceived?.Invoke(this, new ProfileConfirmation() { Name = e.Text });
+        }
+
+        private void ActiveVehicle_ValueReceived(object sender, NetworkTriggerValue.Value e)
+        {
+            ProfileHintReceived?.Invoke(this, new ProfileHint() { Tag = e.Text });
+        }
+
+        public void RequestProfile(string name)
+        {
+            _requestedExportProfile = name;
+            if (CanSend)
+            {
+                ConfigManager.LogManager.LogDebug($"sending request for exports '{_requestedExportProfile}'");
+                SendData($"P{name}");
+            }
+            _retryRequestExportProfile.Stop();
+            _retryRequestExportProfile.Start();
+        }
+
+        private void OnRetryRequestExportProfile(object sender, ElapsedEventArgs e)
+        {
+            if ((_requestedExportProfile != null) && CanSend)
+            {
+                ConfigManager.LogManager.LogDebug($"retrying request for exports '{_requestedExportProfile}'");
+                SendData($"P{_requestedExportProfile}");
+            }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            _requestedExportProfile = null;
+            _retryRequestExportProfile.Stop();
+        }
+
+        protected override void OnProfileStarted()
+        {
+            if ((_requestedExportProfile != null) && CanSend)
+            {
+                ConfigManager.LogManager.LogDebug($"sending request for exports '{_requestedExportProfile}' after DCS interface initialized");
+                SendData($"P{_requestedExportProfile}");
             }
         }
     }

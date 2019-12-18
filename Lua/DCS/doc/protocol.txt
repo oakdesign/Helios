@@ -1,0 +1,102 @@
+title Helios Auto Start (https://sequencediagram.org/)
+participant Helios
+participant Export
+
+group Helios starts second, case 1
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: already matched
+Helios<-Export:Loaded(my_A10_profile_name)
+Helios->Helios:Start(my_A10_profile_name)
+
+end
+group Helios starts second, case 2
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios->Export:LoadProfile(my_A10_profile_name)
+Helios<-Export:Active(FA-18C_hornet)
+Helios->Export:LoadProfile(my_F18_profile_name)
+Helios<-Export:Loaded(my_F18_profile_name)
+Helios->Helios:Start(my_F18_profile_name)
+
+end
+group Helios starts second, case 3
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios-xExport:LoadProfile(my_A10_profile_name)
+note over Helios:can't tell difference between\nlegacy Export and lost message\nso we must not activate
+Helios->(2)Helios:wait
+Helios->Export:LoadProfile(my_A10_profile_name)
+Helios<-Export:Active(FA-18C_hornet)
+Helios->Export:LoadProfile(my_F18_profile_name)
+Helios<-Export:Loaded(my_F18_profile_name)
+Helios->Helios:Start(my_F18_profile_name)
+
+end
+group Helios starts first, case 4
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios-xExport:LoadProfile(my_A10_profile_name)
+Helios->(2)Helios:wait
+Helios<-Export:Active(A-10C)
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: already matched
+Helios<-Export:Loaded(my_A10_profile_name)
+Helios->Helios:Start(my_A10_profile_name)
+
+end
+group Helios starts first, case 5 
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios-xExport:LoadProfile(my_A10_profile_name)
+Helios->(2)Helios:wait
+Helios<-Export:Active(FA-18C_hornet)
+Helios->Export:LoadProfile(my_F18_profile_name)
+Helios<-Export:Loaded(my_F18_profile_name)
+Helios->Helios:Start(my_F18_profile_name)
+
+end
+group Helios starts first, case 6 
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios-xExport:LoadProfile(my_A10_profile_name)
+Helios->(2)Helios:wait
+Helios<-Export:Active(A-10C)
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: don't have this profile!
+Helios<-Export:Loaded(none)
+Helios->Helios:Error()
+
+end
+group Helios starts first, case 7
+
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios-xExport:LoadProfile(my_A10_profile_name)
+Heliosx-Export:Active(A-10C)
+Helios->(2)Helios:wait
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: already matched
+Heliosx-Export:Loaded(my_A10_profile_name)
+Helios->(2)Helios:wait
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: already matched
+Helios<-Export:Loaded(my_A10_profile_name)
+Helios->Helios:Start(my_A10_profile_name)
+
+end
+
+group Helios starts second, case 8
+
+Helios<-Export:Active(A-10C)
+Export->(2)Export:wait
+Export->Export:LoadProfile(my_A10_profile_name)
+Heliosx-Export:Loaded(my_A10_profile_name)
+space
+Helios->Helios:AutoStart(my_A10_profile_name)
+Helios->Export:LoadProfile(my_A10_profile_name)
+note over Export: already matched
+Helios<-Export:Loaded(my_A10_profile_name)
+Helios->Helios:Start(my_A10_profile_name)
+
+end

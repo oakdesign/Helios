@@ -16,6 +16,7 @@
 namespace GadrocsWorkshop.Helios
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Windows.Threading;
@@ -34,11 +35,11 @@ namespace GadrocsWorkshop.Helios
         private string _name = "Untitled";
         private string _path = "";
         DateTime _loadTime;
-
         Dispatcher _dispatcher = null;
 
         private MonitorCollection _monitors = new MonitorCollection();
         private HeliosInterfaceCollection _interfaces = new HeliosInterfaceCollection();
+        private HashSet<string> _tags = new HashSet<string>();
 
         public HeliosProfile() : this(true)
         {
@@ -102,6 +103,14 @@ namespace GadrocsWorkshop.Helios
                     _dispatcher = value;
                     OnPropertyChanged("Dispatcher", oldValue, value, false);
                 }
+            }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                return _tags;
             }
         }
 
@@ -304,6 +313,17 @@ namespace GadrocsWorkshop.Helios
                 ConfigManager.LogManager.LogInfo("Profile starting. (Name=\"" + Name + "\")");
                 OnProfileStarted();
                 IsStarted = true;
+
+                // any interfaces that care should now provide information for the newly loaded profile
+                string shortName = System.IO.Path.GetFileNameWithoutExtension(Path);
+                foreach (HeliosInterface heliosInterface in _interfaces)
+                {
+                    if (heliosInterface is IProfileAwareInterface profileAware)
+                    {
+                        profileAware.RequestProfile(shortName);
+                    }
+                }
+
                 ConfigManager.LogManager.LogInfo("Profile started. (Name=\"" + Name + "\")");
             }
         }
@@ -376,11 +396,11 @@ namespace GadrocsWorkshop.Helios
                     heliosInterface.Profile = this;
                     heliosInterface.ReconnectBindings();
                     heliosInterface.PropertyChanged += new PropertyChangedEventHandler(Child_PropertyChanged);
-                    IProfileAwareInterface profileAware = heliosInterface as IProfileAwareInterface;
-                    if (profileAware != null)
+                    if (heliosInterface is IProfileAwareInterface profileAware)
                     {
                         profileAware.ProfileHintReceived += Interface_ProfileHintReceived;
                         profileAware.ProfileConfirmationReceived += Interface_ProfileConfirmationReceived;
+                        _tags.UnionWith(profileAware.Tags);
                     }
                 }
             }
@@ -393,14 +413,22 @@ namespace GadrocsWorkshop.Helios
                     heliosInterface.Profile = null;
                     heliosInterface.DisconnectBindings();
                     heliosInterface.PropertyChanged -= new PropertyChangedEventHandler(Child_PropertyChanged);
-                    IProfileAwareInterface profileAware = heliosInterface as IProfileAwareInterface;
-                    if (profileAware != null)
+                    if (heliosInterface is IProfileAwareInterface profileAware)
                     {
                         profileAware.ProfileHintReceived -= Interface_ProfileHintReceived;
                         profileAware.ProfileConfirmationReceived -= Interface_ProfileConfirmationReceived;
                     }
                 }
-        }
+                // reindex all tags, since we have no way of removing non-unique ones
+                _tags.Clear();
+                foreach (HeliosInterface heliosInterface in _interfaces)
+                {
+                    if (heliosInterface is IProfileAwareInterface profileAware)
+                    {
+                        _tags.UnionWith(profileAware.Tags);
+                    }
+                }
+            }
         }
 
         private void Interface_ProfileConfirmationReceived(object sender, ProfileConfirmation e)

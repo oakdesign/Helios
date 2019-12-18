@@ -441,6 +441,12 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 //    }
                 //}
 
+                // success, consider this the most recently run profile for its tags (usually just the aircraft types supported)
+                foreach (string tag in ActiveProfile.Tags)
+                {
+                    ConfigManager.SettingsManager.SaveSetting("RecentByTag", tag, ActiveProfile.Path);
+                }
+
                 Message = "Running Profile";
 
                 if (AutoHideCheckBox.IsChecked == true)
@@ -462,7 +468,6 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 return;
             }
             ConfigManager.LogManager.LogDebug($"received profile confirmation that simulator is running exports for '{e.Name}'");
-            // XXX this acknowledges our attempt to load this profile, if the name matches what we are trying to load
         }
 
         private void Profile_ProfileHintReceived(object sender, ProfileHint e)
@@ -472,8 +477,15 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 return;
             }
             ConfigManager.LogManager.LogDebug($"received profile hint with tag '{e.Tag}'");
-            // XXX select most recent profile with the specfiied tag, which in turn has to learn tags from its 
-            // interfaces so it can know what plane it supports without knowing what that means
+            string mostRecent = ConfigManager.SettingsManager.LoadSetting("RecentByTag", e.Tag, null);
+            if (mostRecent == null)
+            {
+                ConfigManager.LogManager.LogInfo($"received profile hint with tag '{e.Tag}' but no matching profile has been loaded; cannot auto load");
+                return;
+            }
+            // execute auto load
+            ConfigManager.LogManager.LogDebug($"trying to start most recent matching profile '{mostRecent}'");
+            ControlCenterCommands.RunProfile.Execute(mostRecent, Application.Current.MainWindow);
         }
 
         private void StopProfile()

@@ -102,7 +102,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
         #endregion
 
         public FA18CInterface()
-            : base("DCS F/A-18C")
+            : base("DCS F/A-18C", "FA-18C_hornet")
         {
             #region Caution Indicators
             // Caution Light Indicator Panel
