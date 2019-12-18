@@ -76,6 +76,14 @@ namespace GadrocsWorkshop.Helios
         public event EventHandler ProfileStopped;
         public event EventHandler ProfileTick;
 
+        // this event indicates that some interface received an indication that a profile that 
+        // matches the specified hint should be loaded
+        public event EventHandler<ProfileHint> ProfileHintReceived;
+
+        // this event indicates that some interface received an indication that the specified
+        // profile name is loaded on the other side of the interface
+        public event EventHandler<ProfileConfirmation> ProfileConfirmationReceived;
+        
         #region Properties
 
         public Dispatcher Dispatcher
@@ -362,24 +370,38 @@ namespace GadrocsWorkshop.Helios
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add ||
                 e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace)
             {
-                    foreach (HeliosInterface heliosInterface in e.NewItems)
-                    {
-                        heliosInterface.Profile = this;
-                        heliosInterface.ReconnectBindings();
-                        heliosInterface.PropertyChanged += new PropertyChangedEventHandler(Child_PropertyChanged);
-                    }
+                foreach (HeliosInterface heliosInterface in e.NewItems)
+                {
+                    heliosInterface.Profile = this;
+                    heliosInterface.ReconnectBindings();
+                    heliosInterface.PropertyChanged += new PropertyChangedEventHandler(Child_PropertyChanged);
+                    heliosInterface.ProfileHintReceived += Interface_ProfileHintReceived;
+                    heliosInterface.ProfileConfirmationReceived += Interface_ProfileConfirmationReceived;
+                }
             }
 
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove ||
                 e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace)
             {
-                    foreach (HeliosInterface heliosInterface in e.OldItems)
-                    {
-                        heliosInterface.Profile = null;
-                        heliosInterface.DisconnectBindings();
-                        heliosInterface.PropertyChanged -= new PropertyChangedEventHandler(Child_PropertyChanged);
-                    }
-            }
+                foreach (HeliosInterface heliosInterface in e.OldItems)
+                {
+                    heliosInterface.Profile = null;
+                    heliosInterface.DisconnectBindings();
+                    heliosInterface.PropertyChanged -= new PropertyChangedEventHandler(Child_PropertyChanged);
+                    heliosInterface.ProfileHintReceived -= Interface_ProfileHintReceived;
+                    heliosInterface.ProfileConfirmationReceived -= Interface_ProfileConfirmationReceived;
+                }
+        }
+        }
+
+        private void Interface_ProfileConfirmationReceived(object sender, ProfileConfirmation e)
+        {
+            ProfileConfirmationReceived(this, e);
+        }
+
+        private void Interface_ProfileHintReceived(object sender, ProfileHint e)
+        {
+            ProfileHintReceived(this, e);
         }
 
         void Monitors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

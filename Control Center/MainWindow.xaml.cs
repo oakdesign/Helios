@@ -67,6 +67,9 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 Maximize();
             }
 
+            // if true, Control Center will automatically start the same profile as is being run by the export script
+            ProfileAutoStartCheckBox.IsChecked = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "ProfileAutoStart", true);
+
             LoadProfileList(ConfigManager.SettingsManager.LoadSetting("ControlCenter", "LastProfile", ""));
             if (_profileIndex == -1 && _profiles.Count > 0)
             {
@@ -382,6 +385,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 ActiveProfile.ControlCenterShown += Profile_ShowControlCenter;
                 ActiveProfile.ControlCenterHidden += Profile_HideControlCenter;
                 ActiveProfile.ProfileStopped += new EventHandler(Profile_ProfileStopped);
+                ActiveProfile.ProfileHintReceived += Profile_ProfileHintReceived;
+                ActiveProfile.ProfileConfirmationReceived += Profile_ProfileConfirmationReceived;
 
                 ActiveProfile.Dispatcher = Dispatcher;
                 ActiveProfile.Start();
@@ -447,6 +452,27 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 }
             }
 
+        }
+
+        private void Profile_ProfileConfirmationReceived(object sender, ProfileConfirmation e)
+        {
+            if (ProfileAutoStartCheckBox.IsChecked == false)
+            {
+                return;
+            }
+            ConfigManager.LogManager.LogDebug($"received profile confirmation that simulator is running exports for '{e.Name}'");
+            // XXX this acknowledges our attempt to load this profile, if the name matches what we are trying to load
+        }
+
+        private void Profile_ProfileHintReceived(object sender, ProfileHint e)
+        {
+            if (ProfileAutoStartCheckBox.IsChecked == false)
+            {
+                return;
+            }
+            ConfigManager.LogManager.LogDebug($"received profile hint with tag '{e.Tag}'");
+            // XXX select most recent profile with the specfiied tag, which in turn has to learn tags from its 
+            // interfaces so it can know what plane it supports without knowing what that means
         }
 
         private void StopProfile()
@@ -774,6 +800,16 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             pathKey.Close();
         }
 
+        private void ProfileAutoStartCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "ProfileAutoStart", true);
+        }
+
+        private void ProfileAutoStartCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "ProfileAutoStart", false);
+        }
+
         private void MinimizeCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             ConfigManager.SettingsManager.SaveSetting("ControlCenter", "StartMinimized", false);
@@ -788,6 +824,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         {
             ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", false);
         }
+
         private void TouchscreenCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             //ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", true);

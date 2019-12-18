@@ -39,8 +39,22 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             _phantomLeft = config.PhantomFixLeft;
             _phantomTop = config.PhantomFixTop;
 
-            AddFunction(new NetworkTriggerValue(this, "ACTIVE_VEHICLE", "ActiveVehicle", "Vehicle currently inhabited in DCS.", "Short name of vehicle"));
-            AddFunction(new NetworkTriggerValue(this, "ACTIVE_PROFILE", "ActiveExportProfile", "Export profile running on DCS.", "Short name of profile"));
+            NetworkTriggerValue activeVehicle = new NetworkTriggerValue(this, "ACTIVE_VEHICLE", "ActiveVehicle", "Vehicle currently inhabited in DCS.", "Short name of vehicle");
+            AddFunction(activeVehicle);
+            activeVehicle.ValueReceived += ActiveVehicle_ValueReceived;
+            NetworkTriggerValue activeProfile = new NetworkTriggerValue(this, "ACTIVE_PROFILE", "ActiveExportProfile", "Export profile running on DCS.", "Short name of profile");
+            AddFunction(activeProfile);
+            activeProfile.ValueReceived += ActiveProfile_ValueReceived;
+        }
+
+        private void ActiveProfile_ValueReceived(object sender, NetworkTriggerValue.Value e)
+        {
+            OnProfileConfirmationReceived(e.Text);
+        }
+
+        private void ActiveVehicle_ValueReceived(object sender, NetworkTriggerValue.Value e)
+        {
+            OnProfileHintReceived(e.Text);
         }
 
         private string DCSPath

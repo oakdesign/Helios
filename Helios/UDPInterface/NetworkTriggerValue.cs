@@ -13,6 +13,14 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private HeliosValue _value;
         private HeliosTrigger _receivedTrigger;
 
+        public class Value : EventArgs
+        {
+            public string Text { get; set; }
+        }
+
+        // fired when a value is received, in addition to firing any Helios bindings
+        public event EventHandler<Value> ValueReceived;
+
         public NetworkTriggerValue(BaseUDPInterface sourceInterface, string id, string name, string description, string valueDescription)
             : base(sourceInterface)
         {
@@ -34,6 +42,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             BindingValue bound = new BindingValue(value);
             _value.SetValue(bound, false);
             _receivedTrigger.FireTrigger(bound);
+            ValueReceived(this, new Value() { Text = value });
         }
 
         public override ExportDataElement[] GetDataElements()
