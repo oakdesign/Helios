@@ -50,6 +50,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             NetworkTriggerValue activeProfile = new NetworkTriggerValue(this, "ACTIVE_PROFILE", "ActiveExportProfile", "Export profile running on DCS.", "Short name of profile");
             AddFunction(activeProfile);
             activeProfile.ValueReceived += ActiveProfile_ValueReceived;
+            AddFunction(new NetworkTrigger(this, "ALIVE", "Heartbeat", "Received periodically if there is no other data received"));
 
             // REVISIT: configurable?
             _retryRequestExportProfile.Interval = 3000;

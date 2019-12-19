@@ -11,6 +11,10 @@ helios_impl.autoLoadDelay = 3.0
 -- seconds between ticks (high priority export interval)
 helios_impl.exportInterval = 0.067
 
+-- maximum number of seconds without us sending anything
+-- NOTE: Helios needs us to send something to discover our UDP client port number
+helios_impl.announceInterval = 3.0
+
 -- luasocket
 local socket  -- lazy init
 
@@ -27,6 +31,9 @@ helios_private.simID = string.format("%08x*", os.time())
 -- most recently detected selfName
 helios_private.previousSelfName = ""
 
+-- event time 'now' as told to us by DCS
+helios_private.clock = 0;
+
 -- State data for export processing
 helios_private.state = {}
 
@@ -35,12 +42,17 @@ function helios_private.clearState()
     helios_private.state.sendStrings = {}
     helios_private.state.lastData = {}
 
+    -- event time of last message sent
+    helios_private.state.lastSend = 0;
+
     -- Frame counter for non important data
     helios_private.state.tickCount = 0
 
     -- times at which we need to take a specific action
     helios_private.state.timers = {}
 end
+
+
 
 function helios.splitString(str, delim, maxNb)
     -- Eliminate bad cases...
@@ -121,23 +133,29 @@ function helios.send(id, value)
         value = value:sub(2)
     end
     if helios_private.state.lastData[id] == nil or helios_private.state.lastData[id] ~= value then
-        local data = id .. "=" .. value
-        local dataLen = string.len(data)
-
-        if dataLen + helios_private.state.packetSize > 576 then
-            helios_private.flush()
-        end
-
-        table.insert(helios_private.state.sendStrings, data)
-        helios_private.state.lastData[id] = value
-        helios_private.state.packetSize = helios_private.state.packetSize + dataLen + 1
+        helios_private.doSend(id, value)
     end
+end
+
+-- sends without checking if the value has changed
+function helios_private.doSend(id, value)
+    local data = id .. "=" .. value
+    local dataLen = string.len(data)
+
+    if dataLen + helios_private.state.packetSize > 576 then
+        helios_private.flush()
+    end
+
+    table.insert(helios_private.state.sendStrings, data)
+    helios_private.state.lastData[id] = value
+    helios_private.state.packetSize = helios_private.state.packetSize + dataLen + 1
 end
 
 function helios_private.flush()
     if #helios_private.state.sendStrings > 0 then
         local packet = helios_private.simID .. table.concat(helios_private.state.sendStrings, ":") .. "\n"
         socket.try(helios_private.clientSocket:sendto(packet, helios_private.host, helios_private.port))
+        helios_private.state.lastSend = helios_private.clock
         helios_private.state.sendStrings = {}
         helios_private.state.packetSize = 0
     end
@@ -192,13 +210,13 @@ end
 function helios_private.notifyLoaded()
     -- export code for 'currently active vehicle, reserved across all DCS interfacess
     log.write("HELIOS.EXPORT", log.INFO, string.format("notifying Helios of active driver '%s'", helios_impl.driverName))
-    helios.send("ACTIVE_PROFILE", helios_impl.driverName)
+    helios_private.doSend("ACTIVE_PROFILE", helios_impl.driverName)
 end
 
 function helios_private.notifySelfName(selfName)
     -- export code for 'currently active vehicle, reserved across all DCS interfacess
     log.write("HELIOS.EXPORT", log.INFO, string.format("notifying Helios of active vehicle '%s'", selfName))
-    helios.send("ACTIVE_VEHICLE", selfName)
+    helios_private.doSend("ACTIVE_VEHICLE", selfName)
     helios_private.flush()
 end
 
@@ -234,7 +252,7 @@ function helios_impl.loadProfile(selfName, profileName)
                 driverPath
             )
         end
-        
+
         -- sanity check, make sure profile is for correct selfName, since race condition is possible
         if success and result.selfName ~= selfName then
             success = false
@@ -321,7 +339,7 @@ function helios_private.autoLoad()
     helios_impl.loadProfile(selfName, firstProfile)
 end
 
-function helios_private.handleSelfNameChange(selfName, clock)
+function helios_private.handleSelfNameChange(selfName)
     log.write(
         "HELIOS.EXPORT",
         log.INFO,
@@ -346,7 +364,7 @@ function helios_private.handleSelfNameChange(selfName, clock)
             log.INFO,
             string.format("%d profiles for vehicle '%s'; waiting up to %f seconds for Helios", numProfiles, selfName, helios_impl.autoLoadDelay)
         )
-        helios_private.state.timers.autoLoad = clock + helios_impl.autoLoadDelay
+        helios_private.state.timers.autoLoad = helios_private.clock + helios_impl.autoLoadDelay
 
         -- don't notify Helios, we will silently wait
     elseif numProfiles < 1 then
@@ -395,13 +413,13 @@ end
 function LuaExportStop()
     -- Called once just after mission stop.
     -- Flush pending data, send DISCONNECT message so we can fire the Helios Disconnect event
-    helios.send("DISCONNECT", "")
+    helios_private.doSend("DISCONNECT", "")
     helios_private.flush()
     helios_private.clientSocket:close()
 end
 
 function LuaExportActivityNextEvent(t)
-    local clock = t
+    helios_private.clock = t
     local nextEvent = t + helios_impl.exportInterval
 
     -- process timers
@@ -412,7 +430,7 @@ function LuaExportActivityNextEvent(t)
             --     log.DEBUG,
             --     string.format("active timer %s at %f, clock is %f", timerName, timer, clock)
             -- )
-            if clock >= timer then
+            if helios_private.clock >= timer then
                 -- timer expired
                 if timerName == "autoLoad" then
                     helios_private.state.timers.autoLoad = nil
@@ -431,7 +449,7 @@ function LuaExportActivityNextEvent(t)
     -- check if vehicle type has changed
     local selfName = helios.selfName()
     if selfName ~= helios_private.previousSelfName then
-        helios_private.handleSelfNameChange(selfName, clock)
+        helios_private.handleSelfNameChange(selfName)
     end
 
     -- NOTE: the retransmission strategy here is:
@@ -463,6 +481,17 @@ function LuaExportActivityNextEvent(t)
         end
 
         helios_private.flush()
+    end
+
+    -- if we sent nothing for a long time, send something just to let Helios discover us
+    if helios_private.clock > (helios_impl.announceInterval + helios_private.state.lastSend) then
+        log.write("HELIOS.EXPORT", log.DEBUG, string.format("sending alive announcement after %f seconds without any data sent (clock %f, sent %f)",
+            helios_impl.announceInterval,
+            helios_private.clock,
+            helios_private.state.lastSend
+        ))
+        helios_private.doSend("ALIVE", "")
+        helios_private.flush();
     end
 
     return t

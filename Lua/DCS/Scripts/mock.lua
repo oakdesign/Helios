@@ -12,7 +12,7 @@ helios_mock_private.fps = 60.0
 -- mock testing interface, only for test/*.lua
 -- luacheck: globals helios_mock
 helios_mock = {}
-helios_mock.nextValue = 1
+helios_mock.nextValue = 0
 helios_mock.selfName = ""
 
 -- set name of vehicle/aircraft to be reported by mock DCS
@@ -45,7 +45,8 @@ function helios_mock_device.update_arguments()
 end
 
 function helios_mock_device.get_argument_value(index)  --luacheck: no unused
-    local value = helios_mock.nextValue
+    -- value goes from 0 to 100 and then wraps repeatedly
+    local value = helios_mock.nextValue % 101
     helios_mock.nextValue = helios_mock.nextValue + 1
     return value
 end
