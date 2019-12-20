@@ -84,7 +84,7 @@ namespace GadrocsWorkshop.Helios
 
         // this event indicates that some interface received an indication that the specified
         // profile name is loaded on the other side of the interface
-        public event EventHandler<ProfileConfirmation> ProfileConfirmationReceived;
+        public event EventHandler<ProfileStatus> ProfileStatusReceived;
         
         #region Properties
 
@@ -399,7 +399,7 @@ namespace GadrocsWorkshop.Helios
                     if (heliosInterface is IProfileAwareInterface profileAware)
                     {
                         profileAware.ProfileHintReceived += Interface_ProfileHintReceived;
-                        profileAware.ProfileConfirmationReceived += Interface_ProfileConfirmationReceived;
+                        profileAware.ProfileStatusReceived += Interface_ProfileStatusReceived;
                         _tags.UnionWith(profileAware.Tags);
                     }
                 }
@@ -416,7 +416,7 @@ namespace GadrocsWorkshop.Helios
                     if (heliosInterface is IProfileAwareInterface profileAware)
                     {
                         profileAware.ProfileHintReceived -= Interface_ProfileHintReceived;
-                        profileAware.ProfileConfirmationReceived -= Interface_ProfileConfirmationReceived;
+                        profileAware.ProfileStatusReceived -= Interface_ProfileStatusReceived;
                     }
                 }
                 // reindex all tags, since we have no way of removing non-unique ones
@@ -431,9 +431,9 @@ namespace GadrocsWorkshop.Helios
             }
         }
 
-        private void Interface_ProfileConfirmationReceived(object sender, ProfileConfirmation e)
+        private void Interface_ProfileStatusReceived(object sender, ProfileStatus e)
         {
-            ProfileConfirmationReceived?.Invoke(this, e);
+            ProfileStatusReceived?.Invoke(this, e);
         }
 
         private void Interface_ProfileHintReceived(object sender, ProfileHint e)

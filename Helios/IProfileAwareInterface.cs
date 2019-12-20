@@ -13,9 +13,9 @@ namespace GadrocsWorkshop.Helios
             public string Tag { get; set; }
         }
 
-        public class ProfileConfirmation : EventArgs
+        public class ProfileStatus : EventArgs
         {
-            public string Name { get; set; }
+            public string RunningProfile { get; set; }
         }
 
         public interface IProfileAwareInterface
@@ -29,13 +29,13 @@ namespace GadrocsWorkshop.Helios
             /// </summary>
             event EventHandler<ProfileAwareInterface.ProfileHint> ProfileHintReceived;
 
-            event EventHandler<ProfileAwareInterface.ProfileConfirmation> ProfileConfirmationReceived;
+            event EventHandler<ProfileAwareInterface.ProfileStatus> ProfileStatusReceived;
 
             IEnumerable<string> Tags { get; }
 
             /// <summary>
             /// Request that the interface provide the information for the specified profile name,
-            /// and send a ProfileConfirmationReceived event when this is accomplished.
+            /// and send a ProfileStatusReceived event when this is accomplished.
             /// </summary>
             /// <param name="name"></param>
             void RequestProfile(string name);

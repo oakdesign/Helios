@@ -1,3 +1,13 @@
+-- mock testing interface, only for test/*.lua
+-- luacheck: globals helios_mock
+helios_mock = {}
+helios_mock.nextValue = 0
+helios_mock.selfName = ""
+
+-- load modules from our containing directory
+package.path = package.path..';./exmock/?.lua;'
+package.cpath = package.cpath..';./exmock/?.dll;'
+
 -- mock implementation, only used when testing in LUA 5.1 runtime without DCS
 lfs = require("mock_lfs")
 log = require("mock_log")
@@ -8,12 +18,6 @@ local helios_mock_device = {}
 -- mock tuning
 local helios_mock_private = {}
 helios_mock_private.fps = 60.0
-
--- mock testing interface, only for test/*.lua
--- luacheck: globals helios_mock
-helios_mock = {}
-helios_mock.nextValue = 0
-helios_mock.selfName = ""
 
 -- set name of vehicle/aircraft to be reported by mock DCS
 function helios_mock.setSelf(name)

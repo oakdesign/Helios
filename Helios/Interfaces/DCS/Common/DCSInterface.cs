@@ -66,7 +66,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         // this event indicates that the interface received an indication that the specified
         // profile name is loaded on the other side of the interface
         [field: NonSerialized]
-        public event EventHandler<ProfileConfirmation> ProfileConfirmationReceived;
+        public event EventHandler<ProfileStatus> ProfileStatusReceived;
         #endregion
 
         private string DCSPath
@@ -145,7 +145,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 // stop, if running
                 _retryRequestExportProfile.Stop();
             }
-            ProfileConfirmationReceived?.Invoke(this, new ProfileConfirmation() { Name = e.Text });
+            ProfileStatusReceived?.Invoke(this, new ProfileStatus() { RunningProfile = e.Text });
         }
 
         private void ActiveVehicle_ValueReceived(object sender, NetworkTriggerValue.Value e)

@@ -387,7 +387,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 ActiveProfile.ControlCenterHidden += Profile_HideControlCenter;
                 ActiveProfile.ProfileStopped += new EventHandler(Profile_ProfileStopped);
                 ActiveProfile.ProfileHintReceived += Profile_ProfileHintReceived;
-                ActiveProfile.ProfileConfirmationReceived += Profile_ProfileConfirmationReceived;
+                ActiveProfile.ProfileStatusReceived += Profile_ProfileStatusReceived;
 
                 ActiveProfile.Dispatcher = Dispatcher;
                 ActiveProfile.Start();
@@ -461,13 +461,38 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         }
 
-        private void Profile_ProfileConfirmationReceived(object sender, ProfileConfirmation e)
+        private void Profile_ProfileStatusReceived(object sender, ProfileStatus e)
         {
             if (ProfileAutoStartCheckBox.IsChecked == false)
             {
                 return;
             }
-            ConfigManager.LogManager.LogDebug($"received profile confirmation that simulator is running exports for '{e.Name}'");
+            ConfigManager.LogManager.LogDebug($"received profile status indicating that simulator is running exports for '{e.RunningProfile}'");
+
+            // already running or selected?
+            if (SelectedProfileName == e.RunningProfile)
+            {
+                return;
+            }
+
+            List<string> selectedPaths = _profiles.FindAll(path => Path.GetFileNameWithoutExtension(path) == e.RunningProfile);
+            if (selectedPaths.Count > 1)
+            {
+                ConfigManager.LogManager.LogWarning($"simulator is running exports for '{e.RunningProfile}' but we have multiple profiles by that name; cannot auto load");
+                foreach(string path in selectedPaths)
+                {
+                    ConfigManager.LogManager.LogWarning($"name collision: {path}");
+                }
+                return;
+            }
+            if (selectedPaths.Count == 0)
+            {
+                ConfigManager.LogManager.LogWarning($"simulator is running exports for '{e.RunningProfile}' but we have no matching profile; cannot auto load");
+                return;
+            }
+            string profilePath = selectedPaths[0];
+            ConfigManager.LogManager.LogDebug($"trying to start matching profile '{profilePath}'");
+            ControlCenterCommands.RunProfile.Execute(profilePath, Application.Current.MainWindow);
         }
 
         private void Profile_ProfileHintReceived(object sender, ProfileHint e)

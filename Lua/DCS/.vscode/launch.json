@@ -8,11 +8,11 @@
             "type": "lua",
             "request": "launch",
             "name": "Mock",
-            "program": "${workspaceFolder}/Scripts/mock.lua",
+            "program": "${workspaceFolder}/Scripts/exmock/main.lua",
             "arg": ["8"],
             "cwd": "${workspaceFolder}/Scripts",
             "stopOnEntry": false,
-            "path": "${workspaceFolder}\\Scripts\\?.lua;d:\\lua51\\lib\\lua\\?.lua",
+            "path": "d:\\lua51\\lib\\lua\\?.lua",
             "cpath": "d:\\lua51\\lib\\lua\\?.dll"
         }
     ]

@@ -211,6 +211,7 @@ function helios_private.notifyLoaded()
     -- export code for 'currently active vehicle, reserved across all DCS interfacess
     log.write("HELIOS.EXPORT", log.INFO, string.format("notifying Helios of active driver '%s'", helios_impl.driverName))
     helios_private.doSend("ACTIVE_PROFILE", helios_impl.driverName)
+    helios_private.flush()
 end
 
 function helios_private.notifySelfName(selfName)
@@ -233,7 +234,6 @@ function helios_impl.loadProfile(selfName, profileName)
         success = false
         result = string.format("cannot load profile '%s' while vehicle '%s' is active", profileName, currentSelfName)
         -- tell Helios to choose something that makes sense
-        helios_private.notifySelfName(currentSelfName)
     -- check if request is already satisfied
     elseif helios_impl.driverName == profileName then
         -- do nothing
@@ -289,6 +289,11 @@ function helios_impl.loadProfile(selfName, profileName)
 
     -- tell Helios about it
     helios_private.notifyLoaded()
+
+    if not success then
+        -- solicit matching profile
+        helios_private.notifySelfName()
+    end
 end
 
 -- currently active vehicle/airplane
