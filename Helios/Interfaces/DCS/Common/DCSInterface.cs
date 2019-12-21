@@ -20,7 +20,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
-    using System.Timers;
 
     public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
     {
@@ -30,8 +29,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         protected int _phantomTop;
         protected long _nextCheck = 0;
         protected string _exportDeviceName;
-        protected Timer _retryRequestExportProfile = new Timer();
-        protected string _requestedExportProfile;
+
+        // protocol to talk to DCS Export script (control messages)
+        protected DCSExportProtocol _protocol;
 
         public DCSInterface(string name, string exportDeviceName)
             : base(name)
@@ -51,10 +51,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             AddFunction(activeProfile);
             activeProfile.ValueReceived += ActiveProfile_ValueReceived;
             AddFunction(new NetworkTrigger(this, "ALIVE", "Heartbeat", "Received periodically if there is no other data received"));
-
-            // REVISIT: configurable?
-            _retryRequestExportProfile.Interval = 3000;
-            _retryRequestExportProfile.Elapsed += OnRetryRequestExportProfile;
         }
 
         #region Events
@@ -136,15 +132,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private void ActiveProfile_ValueReceived(object sender, NetworkTriggerValue.Value e)
         {
-            if (e.Text == _requestedExportProfile)
-            {
-                // this acknowledges our attempt to load this profile, if the name matches what we are trying to load
-                // cancel retries of "P" command
-                _requestedExportProfile = null;
-
-                // stop, if running
-                _retryRequestExportProfile.Stop();
-            }
+            _protocol?.OnProfileRequestAck(e.Text);
             ProfileStatusReceived?.Invoke(this, new ProfileStatus() { RunningProfile = e.Text });
         }
 
@@ -155,39 +143,35 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         public void RequestProfile(string name)
         {
-            _requestedExportProfile = name;
-            if (CanSend)
-            {
-                ConfigManager.LogManager.LogDebug($"sending request for exports '{_requestedExportProfile}'");
-                SendData($"P{name}");
-            }
-            _retryRequestExportProfile.Stop();
-            _retryRequestExportProfile.Start();
-        }
-
-        private void OnRetryRequestExportProfile(object sender, ElapsedEventArgs e)
-        {
-            if ((_requestedExportProfile != null) && CanSend)
-            {
-                ConfigManager.LogManager.LogDebug($"retrying request for exports '{_requestedExportProfile}'");
-                SendData($"P{_requestedExportProfile}");
-            }
+            // the interface is supposed to have called OnProfileStarted before this is called,
+            // so don't check for null; we want this to crash if this breaks in the future
+            _protocol.SendProfileRequest(name);
         }
 
         public override void Reset()
         {
             base.Reset();
-            _requestedExportProfile = null;
-            _retryRequestExportProfile.Stop();
+            _protocol?.Reset();
         }
 
         protected override void OnProfileStarted()
         {
-            if ((_requestedExportProfile != null) && CanSend)
-            {
-                ConfigManager.LogManager.LogDebug($"sending request for exports '{_requestedExportProfile}' after DCS interface initialized");
-                SendData($"P{_requestedExportProfile}");
-            }
+            _protocol = new DCSExportProtocol(this, _profile);
+
+            // hook transport via event (transport is our base class) to know when we
+            // have to reset our conversation with the client, because the client has 
+            // potentially restarted
+            ClientChanged += _protocol.BaseUDPInterface_ClientChanged;
+        }
+
+        protected override void OnProfileStopped()
+        {
+            // hook transport via event (transport is our base class) to know when we
+            // have to reset our conversation with the client, because the client has 
+            // potentially restarted
+            ClientChanged -= _protocol.BaseUDPInterface_ClientChanged;
+            _protocol.Stop();
+            _protocol = null;
         }
     }
 }

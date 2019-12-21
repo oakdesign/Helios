@@ -40,7 +40,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private HeliosTrigger _connectedTrigger;
         private HeliosTrigger _profileLoadedTrigger;
 
-        private HeliosProfile _profile = null;
+        protected HeliosProfile _profile = null;
 
         private string[] _tokens = new string[1024];
         private int _tokenCount = 0;
@@ -49,6 +49,9 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private System.Text.Encoding iso_8859_1;
 
         private string _alternatename = "";
+
+        // event to notify potentially other threads that the client connection has changed
+        protected event EventHandler ClientChanged;
 
         public BaseUDPInterface(string name)
             : base(name)
@@ -213,6 +216,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                             ConfigManager.LogManager.LogInfo("UDP interface new client connected, sending data reset command. (Interface=\"" + Name + "\", Client=\"" + _client.ToString() + "\", Client ID=\"" + packetClientID + "\")");
                             _connectedTrigger.FireTrigger(BindingValue.Empty);
                             _clientID = packetClientID;
+                            ClientChanged?.Invoke(this, new EventArgs());
                             SendData("R");
                         }
 
@@ -260,6 +264,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
 
         private void ProcessData()
         {
+            // XXX ERROR: this is called on main thread (via Dispatch) and _tokenCount, _tokens are written by a worker thread in the async transport callback
             for (int i = 0; i < _tokenCount; i += 2)
             {
                 string key = _tokens[i];
@@ -305,6 +310,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         {
             try
             {
+                // XXX how are these thread safe?  they are manipulated by the socket callbacks and also by the main thread calling here
                 if (_client != null && _clientID.Length > 0)
                 {
                     ConfigManager.LogManager.LogDebug("UDP interface sending data. (Interface=\"" + Name + "\", Data=\"" + data + "\")");
@@ -331,6 +337,9 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             _profile = null;
             if (_startuptimer != null)
                 _startuptimer.Stop();
+
+            // hook for descendants
+            OnProfileStopped();
         }
 
         void Profile_ProfileStarted(object sender, EventArgs e)
@@ -358,6 +367,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 ConfigManager.LogManager.LogInfo("Startup timer started.");
                 WaitForData();
 
+                // hook for descendants
                 OnProfileStarted();
             }
             catch (System.Net.Sockets.SocketException se)
@@ -407,7 +417,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             SendData("R");
         }
 
-        protected bool CanSend
+        public bool CanSend
         {
             get
             {
@@ -416,6 +426,11 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         }
 
         protected virtual void OnProfileStarted()
+        {
+            // no code in base implementation
+        }
+
+        protected virtual void OnProfileStopped()
         {
             // no code in base implementation
         }
