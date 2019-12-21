@@ -38,6 +38,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
             _exportDeviceName = exportDeviceName;
 
+            // XXX temp until we get rid of alternate names
+            AlternateName = exportDeviceName;
+
             DCSConfigurator config = new DCSConfigurator(name, DCSPath);
             Port = config.Port;
             _phantomFix = config.PhantomFix;

@@ -140,7 +140,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             }
             set
             {
-                if (!_port.Equals(value))
+                if (!_alternatename.Equals(value))
                 {
                     string oldValue = _alternatename;
                     _alternatename = value;
