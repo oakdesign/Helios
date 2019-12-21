@@ -242,7 +242,7 @@ function helios_impl.loadProfile(selfName, profileName)
         return
     else
         -- now try to load specific profile
-        local driverPath = string.format("%sScripts\\Helios\\%s\\%s.lua", lfs.writedir(), selfName, profileName)
+        local driverPath = string.format("%sScripts\\HeliosExport\\Drivers\\%s\\%s.lua", lfs.writedir(), selfName, profileName)
         success, result = pcall(dofile, driverPath)
 
         -- check result for nil, since profile may not have returned anything
@@ -308,7 +308,7 @@ end
 function helios_private.findProfiles(selfName)
     local numProfiles = 0
     local firstProfile = nil
-    for path in lfs.dir(string.format("%sScripts\\Helios\\%s", lfs.writedir(), selfName)) do
+    for path in lfs.dir(string.format("%sScripts\\HeliosExport\\Drivers\\%s", lfs.writedir(), selfName)) do
         if path:match(".lua$") then
             log.write(
                 "HELIOS.EXPORT",
