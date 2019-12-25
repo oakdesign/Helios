@@ -26,7 +26,9 @@ std = {
                 "dispatchCommand",
                 "autoLoadDelay",
                 "exportInterval",
-                "announceInterval"
+                "announceInterval",
+                "fastAnnounceInterval",
+                "fastAnnounceDuration"
             }
         },
 

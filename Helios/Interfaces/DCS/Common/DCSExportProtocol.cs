@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using GadrocsWorkshop.Helios.ProfileAwareInterface;
 using GadrocsWorkshop.Helios.UDPInterface;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
@@ -33,7 +34,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
                 // REVISIT: configurable?
                 _retryLimit = 3;
-                _timer.Interval = 3000;
+                _timer.Interval = 1000;
 
                 _timer.Elapsed += Timer_Elapsed;
             }
@@ -50,7 +51,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     _udp.SendData(_request);
                 }
                 _timer.Start();
-
             }
 
             public void Restart()
@@ -127,7 +127,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         }
 
         // callback on socket worker thread
-        public void BaseUDPInterface_ClientChanged(object sender, EventArgs e)
+        public void BaseUDPInterface_ClientChanged(object sender, ProfileAwareInterface.ClientChange e)
         {
             _profile?.Dispatcher.Invoke((Action)OnClientChanged, System.Windows.Threading.DispatcherPriority.Normal);
         }

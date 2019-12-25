@@ -10,7 +10,7 @@ local helios_private = {}
 
 -- ========================= CONFIGURATION ======================================
 
--- address to which we send 
+-- address to which we send
 helios_private.host = "127.0.0.1"
 
 -- UDP port to which we send
@@ -29,6 +29,13 @@ helios_impl.exportInterval = 0.067
 -- maximum number of seconds without us sending anything
 -- NOTE: Helios needs us to send something to discover our UDP client port number
 helios_impl.announceInterval = 3.0
+
+-- seconds between announcements immeidately after change in vehicle, to give
+-- Helios a chance to discover us after it restarts its interface
+helios_impl.fastAnnounceInterval = 0.1
+
+-- seconds after change in vehicle to use fast announcements
+helios_impl.fastAnnounceDuration = 1.0
 
 -- ========================= HOOKS CALLED BY DCS =================================
 
@@ -116,6 +123,7 @@ function LuaExportActivityNextEvent(t)
     -- the control center will need to register for an event on the currently active profile.
 
     helios_private.state.tickCount = helios_private.state.tickCount + 1
+
     local lDevice = GetDevice(0)
     if type(lDevice) == "table" then
         lDevice:update_arguments()
@@ -128,21 +136,31 @@ function LuaExportActivityNextEvent(t)
             helios_private.driver.processLowImportance(lDevice)
             helios_private.state.tickCount = 0
         end
-
-        helios_private.flush()
     end
 
-    -- if we sent nothing for a long time, send something just to let Helios discover us
+    local heartBeat = false
     if helios_private.clock > (helios_impl.announceInterval + helios_private.state.lastSend) then
+        -- if we sent nothing for a long time, send something just to let Helios discover us
+        heartBeat = true
+    end
+    if helios_private.state.fastAnnounceTicks > 0 then
+        -- immediately after changing vehicle or otherwise resetting, announce very fast
+        helios_private.state.fastAnnounceTicks = helios_private.state.fastAnnounceTicks - 1
+        if helios_private.clock > (helios_impl.fastAnnounceInterval + helios_private.state.lastSend) then
+            heartBeat = true
+        end
+    end
+
+    if heartBeat then
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("sending alive announcement after %f seconds without any data sent (clock %f, sent %f)",
             helios_impl.announceInterval,
             helios_private.clock,
             helios_private.state.lastSend
         ))
         helios_private.doSend("ALIVE", "")
-        helios_private.flush();
     end
 
+    helios_private.flush();
     return t
 end
 
@@ -220,6 +238,7 @@ function helios.send(id, value)
     end
     if helios_private.state.lastData[id] == nil or helios_private.state.lastData[id] ~= value then
         helios_private.doSend(id, value)
+        helios_private.state.lastData[id] = value
     end
 end
 
@@ -328,7 +347,7 @@ function helios_impl.loadProfile(selfName, profileName)
 
     if not success then
         -- solicit matching profile
-        helios_private.notifySelfName()
+        helios_private.notifySelfName(currentSelfName)
     end
 end
 
@@ -355,13 +374,16 @@ function helios_private.clearState()
     helios_private.state.lastData = {}
 
     -- event time of last message sent
-    helios_private.state.lastSend = 0;
+    helios_private.state.lastSend = 0
 
     -- Frame counter for non important data
     helios_private.state.tickCount = 0
 
     -- times at which we need to take a specific action
     helios_private.state.timers = {}
+
+    -- ticks of fast announcement remaining
+    helios_private.state.fastAnnounceTicks = helios_impl.fastAnnounceDuration / helios_impl.exportInterval
 end
 
 function helios_private.processArguments(device, arguments)
@@ -382,7 +404,6 @@ function helios_private.doSend(id, value)
     end
 
     table.insert(helios_private.state.sendStrings, data)
-    helios_private.state.lastData[id] = value
     helios_private.state.packetSize = helios_private.state.packetSize + dataLen + 1
 end
 

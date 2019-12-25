@@ -169,9 +169,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         protected override void OnProfileStopped()
         {
-            // hook transport via event (transport is our base class) to know when we
-            // have to reset our conversation with the client, because the client has 
-            // potentially restarted
             ClientChanged -= _protocol.BaseUDPInterface_ClientChanged;
             _protocol.Stop();
             _protocol = null;

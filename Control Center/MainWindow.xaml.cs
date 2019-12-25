@@ -49,6 +49,13 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private HotKey _hotkey = null;
 
+        // current status message to display
+        private StatusValue _status = StatusValue.Empty;
+
+        // most recently received simulator info
+        private string _lastProfileHint = "";
+        private string _lastProfileStatus = "";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -123,9 +130,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             }
 
             AutoHideCheckBox.IsChecked = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "AutoHide", false);
-
-            SetLicenseMessage();
-            SetProjectReleaseMessage();
+            StatusMessage = StatusValue.RunningVersion;
         }
 
         private void displaySplash(Int32 splashDelay)
@@ -159,16 +164,79 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         public static readonly DependencyProperty SelectedProfileNameProperty =
             DependencyProperty.Register("SelectedProfileName", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
 
-        public string Message
+        public enum StatusValue
         {
-            get { return (string)GetValue(MessageProperty); }
-            set { SetValue(MessageProperty, value); }
+            Empty,
+            License, // Helios used to display a license; this case is here in case we need to put that back
+            DeleteWarning,
+            Running,
+            Loading,
+            LoadError,
+            RunningVersion,
+            ProfileVersionHigher
         }
 
-        // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
 
+        public StatusValue StatusMessage
+        {
+            get { return _status; }
+            set {
+                _status = value;
+                UpdateStatusMessage();
+            }
+        }
+
+        private void ComposeStatusMessage(string firstLine)
+        {
+            string message = firstLine;
+            if (_lastProfileHint.Length > 0)
+            {
+                message += $"\nSimulator is {_lastProfileHint}";
+            } else {
+                message += "\n";
+            }
+            if (_lastProfileStatus.Length > 0)
+            {
+                message += $"\nSimulator is running {_lastProfileStatus}";
+            }
+            SetValue(MessageProperty, message);
+        }        
+
+        private void UpdateStatusMessage()
+        {
+            // centralize all these messages, because they all need to fit in the same space
+            switch(_status)
+            {
+                case StatusValue.Empty:
+                    // fall through
+                case StatusValue.License:
+                    ComposeStatusMessage("");
+                    break;
+                case StatusValue.DeleteWarning:
+                    // this multiline message does not combine with anything
+                    SetValue(MessageProperty, "!!WARNING!!\nYou are about to permanetly delete this profile.  Please press start to confirm.");
+                    break;
+                case StatusValue.Running:
+                    ComposeStatusMessage("Running Profile");
+                    break;
+                case StatusValue.Loading:
+                    ComposeStatusMessage("Loading Profile...");
+                    break;
+                case StatusValue.LoadError:
+                    ComposeStatusMessage("Error loading Profile");
+                    break;
+                case StatusValue.RunningVersion:
+                    Version ver = Assembly.GetEntryAssembly().GetName().Version;
+                    ComposeStatusMessage($"{ver.Major.ToString()}.{ver.Minor.ToString()}.{ver.Build.ToString("0000")}.{ver.Revision.ToString("0000")}\nProject Fork: BlueFinBima\n");
+                    break;
+                case StatusValue.ProfileVersionHigher:
+                    // this multiline message does not combine with anything
+                    SetValue(MessageProperty, "Cannot display this profile because it was created with a newer version of Helios.  Please upgrade to the latest version.");
+                    break;
+            }
+        }
 
         public string HotKeyDescription
         {
@@ -286,7 +354,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         {
             _deletingProfile = false;
             StopProfile();
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
         }
 
         public void ResetProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -299,7 +367,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             if (_deletingProfile)
             {
                 _deletingProfile = false;
-                SetLicenseMessage();
+                StatusMessage = StatusValue.License;
             }
             ResetProfile();
         }
@@ -327,7 +395,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         private void PrevProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             _deletingProfile = false;
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             LoadProfileList();
 
@@ -347,7 +415,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         private void NextProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             _deletingProfile = false;
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             LoadProfileList();
 
@@ -367,7 +435,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         private void DeleteProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             _deletingProfile = true;
-            Message = "!!WARNING!!\nYou are about to permanetly delete this profile.  Please press start to confirm.";
+            StatusMessage = StatusValue.DeleteWarning;
         }
 
         private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -385,9 +453,10 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             {
                 ActiveProfile.ControlCenterShown += Profile_ShowControlCenter;
                 ActiveProfile.ControlCenterHidden += Profile_HideControlCenter;
-                ActiveProfile.ProfileStopped += new EventHandler(Profile_ProfileStopped);
+                ActiveProfile.ProfileStopped += Profile_ProfileStopped;
                 ActiveProfile.ProfileHintReceived += Profile_ProfileHintReceived;
                 ActiveProfile.ProfileStatusReceived += Profile_ProfileStatusReceived;
+                ActiveProfile.ClientChanged += Profile_ClientChanged;
 
                 ActiveProfile.Dispatcher = Dispatcher;
                 ActiveProfile.Start();
@@ -447,7 +516,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                     ConfigManager.SettingsManager.SaveSetting("RecentByTag", tag, ActiveProfile.Path);
                 }
 
-                Message = "Running Profile";
+                StatusMessage = StatusValue.Running;
 
                 if (AutoHideCheckBox.IsChecked == true)
                 {
@@ -463,6 +532,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void Profile_ProfileStatusReceived(object sender, ProfileStatus e)
         {
+            _lastProfileStatus = e.RunningProfile;
+            UpdateStatusMessage();
             if (ProfileAutoStartCheckBox.IsChecked == false)
             {
                 return;
@@ -497,6 +568,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void Profile_ProfileHintReceived(object sender, ProfileHint e)
         {
+            _lastProfileHint = e.Tag;
+            UpdateStatusMessage();
             if (ProfileAutoStartCheckBox.IsChecked == false)
             {
                 return;
@@ -508,9 +581,26 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 ConfigManager.LogManager.LogInfo($"received profile hint with tag '{e.Tag}' but no matching profile has been loaded; cannot auto load");
                 return;
             }
+            if ((ActiveProfile != null) && (ActiveProfile.Path == mostRecent))
+            {
+                ConfigManager.LogManager.LogDebug($"most recent profile for profile hint with tag '{e.Tag}' is already active");
+                // ask simulator to use the one we are running, if possible
+                ActiveProfile.RequestProfileSupport();
+                return;
+            }
             // execute auto load
             ConfigManager.LogManager.LogDebug($"trying to start most recent matching profile '{mostRecent}'");
             ControlCenterCommands.RunProfile.Execute(mostRecent, Application.Current.MainWindow);
+        }
+
+        private void Profile_ClientChanged(object sender, ProfileAwareInterface.ClientChange e)
+        {
+            if (e.FromOpaqueHandle != ProfileAwareInterface.ClientChange.NO_CLIENT)
+            {
+                // this is a change during our profile's lifetime, so we need to discard information we have
+                _lastProfileHint = "";
+            }
+            _lastProfileStatus = "";
         }
 
         private void StopProfile()
@@ -554,6 +644,9 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 profile.ControlCenterShown -= Profile_ShowControlCenter;
                 profile.ControlCenterHidden -= Profile_HideControlCenter;
                 profile.ProfileStopped -= Profile_ProfileStopped;
+                profile.ProfileHintReceived -= Profile_ProfileHintReceived;
+                profile.ProfileStatusReceived -= Profile_ProfileStatusReceived;
+                profile.ClientChanged -= Profile_ClientChanged;
             }
 
             if (_dispatcherTimer != null)
@@ -562,7 +655,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 _dispatcherTimer = null;
             }
 
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             //EGalaxTouch.ReleaseTouchScreens();
         }
@@ -603,7 +696,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         {
             if (ActiveProfile == null || (ActiveProfile != null && ActiveProfile.LoadTime < Directory.GetLastWriteTime(ActiveProfile.Path)))
             {
-                Message = "Loading Profile...";
+                StatusMessage = StatusValue.Loading;
                 Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Loaded, (Action)delegate { });
                 ActiveProfile = ConfigManager.ProfileManager.LoadProfile(path, Dispatcher);
             }
@@ -616,7 +709,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 #if !DEBUG
                 if (!ActiveProfile.IsValidMonitorLayout)
                 {
-                    Message = "Cannot display this profile because it has an invalid monitor configuration.  Please open the editor and select reset monitors from the profile menu.";
+                    Message = StatusValue.BadMonitorConfig;
                     ActiveProfile = null;
                     return;
                 }
@@ -624,14 +717,14 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
                 if (ActiveProfile.IsInvalidVersion)
                 {
-                    Message = "Cannot display this profile because it was created with a newer version of Helios.  Please upgrade to the latest version.";
+                    StatusMessage = StatusValue.ProfileVersionHigher;
                     ActiveProfile = null;
                     return;
                 }
             }
             else
             {
-                Message = "Error loading profile.";
+                StatusMessage = StatusValue.Running;
             }
         }
 
@@ -934,21 +1027,6 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             Maximize();
         }
 
-        #endregion
-
-        #region Helper Methods
-
-        private void SetLicenseMessage()
-        {
-            Message = "";
-        }
-
-        private void SetProjectReleaseMessage()
-        {
-            Version _runningVersion = Assembly.GetEntryAssembly().GetName().Version;
-            Message = _runningVersion.Major.ToString() + "." + _runningVersion.Minor.ToString() + "." + _runningVersion.Build.ToString("0000") + "." + _runningVersion.Revision.ToString("0000") +
-                "\nProject Fork: BlueFinBima\n";
-        }
         #endregion
 
         private void Button_Click(object sender, RoutedEventArgs e)

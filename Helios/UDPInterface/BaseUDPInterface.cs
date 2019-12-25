@@ -15,6 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.UDPInterface
 {
+    using GadrocsWorkshop.Helios.ProfileAwareInterface;
     using System;
     using System.Collections.Generic;
     using System.Net;
@@ -30,7 +31,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private Socket _socket = null;
         private EndPoint _bindEndPoint;
         private EndPoint _client = null;
-        private string _clientID = "";
+        private string _clientID = ClientChange.NO_CLIENT;
 
         private bool _started = false;
 
@@ -51,7 +52,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private string _alternatename = "";
 
         // event to notify potentially other threads that the client connection has changed
-        protected event EventHandler ClientChanged;
+        public event EventHandler<ProfileAwareInterface.ClientChange> ClientChanged;
 
         public BaseUDPInterface(string name)
             : base(name)
@@ -215,8 +216,9 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                         {
                             ConfigManager.LogManager.LogInfo("UDP interface new client connected, sending data reset command. (Interface=\"" + Name + "\", Client=\"" + _client.ToString() + "\", Client ID=\"" + packetClientID + "\")");
                             _connectedTrigger.FireTrigger(BindingValue.Empty);
+                            string fromValue = _clientID ?? ProfileAwareInterface.ClientChange.NO_CLIENT;
                             _clientID = packetClientID;
-                            ClientChanged?.Invoke(this, new EventArgs());
+                            ClientChanged?.Invoke(this, new ProfileAwareInterface.ClientChange() { FromOpaqueHandle = fromValue, ToOpaqueHandle = packetClientID });
                             SendData("R");
                         }
 
@@ -295,7 +297,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                                           SocketType.Dgram,
                                           ProtocolType.Udp);
                 _socket.Bind(_bindEndPoint);
-                _clientID = "";
+                _clientID = ClientChange.NO_CLIENT;
                 _client = new IPEndPoint(IPAddress.Any, 0);
                 return true;
             }
@@ -311,7 +313,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             try
             {
                 // XXX how are these thread safe?  they are manipulated by the socket callbacks and also by the main thread calling here
-                if (_client != null && _clientID.Length > 0)
+                if ((_client != null) && (_clientID != ClientChange.NO_CLIENT))
                 {
                     ConfigManager.LogManager.LogDebug("UDP interface sending data. (Interface=\"" + Name + "\", Data=\"" + data + "\")");
                     byte[] sendData = iso_8859_1.GetBytes(data + "\n");
@@ -356,7 +358,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 _socket.Bind(_bindEndPoint);
                 _client = new IPEndPoint(IPAddress.Any, 0);
                 _started = true;
-                _clientID = "";
+                _clientID = ClientChange.NO_CLIENT;
                 _profile = Profile;
 
 

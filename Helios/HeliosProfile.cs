@@ -85,7 +85,11 @@ namespace GadrocsWorkshop.Helios
         // this event indicates that some interface received an indication that the specified
         // profile name is loaded on the other side of the interface
         public event EventHandler<ProfileStatus> ProfileStatusReceived;
-        
+
+        // this event indicates that some interface may have connected to a different endpoint
+        // than before
+        public event EventHandler<ProfileAwareInterface.ClientChange> ClientChanged;
+
         #region Properties
 
         public Dispatcher Dispatcher
@@ -313,18 +317,22 @@ namespace GadrocsWorkshop.Helios
                 ConfigManager.LogManager.LogInfo("Profile starting. (Name=\"" + Name + "\")");
                 OnProfileStarted();
                 IsStarted = true;
-
-                // any interfaces that care should now provide information for the newly loaded profile
-                string shortName = System.IO.Path.GetFileNameWithoutExtension(Path);
-                foreach (HeliosInterface heliosInterface in _interfaces)
-                {
-                    if (heliosInterface is IProfileAwareInterface profileAware)
-                    {
-                        profileAware.RequestProfile(shortName);
-                    }
-                }
-
+                RequestProfileSupport();
                 ConfigManager.LogManager.LogInfo("Profile started. (Name=\"" + Name + "\")");
+            }
+        }
+
+        public void RequestProfileSupport()
+        {
+
+            // any interfaces that care should now provide information for the newly loaded profile
+            string shortName = System.IO.Path.GetFileNameWithoutExtension(Path);
+            foreach (HeliosInterface heliosInterface in _interfaces)
+            {
+                if (heliosInterface is IProfileAwareInterface profileAware)
+                {
+                    profileAware.RequestProfile(shortName);
+                }
             }
         }
 
@@ -400,6 +408,7 @@ namespace GadrocsWorkshop.Helios
                     {
                         profileAware.ProfileHintReceived += Interface_ProfileHintReceived;
                         profileAware.ProfileStatusReceived += Interface_ProfileStatusReceived;
+                        profileAware.ClientChanged += Interface_ClientChanged;
                         _tags.UnionWith(profileAware.Tags);
                     }
                 }
@@ -417,6 +426,7 @@ namespace GadrocsWorkshop.Helios
                     {
                         profileAware.ProfileHintReceived -= Interface_ProfileHintReceived;
                         profileAware.ProfileStatusReceived -= Interface_ProfileStatusReceived;
+                        profileAware.ClientChanged -= Interface_ClientChanged;
                     }
                 }
                 // reindex all tags, since we have no way of removing non-unique ones
@@ -439,6 +449,11 @@ namespace GadrocsWorkshop.Helios
         private void Interface_ProfileHintReceived(object sender, ProfileHint e)
         {
             ProfileHintReceived?.Invoke(this, e);
+        }
+
+        private void Interface_ClientChanged(object sender, ProfileAwareInterface.ClientChange e)
+        {
+            ClientChanged?.Invoke(this, e);
         }
 
         void Monitors_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
