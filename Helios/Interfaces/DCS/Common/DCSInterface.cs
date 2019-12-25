@@ -159,7 +159,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         protected override void OnProfileStarted()
         {
-            _protocol = new DCSExportProtocol(this, _profile);
+            _protocol = new DCSExportProtocol(this);
 
             // hook transport via event (transport is our base class) to know when we
             // have to reset our conversation with the client, because the client has 

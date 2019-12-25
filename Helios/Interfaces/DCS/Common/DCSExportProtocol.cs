@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Threading;
 using GadrocsWorkshop.Helios.ProfileAwareInterface;
 using GadrocsWorkshop.Helios.UDPInterface;
 
@@ -11,13 +12,13 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
     public class DCSExportProtocol
     {
-        private HeliosProfile _profile;
+        private Dispatcher _dispatcher;
         private RetriedRequest _requestExportProfile;
         private string _requestedExportProfile;
 
         public class RetriedRequest
         {
-            private HeliosProfile _profile;
+            private Dispatcher _dispatcher;
             private BaseUDPInterface _udp;
 
             private string _request;
@@ -27,9 +28,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
             private int _retryLimit;
 
-            public RetriedRequest(UDPInterface.BaseUDPInterface udp, HeliosProfile profile)
+            public RetriedRequest(UDPInterface.BaseUDPInterface udp, Dispatcher dispatcher)
             {
-                _profile = profile;
+                _dispatcher = dispatcher;
                 _udp = udp;
 
                 // REVISIT: configurable?
@@ -69,7 +70,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             private void Timer_Elapsed(object sender, ElapsedEventArgs e)
             {
                 // if profile is unloaded, do nothing
-                _profile?.Dispatcher.Invoke((Action)OnRetry, System.Windows.Threading.DispatcherPriority.Normal);
+                _dispatcher.Invoke((Action)OnRetry, System.Windows.Threading.DispatcherPriority.Normal);
             }
 
             private void OnRetry()
@@ -91,10 +92,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             }
         }
 
-        public DCSExportProtocol(UDPInterface.BaseUDPInterface udp, HeliosProfile profile)
+        public DCSExportProtocol(UDPInterface.BaseUDPInterface udp)
         {
-            _profile = profile;
-            _requestExportProfile = new RetriedRequest(udp, profile);
+            _dispatcher = udp.Dispatcher;
+            _requestExportProfile = new RetriedRequest(udp, udp.Dispatcher);
         }
 
         public void SendProfileRequest(string profileShortName)
@@ -129,7 +130,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         // callback on socket worker thread
         public void BaseUDPInterface_ClientChanged(object sender, ProfileAwareInterface.ClientChange e)
         {
-            _profile?.Dispatcher.Invoke((Action)OnClientChanged, System.Windows.Threading.DispatcherPriority.Normal);
+            _dispatcher.Invoke((Action)OnClientChanged, System.Windows.Threading.DispatcherPriority.Normal);
         }
 
         private void OnClientChanged()
