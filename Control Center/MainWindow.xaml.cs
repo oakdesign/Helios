@@ -173,7 +173,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             Loading,
             LoadError,
             RunningVersion,
-            ProfileVersionHigher
+            ProfileVersionHigher,
+            BadMonitorConfig
         }
 
         public static readonly DependencyProperty MessageProperty =
@@ -234,6 +235,10 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 case StatusValue.ProfileVersionHigher:
                     // this multiline message does not combine with anything
                     SetValue(MessageProperty, "Cannot display this profile because it was created with a newer version of Helios.  Please upgrade to the latest version.");
+                    break;
+                case StatusValue.BadMonitorConfig:
+                    // this multiline message does not combine with anything
+                    SetValue(MessageProperty, "Cannot display this profile because it has an invalid monitor configuration.  Please open the editor and select reset monitors from the profile menu.");
                     break;
             }
         }
@@ -709,7 +714,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 #if !DEBUG
                 if (!ActiveProfile.IsValidMonitorLayout)
                 {
-                    Message = StatusValue.BadMonitorConfig;
+                    StatusMessage = StatusValue.BadMonitorConfig;
                     ActiveProfile = null;
                     return;
                 }
