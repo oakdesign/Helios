@@ -803,10 +803,10 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 Timer timer = new Timer(10000);
                 timer.AutoReset = false; // only once
                 timer.Elapsed += OnStartupTimer;
-                timer.Start();
                 _main.StartupTimer = timer;
+                timer.Start();
+                ConfigManager.LogManager.LogDebug("Startup timer started.");
 
-                ConfigManager.LogManager.LogInfo("Startup timer started.");
                 WaitForData(new ReceiveContext());
 
                 // hook for descendants
