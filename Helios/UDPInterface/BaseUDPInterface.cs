@@ -189,15 +189,16 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         /// </summary>
         private class SharedAccess
         {
-            // no synchronization required, stable while socket threads are active
-            public Socket _socket = null;
+            // contention between main and socket threads due to read/write and error recovery open/close
+            private Socket _socket = null;
+
+            // pool of receive contexts
+            private Queue<ReceiveContext> _receiveContexts = new Queue<ReceiveContext>();
+            private const int _cachedReceiveContexts = 16;
 
             // lock on all the other fields, public access ok so we can lock larger
             // sections of code and rely on re-entrant locking to avoid deadlock
             public object Lock { get; } = new object();
-
-            // fields synchronized via properties
-            private bool _started = false;
 
             public bool Started
             {
@@ -205,14 +206,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 {
                     lock (Lock)
                     {
-                        return _started;
-                    }
-                }
-                set
-                {
-                    lock (Lock)
-                    {
-                        _started = value;
+                        return _socket != null;
                     }
                 }
             }
@@ -234,6 +228,40 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                     }
                 }
             }
+
+            /// <summary>
+            /// returns clean ReceiveContext or null
+            /// </summary>
+            /// <returns></returns>
+            public ReceiveContext FetchReceiveContext()
+            {
+                lock(Lock)
+                {
+                    if (_receiveContexts.Count > 0)
+                    {
+                        return _receiveContexts.Dequeue();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// adds a receive context back to the pool
+            /// </summary>
+            public void ReturnReceiveContext(ReceiveContext context)
+            {
+                context.Clear();
+                lock(Lock)
+                {
+                    if (_receiveContexts.Count < _cachedReceiveContexts)
+                    {
+                        _receiveContexts.Enqueue(context);
+                    }
+                }
+            }
         }
 
         private class SendContext
@@ -245,22 +273,94 @@ namespace GadrocsWorkshop.Helios.UDPInterface
 
         /// <summary>
         /// owned by the socket thread pool thread that is currently processing the receive operation, then
-        /// ownership is handed off to main thread for final processing.  object is not reused
+        /// ownership is handed off to main thread for final processing.  object is not reused (yet)
         /// </summary>
         private class ReceiveContext
         {
-            // buffer for datagram received
-            public byte[] dataBuffer = new byte[2048];
+            public class Message
+            {
+                // preallocated space
+                public byte[] data = new byte[2048];
 
-            // fill level of buffer
-            public int bytesReceived = 0;
+                // fill level
+                public int bytesReceived = 0;
 
-            // source of datagram received
-            public EndPoint fromEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                // source of datagram received
+                public EndPoint fromEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-            // tokens parsed out on socket thread pool to avoid loading main thread
-            public string[] tokens = new string[1024];
-            public int tokenCount = 0;
+                // tokens parsed out on socket thread pool to avoid loading main thread
+                public string[] tokens = new string[1024];
+                public int tokenCount = 0;
+
+                public void Clear()
+                {
+                    fromEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    bytesReceived = 0;
+                    tokenCount = 0;
+                }
+            }
+
+            // buffers for datagrams received on one context switch
+            // XXX tune size
+            private Message[] _messages = new Message[10];
+
+            // number of buffers filled
+            private int _messagesFilled = 0;
+
+            public void Clear()
+            {
+                _messagesFilled = 0;
+            }
+
+            public int Length
+            {
+                get => _messagesFilled;
+            }
+
+            public int Capacity
+            {
+                get => _messages.Length;
+            }
+
+            public Message BeginWrite()
+            {
+                if (_messagesFilled >= _messages.Length)
+                {
+                    throw new IndexOutOfRangeException("logic error: attempt to fill receive context past capacity");
+                }
+                if (_messages[_messagesFilled] == null)
+                {
+                    // lazy allocate
+                    _messages[_messagesFilled] = new Message();
+                } else
+                {
+                    _messages[_messagesFilled].Clear();
+                }
+                return _messages[_messagesFilled];
+            }
+
+            public Message ContinueWrite(int index)
+            {
+                if (index != _messagesFilled)
+                {
+                    throw new IndexOutOfRangeException("logic error: attempt to continue write that is not current");
+                }
+                return _messages[index];
+            }
+
+            public void EndWrite()
+            {
+                _messagesFilled++;
+            }
+
+            public Message Read(int index)
+            {
+                if (index >= _messagesFilled)
+                {
+                    throw new IndexOutOfRangeException("logic error: attempt to read receive context past fill level");
+                }
+                return _messages[index];
+            }
         }
 
         private MainThreadAccess _main = new MainThreadAccess();
@@ -405,7 +505,8 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 {
                     try
                     {
-                        _shared.ServerSocket.BeginReceiveFrom(context.dataBuffer, 0, context.dataBuffer.Length, SocketFlags.None, ref context.fromEndPoint, _socketDataCallback, context);
+                        ReceiveContext.Message message = context.BeginWrite();
+                        _ = _shared.ServerSocket.BeginReceiveFrom(message.data, 0, message.data.Length, SocketFlags.None, ref message.fromEndPoint, _socketDataCallback, context);
                         break;
                     }
                     catch (SocketException se)
@@ -435,11 +536,13 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                     // ignore, we shut down since requesting receive
                     return;
                 }
+                Socket socket = _shared.ServerSocket;
                 ReceiveContext context = asyncResult.AsyncState as ReceiveContext;
                 try
                 {
-                    context.bytesReceived = _shared.ServerSocket.EndReceiveFrom(asyncResult, ref context.fromEndPoint);
-                    owned = context;
+                    ReceiveContext.Message message = context.ContinueWrite(0);
+                    message.bytesReceived = _shared.ServerSocket.EndReceiveFrom(asyncResult, ref message.fromEndPoint);
+                    context.EndWrite();
                 }
                 catch (SocketException se)
                 {
@@ -449,83 +552,130 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                         // no new receive attempt
                         return;
                     }
+
+                    // recovered with probably a new socket
+                    socket = _shared.ServerSocket;
                 }
+                // drain the socket, as much as allowed, to share the context switch to main
+                while ((socket.Available > 0) && (context.Length < context.Capacity))
+                {
+                    ReceiveContext.Message message = context.BeginWrite();
+                    SocketError errorCode = default;
+                    try
+                    {
+                        message.bytesReceived = socket.Receive(message.data, 0, message.data.Length, SocketFlags.None, out errorCode);
+                    }
+                    catch (SocketException se)
+                    {
+                        if (HandleSocketException(se))
+                        {
+                            // recovered with probably a new socket
+                            socket = _shared.ServerSocket;
+                        } else {
+                            // dead, stop trying to drain
+                            break;
+                        }
+                    }
+                    // REVISIT: this is a little bit ugly, but safe
+                    if ((errorCode == SocketError.Success) && (message.bytesReceived > 0))
+                    {
+                        context.EndWrite();
+                    }
+                }
+                owned = context;
             }
 
-            if (owned != null)
+            // NOTE: owned must not be null here, so crash if it is.  
+            // it could be empty if all we did this iteration is throw and reset the socket 
+            if (owned.Length > 0)
             {
-                // offload parsing from main thread to socket thread pool
+                // offload parsing from main thread to socket thread pool, without lock held
                 ParseReceived(owned);
 
-                // pass ownership to main thread
+                // pass ownership to main thread, process synchronously
                 Dispatcher.Invoke(new Action(() => this.DispatchReceived(owned)), System.Windows.Threading.DispatcherPriority.Send);
             }
 
             // start next receive
-            // REVISIT: could use a pool of context objects if we want to do some of the memory management ourselves
-            WaitForData(new ReceiveContext());
+            WaitForData(_shared.FetchReceiveContext() ?? new ReceiveContext());
         }
 
         private static void ParseReceived(ReceiveContext owned)
         {
-            owned.tokenCount = 0;
-            int parseCount = owned.bytesReceived - 1;
-            int lastIndex = 8;
-            for (int i = 9; i < parseCount; i++)
+            for(int messageIndex=0; messageIndex<owned.Length; messageIndex++)
             {
-                if (owned.dataBuffer[i] == 0x3a || owned.dataBuffer[i] == 0x3d)
+                ReceiveContext.Message message = owned.Read(messageIndex);
+                message.tokenCount = 0;
+                int parseCount = message.bytesReceived - 1;
+                int offset = 8;
+                for (int scan = 9; scan < parseCount; scan++)
                 {
-                    int size = i - lastIndex - 1;
-                    owned.tokens[owned.tokenCount++] = _iso_8859_1.GetString(owned.dataBuffer, lastIndex + 1, size);
-                    lastIndex = i;
+                    if (message.data[scan] == 0x3a || message.data[scan] == 0x3d)
+                    {
+                        int size = scan - offset - 1;
+                        message.tokens[message.tokenCount++] = _iso_8859_1.GetString(message.data, offset + 1, size);
+                        offset = scan;
+                    }
                 }
-            }
-            owned.tokens[owned.tokenCount++] = _iso_8859_1.GetString(owned.dataBuffer, lastIndex + 1, parseCount - lastIndex - 1);
-            if (owned.tokenCount % 1 > 0)
-            {
-                // don't allow odd number of tokens because a lot of the parsing code is unsafe
-                owned.tokenCount--;
+                message.tokens[message.tokenCount++] = _iso_8859_1.GetString(message.data, offset + 1, parseCount - offset - 1);
+                if (message.tokenCount % 1 > 0)
+                {
+                    // don't allow odd number of tokens because a lot of the parsing code is unsafe
+                    message.tokenCount--;
+                }
             }
         }
 
-        private void DispatchReceived(ReceiveContext context)
+        private void DispatchReceived(ReceiveContext owned)
         {
-            // store address and port, since we need it for outgoing messages
-            _main.Client = context.fromEndPoint;
-            if (context.bytesReceived < 13)
+            if (owned.Length > 1)
             {
-                HandleShortMessage(context.dataBuffer, context.bytesReceived);
-                return;
+                ConfigManager.LogManager.LogInfo($"received {owned.Length} UDP messages in batch");
             }
 
-            // Don't create the extra strings if we don't need to
-            if (ConfigManager.LogManager.LogLevel == LogLevel.Debug)
+            // REVISIT: could skip ahead if this batch contains a client change
+            for (int messageIndex = 0; messageIndex < owned.Length; messageIndex++)
             {
-                ConfigManager.LogManager.LogDebug("UDP Interface received packet. (Interface=\"" + Name + "\", Packet=\"" + _iso_8859_1.GetString(context.dataBuffer, 0, context.bytesReceived) + "\")");
-            }
-
-            // handle client restart or change in client
-            String packetClientID = _iso_8859_1.GetString(context.dataBuffer, 0, 8);
-            if (!_main.ClientID.Equals(packetClientID))
-            {
-                ConfigManager.LogManager.LogInfo("UDP interface new client connected, sending data reset command. (Interface=\"" + Name + "\", Client=\"" + _main.Client.ToString() + "\", Client ID=\"" + packetClientID + "\")");
-                _main.ConnectedTrigger.FireTrigger(BindingValue.Empty);
-                _main.ClientID = packetClientID;
-                SendData("R");
-            }
-
-            for (int i = 0; i < context.tokenCount; i += 2)
-            {
-                if (_main.FunctionsById.ContainsKey(context.tokens[i]))
+                ReceiveContext.Message message = owned.Read(messageIndex);
+                // store address and port, since we need it for outgoing messages
+                _main.Client = message.fromEndPoint;
+                if (message.bytesReceived < 13)
                 {
-                    NetworkFunction function = _main.FunctionsById[context.tokens[i]];
-                    function.ProcessNetworkData(context.tokens[i], context.tokens[i + 1]);
+                    HandleShortMessage(message.data, message.bytesReceived);
+                    continue;
                 }
-                else
+
+                // Don't create the extra strings if we don't need to
+                if (ConfigManager.LogManager.LogLevel == LogLevel.Debug)
                 {
-                    ConfigManager.LogManager.LogWarning("UDP interface received data for missing function. (Key=\"" + context.tokens[i] + "\")");
+                    ConfigManager.LogManager.LogDebug("UDP Interface received packet. (Interface=\"" + Name + "\", Packet=\"" + _iso_8859_1.GetString(message.data, 0, message.bytesReceived) + "\")");
+                }
+
+                // handle client restart or change in client
+                String packetClientID = _iso_8859_1.GetString(message.data, 0, 8);
+                if (!_main.ClientID.Equals(packetClientID))
+                { 
+                    ConfigManager.LogManager.LogInfo("UDP interface new client connected, sending data reset command. (Interface=\"" + Name + "\", Client=\"" + _main.Client.ToString() + "\", Client ID=\"" + packetClientID + "\")");
+                    _main.ConnectedTrigger.FireTrigger(BindingValue.Empty);
+                    _main.ClientID = packetClientID;
+                    SendData("R");
+                }
+
+                for (int tokenIndex = 0; tokenIndex < message.tokenCount; tokenIndex += 2)
+                {
+                    if (_main.FunctionsById.ContainsKey(message.tokens[tokenIndex]))
+                    {
+                        NetworkFunction function = _main.FunctionsById[message.tokens[tokenIndex]];
+                        function.ProcessNetworkData(message.tokens[tokenIndex], message.tokens[tokenIndex + 1]);
+                    }
+                    else
+                    {
+                        ConfigManager.LogManager.LogWarning("UDP interface received data for missing function. (Key=\"" + message.tokens[tokenIndex] + "\")");
+                    }
                 }
             }
+
+            _shared.ReturnReceiveContext(owned);
         }
 
 
@@ -612,7 +762,6 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             lock (_shared.Lock)
             {
                 _shared.ServerSocket = socket;
-                _shared.Started = true;
             }
         }
 
@@ -621,7 +770,6 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             Socket socket = null;
             lock (_shared.Lock)
             {
-                _shared.Started = false;
                 socket = _shared.ServerSocket;
                 _shared.ServerSocket = null;
             }
@@ -656,8 +804,19 @@ namespace GadrocsWorkshop.Helios.UDPInterface
 
         }
 
+        /// <summary>
+        /// timer thread callback
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private void OnStartupTimer(Object source, System.Timers.ElapsedEventArgs e)
         {
+            // sync notify
+            Dispatcher.Invoke(new Action(OnDelayedStartup));
+        }
+
+        private void OnDelayedStartup()
+        { 
             ConfigManager.LogManager.LogInfo("Startup Delay timer triggered.");
             _main.ProfileLoadedTrigger.FireTrigger(BindingValue.Empty);
         }
