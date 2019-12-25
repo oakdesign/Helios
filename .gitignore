@@ -22,3 +22,5 @@ Keypress Receiver Installer/Release/Keypress Receiver Setup.msi
 !/Docs/*.txt
 /UpgradeLog3.htm
 Lua/DCS/doc/todo.txt
+Lua/DCS/Scripts/HeliosExport/Mods
+/.vs/slnx.sqlite
