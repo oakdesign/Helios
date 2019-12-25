@@ -55,6 +55,20 @@ function helios_mock_device.get_argument_value(index)  --luacheck: no unused
     return value
 end
 
+function helios_mock_device.get_frequency()
+    local value = helios_mock.nextValue / 100.0
+    helios_mock.nextValue = helios_mock.nextValue + 1
+    return value
+end
+
+-- test loading module in compatibility mode
+function helios_mock.loadModuleDriver(selfName, moduleName)
+    helios_impl.cancelAutoLoad();
+    local driver = helios_impl.createModuleDriver(selfName, moduleName)
+    helios_impl.driverName = moduleName;
+    helios_impl.installDriver(driver)
+end
+
 function list_indication(indicator_id) -- luacheck: no global, no unused
     return ""
 end
@@ -70,7 +84,7 @@ function LoGetSelfData() -- luacheck: no global
 end
 
 -- load export script as if we were DCS
-dofile "Export.lua"
+dofile "Export15.lua"
 
 -- default test
 helios_mock.test = { [10] = function() end }

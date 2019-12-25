@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Mock",
             "program": "${workspaceFolder}/Scripts/exmock/main.lua",
-            "arg": ["8"],
+            "arg": ["mod_A10C"],
             "cwd": "${workspaceFolder}/Scripts",
             "stopOnEntry": false,
             "path": "d:\\lua51\\lib\\lua\\?.lua",

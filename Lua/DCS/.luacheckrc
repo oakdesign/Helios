@@ -28,7 +28,10 @@ std = {
                 "exportInterval",
                 "announceInterval",
                 "fastAnnounceInterval",
-                "fastAnnounceDuration"
+                "fastAnnounceDuration",
+                "createModuleDriver",
+                "installDriver",
+                "cancelAutoLoad"
             }
         },
 
@@ -40,7 +43,28 @@ std = {
         "LuaExportBeforeNextFrame",
         "LuaExportAfterNextFrame",
         "LuaExportStop",
-        "LuaExportActivityNextEvent"
+        "LuaExportActivityNextEvent",
+
+        -- compatibility with modules
+        Helios_Udp = {
+            fields = {
+                -- API functions
+                "Send",
+                "Flush",
+                "ResetChangeValues"
+            }
+        },
+        Helios_Util = {
+            fields = {
+                -- API functions
+                "Split",
+                "ValueConvert",
+                "Convert_Lamp",
+                "Degrees",
+                "GetListIndicator",
+                "Convert_SW"
+            }
+        }
     },
     read_globals = {
         -- LUA std
@@ -127,7 +151,8 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
                     "loadDriver",
                     "profileName",
                     "receiveLoadProfile",
-                    "framesUntilAutoLoad"
+                    "framesUntilAutoLoad",
+                    "loadModuleDriver"
                 }
             },
 
@@ -181,19 +206,6 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
         read_globals = {
             -- modules
             "log",
-
-            -- helios export API
-            helios = {
-                fields = {
-                    "splitString",
-                    "round",
-                    "ensureString",
-                    "textureToString",
-                    "send",
-                    "parseIndication",
-                    "selfName"
-                }
-            },
 
             -- helios module compatibility API
             Helios_Udp = {
