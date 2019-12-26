@@ -189,7 +189,7 @@ end
 function helios.splitString(str, delim, maxNb)
     -- quickly handle edge case
     if string.find(str, delim) == nil then
-        return {str}
+        return { str }
     end
 
     -- optional limit on number of fields
@@ -283,8 +283,9 @@ end
 function helios_impl.dispatchCommand(command)
     -- REVISIT: this is legacy code and does not guard anything
     local commandCode = string.sub(command, 1, 1)
+    local rest = string.sub(command, 2):match("^(.-)%s*$");
     if (commandCode == "P") then
-        local profileName = command:sub(2):match("^(.-)%s*$")
+        local profileName = rest
         helios_impl.loadProfile(helios.selfName(), profileName)
     elseif helios_private.driver.processInput ~= nil then
         -- delegate commands other than 'P'
@@ -294,7 +295,7 @@ function helios_impl.dispatchCommand(command)
         helios_private.resetCachedValues()
     elseif (commandCode == "C") then
         -- click command from Helios
-        local commandArgs = helios.splitString(string.sub(command, 2), ",")
+        local commandArgs = helios.splitString(rest, ",")
         local targetDevice = GetDevice(commandArgs[1])
         if type(targetDevice) == "table" then
             targetDevice:performClickableAction(commandArgs[2], commandArgs[3])
@@ -332,6 +333,23 @@ function helios_impl.loadProfile(selfName, profileName)
         -- now try to load specific profile
         local driverPath = string.format("%sScripts\\Helios\\Drivers\\%s\\%s.lua", lfs.writedir(), selfName, profileName)
         success, result = pcall(dofile, driverPath)
+
+        -- if the driver is not found, try a module
+        if (not success) and helios_module_names[selfName] ~= nil then
+            -- use export-everything module for this aircraft
+            -- NOTE: this makes us compatible with Capt Zeen profiles
+            local moduleName = helios_module_names[selfName]
+            local module = helios_impl.createModuleDriver(selfName, moduleName)
+            if module ~= nil then
+                -- success
+                log.write("HELIOS.EXPORT", log.INFO, string.format("loaded module '%s' for '%s'", moduleName, selfName))
+                helios_impl.installDriver(module, moduleName)
+                helios_impl.notifyLoaded()
+                return
+            else
+                result = string.format("failed to load module '%s' for '%s'", moduleName, selfName)
+            end
+        end
 
         -- check result for nil, since profile may not have returned anything
         if success and result == nil then

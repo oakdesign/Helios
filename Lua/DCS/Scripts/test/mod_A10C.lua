@@ -6,6 +6,6 @@ helios_mock.test = {
     [11] = function()
         helios_mock.loadModuleDriver("A-10C", "Helios_A10C")
     end,
-    [100] = function()
+    [10000] = function()
     end
 }

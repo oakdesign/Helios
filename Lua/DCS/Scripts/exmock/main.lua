@@ -26,7 +26,7 @@ local helios_mock_device = {}
 function helios_mock_device.update_arguments()
 end
 
-function helios_mock_device.get_argument_value(index)  --luacheck: no unused
+function helios_mock_device.get_argument_value(self, index)  --luacheck: no unused
     -- value goes from 0 to 100 and then wraps repeatedly
     return helios_mock.makeValue(0, 100, 1.0)
 end
@@ -38,8 +38,18 @@ function helios_mock.makeValue(min, max, resolution)
     return value
 end
 
-function helios_mock_device.get_frequency()
+function helios_mock_device.get_frequency(self)  --luacheck: no unused
     return helios_mock.makeValue(100, 200, 0.1)
+end
+
+function helios_mock_device.performClickableAction(self, action, value) -- luacheck: no unused
+    if type(action) ~= "number" then
+        action = 0
+    end
+    if type(value) ~= "number" then
+        value = 0
+    end
+    log.write('MOCK', log.INFO, string.format("click %d, %d", action, value))
 end
 
 function list_indication(indicator_id) -- luacheck: no unused
@@ -156,10 +166,6 @@ function helios_mock.framesUntilAutoLoad()
     return math.ceil((helios_impl.autoLoadDelay + helios_impl.exportInterval) * helios_mock_private.fps)
 end
 
-function helios_mock_device.performClickableAction(arg1, arg2)
-    log.write('MOCK', log.INFO, string.format("click %d, %d", arg1, arg2))
-end
-
 -- test loading module in compatibility mode
 function helios_mock.loadModuleDriver(selfName, moduleName)
     helios_impl.cancelAutoLoad();
@@ -188,6 +194,8 @@ for eventFrame, _ in pairs(helios_mock.test)  do
 end
 table.sort(eventFrames)
 
+local socket = require("socket")
+
 -- run scenario
 LuaExportStart()
 local frame = 0
@@ -199,6 +207,8 @@ for _, eventFrame in ipairs(eventFrames) do
         log.write('MOCK', log.DEBUG, string.format("frame %d", progress))
         LuaExportBeforeNextFrame()
         frame = progress
+        -- HACK: sleep to slow down
+        socket.select(nil, nil, 0.9 / helios_mock_private.fps)
         LuaExportAfterNextFrame()
 
         local clock = frame / helios_mock_private.fps
