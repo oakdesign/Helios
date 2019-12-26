@@ -1,5 +1,9 @@
 -- mock testing interface, only for test/*.lua
 -- luacheck: globals helios_mock
+
+-- we implement a bunch of DCS globals, so we write them:
+-- luacheck: ignore 121
+
 helios_mock = {}
 helios_mock.nextValue = 0
 helios_mock.selfName = ""
@@ -38,15 +42,15 @@ function helios_mock_device.get_frequency()
     return helios_mock.makeValue(100, 200, 0.1)
 end
 
-function list_indication(indicator_id) -- luacheck: no global, no unused
+function list_indication(indicator_id) -- luacheck: no unused
     return ""
 end
 
-function GetDevice(name) -- luacheck: no global, no unused args
+function GetDevice(name) -- luacheck: no unused
     return helios_mock_device
 end
 
-function LoGetSelfData() -- luacheck: no global
+function LoGetSelfData()
     local info = {}
     info.Name = helios_mock.selfName
     info.Heading = helios_mock.makeValue(-1, 1, 0.02)
@@ -85,10 +89,10 @@ function LoGetEngineInfo()
 end
 
 function LoGetControlPanel_HSI()
-    return { 
+    return {
         ADR_raw = helios_mock.makeValue(-10, 10, 0.1),
         RMI_raw = helios_mock.makeValue(-10, 10, 0.1)
-    } 
+    }
 end
 
 function LoGetVerticalVelocity()

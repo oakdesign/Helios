@@ -67,7 +67,21 @@ std = {
         -- DCS
         "list_indication",
         "GetDevice",
-        "LoGetSelfData"
+        "LoGetSelfData",
+        "LoGetAltitudeAboveSeaLevel",
+        "LoGetAltitudeAboveGroundLevel",
+        "LoGetADIPitchBankYaw",
+        "LoGetEngineInfo",
+        "LoGetControlPanel_HSI",
+        "LoGetVerticalVelocity",
+        "LoGetIndicatedAirSpeed",
+        "LoGetRoute",
+        "LoGetAngleOfAttack",
+        "LoGetAccelerationUnits",
+        "LoGetGlideDeviation",
+        "LoGetSideDeviation",
+        "LoGetNavigationInfo",
+        "LoGeoCoordinatesToLoCoordinates"
     }
 }
 ignore = {

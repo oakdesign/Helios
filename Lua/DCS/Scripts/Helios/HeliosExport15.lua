@@ -734,7 +734,7 @@ end
 function helios_modules_util.Degrees(radians)
     if radians == nil then
         return 0.0
-    end 
+    end
 	return radians * 57.2957795
 end
 
