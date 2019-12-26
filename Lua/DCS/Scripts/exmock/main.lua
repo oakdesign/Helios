@@ -12,12 +12,123 @@ package.cpath = package.cpath..';./exmock/?.dll;'
 lfs = require("mock_lfs")
 log = require("mock_log")
 
--- mock DCS device (singleton for now)
-local helios_mock_device = {}
-
 -- mock tuning
 local helios_mock_private = {}
 helios_mock_private.fps = 60.0
+
+-- mock DCS device (singleton for now)
+local helios_mock_device = {}
+
+function helios_mock_device.update_arguments()
+end
+
+function helios_mock_device.get_argument_value(index)  --luacheck: no unused
+    -- value goes from 0 to 100 and then wraps repeatedly
+    return helios_mock.makeValue(0, 100, 1.0)
+end
+
+function helios_mock.makeValue(min, max, resolution)
+    local iteration = helios_mock.nextValue % ((max - min) / resolution)
+    local value = min + (resolution * iteration)
+    helios_mock.nextValue = helios_mock.nextValue + 1
+    return value
+end
+
+function helios_mock_device.get_frequency()
+    return helios_mock.makeValue(100, 200, 0.1)
+end
+
+function list_indication(indicator_id) -- luacheck: no global, no unused
+    return ""
+end
+
+function GetDevice(name) -- luacheck: no global, no unused args
+    return helios_mock_device
+end
+
+function LoGetSelfData() -- luacheck: no global
+    local info = {}
+    info.Name = helios_mock.selfName
+    info.Heading = helios_mock.makeValue(-1, 1, 0.02)
+    return info
+end
+
+function LoGetAltitudeAboveSeaLevel()
+    return helios_mock.makeValue(10000, 20000, 10)
+end
+
+function LoGetAltitudeAboveGroundLevel()
+    return LoGetAltitudeAboveSeaLevel() - 1000;
+end
+
+function LoGetADIPitchBankYaw()
+    return helios_mock.makeValue(-10, 10, 0.1), helios_mock.makeValue(-10, 10, 0.1), helios_mock.makeValue(-10, 10, 0.1)
+end
+
+function LoGetEngineInfo()
+    return {
+        RPM = {
+           left = helios_mock.makeValue(1, 100, 1),
+           right = helios_mock.makeValue(1, 100, 1)
+        },
+        Temperature = {
+            left = helios_mock.makeValue(1, 100, 1),
+            right = helios_mock.makeValue(1, 100, 1)
+        },
+        FuelConsumption = {
+            left = helios_mock.makeValue(1, 100, 1),
+            right = helios_mock.makeValue(1, 100, 1)
+        },
+        fuel_internal = helios_mock.makeValue(1000, 2000, 1),
+        fuel_external = helios_mock.makeValue(1000, 2000, 1)
+    }
+end
+
+function LoGetControlPanel_HSI()
+    return { 
+        ADR_raw = helios_mock.makeValue(-10, 10, 0.1),
+        RMI_raw = helios_mock.makeValue(-10, 10, 0.1)
+    } 
+end
+
+function LoGetVerticalVelocity()
+    return helios_mock.makeValue(-10, 10, 0.1)
+end
+
+function LoGetIndicatedAirSpeed()
+    return helios_mock.makeValue(100, 500, 1.0)
+end
+
+function LoGetRoute()
+    return nil
+end
+
+function LoGetAngleOfAttack()
+    return helios_mock.makeValue(-10, 10, 0.1)
+end
+
+function LoGetAccelerationUnits()
+    return { x = helios_mock.makeValue(-10, 10, 0.1), y = helios_mock.makeValue(-10, 10, 0.1), z = helios_mock.makeValue(-10, 10, 0.1) }
+end
+
+function LoGetGlideDeviation()
+    return helios_mock.makeValue(-10, 10, 0.1);
+end
+
+function LoGetSideDeviation()
+    return helios_mock.makeValue(-10, 10, 0.1);
+end
+
+function LoGetNavigationInfo()
+    return nil
+end
+
+function LoGeoCoordinatesToLoCoordinates(x1, z1)
+    return { x = x1, y = 0.0, z = z1};
+end
+
+-- load export script as if we were DCS and gain privileged access
+local helios_impl = dofile(".\\Helios\\HeliosExport15.lua")
 
 -- set name of vehicle/aircraft to be reported by mock DCS
 function helios_mock.setSelf(name)
@@ -45,46 +156,17 @@ function helios_mock_device.performClickableAction(arg1, arg2)
     log.write('MOCK', log.INFO, string.format("click %d, %d", arg1, arg2))
 end
 
-function helios_mock_device.update_arguments()
-end
-
-function helios_mock_device.get_argument_value(index)  --luacheck: no unused
-    -- value goes from 0 to 100 and then wraps repeatedly
-    local value = helios_mock.nextValue % 101
-    helios_mock.nextValue = helios_mock.nextValue + 1
-    return value
-end
-
-function helios_mock_device.get_frequency()
-    local value = helios_mock.nextValue / 100.0
-    helios_mock.nextValue = helios_mock.nextValue + 1
-    return value
-end
-
 -- test loading module in compatibility mode
 function helios_mock.loadModuleDriver(selfName, moduleName)
     helios_impl.cancelAutoLoad();
     local driver = helios_impl.createModuleDriver(selfName, moduleName)
-    helios_impl.driverName = moduleName;
-    helios_impl.installDriver(driver)
+    if driver == nil then
+        log.write('MOCK', log.ERROR, string.format("failed to create module driver %s for %s", moduleName, selfName))
+        return
+    end
+    helios_impl.installDriver(driver, moduleName)
+    helios_impl.notifyLoaded()
 end
-
-function list_indication(indicator_id) -- luacheck: no global, no unused
-    return ""
-end
-
-function GetDevice(name) -- luacheck: no global, no unused args
-    return helios_mock_device
-end
-
-function LoGetSelfData() -- luacheck: no global
-    local info = {}
-    info.Name = helios_mock.selfName
-    return info
-end
-
--- load export script as if we were DCS
-dofile "Export15.lua"
 
 -- default test
 helios_mock.test = { [10] = function() end }

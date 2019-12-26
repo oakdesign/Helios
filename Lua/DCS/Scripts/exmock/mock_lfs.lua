@@ -4,7 +4,7 @@ local mock_lfs = {}
 local io = require("io")
 
 function mock_lfs.writedir()
-    return "../"
+    return "..\\"
 end
 
 function mock_lfs.dir(path)

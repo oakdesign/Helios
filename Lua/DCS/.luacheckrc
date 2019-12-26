@@ -14,24 +14,8 @@ std = {
                 "send",
                 "parseIndication",
                 "selfName",
-                "autoLoadDelay"
-            }
-        },
-
-        -- internal functions needed for mock testing, but not to be used by profile drivers
-        helios_impl = {
-            fields = {
-                "loadProfile",
-                "driverName",
-                "dispatchCommand",
                 "autoLoadDelay",
-                "exportInterval",
-                "announceInterval",
-                "fastAnnounceInterval",
-                "fastAnnounceDuration",
-                "createModuleDriver",
-                "installDriver",
-                "cancelAutoLoad"
+                "version"
             }
         },
 
@@ -93,7 +77,7 @@ ignore = {
 -- either: execute "lua\bin\luacheck Scripts" manually on the command line or configure an
 -- absolute path to luacheck in settings.json (workspace path does not get expanded on vscode-lua)
 -- For ease of local hacking, consider running "git update-index --skip-worktree .vscode\settings.json"
-files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
+files["Scripts/Helios/Drivers/*/*.lua"] = {
     std = {
         globals = { },
         read_globals = {
@@ -109,7 +93,8 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
                     "textureToString",
                     "send",
                     "parseIndication",
-                    "selfName"
+                    "selfName",
+                    "version"
                 }
             },
 
@@ -117,7 +102,7 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
             "math",
             "table",
             "string",
-            "tonumber",
+            "tonumber"
 
             -- DCS
             -- nothing for now, let"s try to wrap those things that we need in safe alternatives, like parseIndication
@@ -167,7 +152,7 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
  }
 
  -- Helios modules from Capt Zeen
- files["Scripts/HeliosExport/Mods/*.lua"] = {
+ files["Scripts/Helios/Mods/*.lua"] = {
     std = {
         globals = {
             -- bugs
@@ -271,17 +256,17 @@ files["Scripts/HeliosExport/Drivers/*/*.lua"] = {
  }
 
  -- specific plane modules all have different globals and we can"t for loop here
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_A10C = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_F14 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_F16C = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_F18C = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_FC = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_Harrier = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_Huey = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_KA50 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_L39 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_MI8 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_Mig21Bis = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_P51 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
-files["Scripts/HeliosExport/Mods/*.lua"].std.globals.Helios_SA342 = files["Scripts/HeliosExport/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_A10C = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_F14 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_F16C = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_F18C = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_FC = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_Harrier = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_Huey = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_KA50 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_L39 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_MI8 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_Mig21Bis = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_P51 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
+files["Scripts/Helios/Mods/*.lua"].std.globals.Helios_SA342 = files["Scripts/Helios/Mods/*.lua"].std.globals.PLANE
 
