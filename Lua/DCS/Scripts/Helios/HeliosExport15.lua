@@ -1015,6 +1015,10 @@ function helios_private.unhookDCS()
     helios_dcs.LuaExportBeforeNextFrame =  helios_loader.LuaExportBeforeNextFrame
     helios_dcs.LuaExportAfterNextFrame = helios_loader.LuaExportAfterNextFrame
 
+    -- XXX this does not actually work, and possibly can't work.  other export scripts will have our previous
+    -- hook stored and we don't indirect this hook through a global table, so it will call our old private code and crash
+    -- XXX TODO try making helios_dcs an indirect table that is global and test with a chained export
+
     -- these functions must not suddenly become null, so we restore them or install
     -- a dummy handler if we are the only script
     LuaExportStart = helios_private.previousHooks.LuaExportStart or helios_loader.LuaExportStart
@@ -1024,7 +1028,7 @@ function helios_private.unhookDCS()
     LuaExportAfterNextFrame = helios_private.previousHooks.LuaExportAfterNextFrame or helios_loader.LuaExportAfterNextFrame
 
     -- NOTE: some other script may have stored our old DCS hooks, but they will
-    -- continue to workend
+    -- continue to work
 end
 
 -- when this script is being tested, these functions are accessible to our tester
