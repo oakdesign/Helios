@@ -380,6 +380,10 @@ function helios_impl.loadProfile(selfName, profileName)
         local driverPath = string.format("%sScripts\\Helios\\Drivers\\%s\\%s.lua", lfs.writedir(), selfName, profileName)
         success, result = pcall(dofile, driverPath)
 
+        if not success then
+            log.write("HELIOS.EXPORT", log.INFO, string.format("failed to load profile driver for %s from %s", selfName, driverPath))
+        end
+
         -- if the driver is not found, try a module
         if (not success) and helios_module_names[selfName] ~= nil then
             -- use export-everything module for this aircraft

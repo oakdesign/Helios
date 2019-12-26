@@ -23,9 +23,17 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(FA18CInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(FA18CInterface.Editor), typeof(UniqueHeliosInterfaceFactory))]
     public class FA18CInterface : DCSInterface
     {
+        public class Editor: DCSInterfaceEditor
+        {   
+            public Editor()
+            {
+                Configuration.ExportFunctionsPath = "pack://application:,,,/Helios;component/Interfaces/DCS/FA18C/ExportFunctions.lua";
+            }
+        }
+
         #region Devices
         //  From devices.lua - DCS seem to want this to remain constant which is great 
         private const string FM_PROXY = "1";
