@@ -49,3 +49,6 @@ Export.lua itself should just be a stub that loads the Helios code from another 
 
 # Nice-to-have 11: During development, it should be possible to hot-reload the Helios Export script without restarting DCS
 If we have Requirement 10, then we can have a version of Export.lua that reloads Helios if the files change, without restarting.  That would really help with the development cycle time.
+
+# Requirement 12: File naming should allow incompatible versions to coexist (not run)
+When we release a major version of Helios that introduces incompatible changes (if we have to) then there needs to be a way to tell that one file is the Export.lua for the previous version and one is for the new one.  Users will need this to migrate their changes they may have made to the Export script.  For example, if Helios 1.6 introduces a new Export.lua, then people can hit the "update Exports" button in Profile Editor and get a new HeliosExports16.lua that sits next to HeliosExports15.lua (modified).  Then they can switch to calling the new one (from Export.lua) after they migrate their changes.
