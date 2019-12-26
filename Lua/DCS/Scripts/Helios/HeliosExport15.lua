@@ -50,6 +50,9 @@ helios_impl.fastAnnounceInterval = 0.1
 -- seconds after change in vehicle to use fast announcements
 helios_impl.fastAnnounceDuration = 1.0
 
+-- seconds between checks whether this file has changed, if hot reload is enabled
+helios_impl.hotReloadInterval = 5.0
+
 -- Module names are different from internal self names, so this table translates them
 -- without instantiating every module.  Planes must be entered into this table to be
 -- able to use modules from the Scripts\Mods directory.
@@ -86,17 +89,7 @@ function helios_dcs.LuaExportStart()
     package.path = package.path .. ";.\\LuaSocket\\?.lua"
     package.cpath = package.cpath .. ";.\\LuaSocket\\?.dll"
 
-    -- load socket library
-    helios_private.socketLibrary = require("socket")
-
-    -- init with empty driver that exports nothing by default
-    helios_impl.installDriver(helios_private.createDriver(), "")
-
-    -- start service
-    helios_private.clientSocket = helios_private.socketLibrary.udp()
-    helios_private.clientSocket:setsockname("*", 0)
-    helios_private.clientSocket:setoption("broadcast", true)
-    helios_private.clientSocket:settimeout(.001) -- set the timeout for reading the socket
+    helios_impl.init()
 end
 
 function helios_dcs.LuaExportBeforeNextFrame()
@@ -107,16 +100,18 @@ function helios_dcs.LuaExportAfterNextFrame()
 end
 
 function helios_dcs.LuaExportStop()
-    -- Called once just after mission stop.
-    -- Flush pending data, send DISCONNECT message so we can fire the Helios Disconnect event
-    helios_private.doSend("DISCONNECT", "")
-    helios_private.flush()
-    helios_private.clientSocket:close()
+    -- called once just after mission stop.
+    helios_impl.unload()
 end
 
-function helios_dcs.LuaExportActivityNextEvent(t)
-    helios_private.clock = t
-    local nextEvent = t + helios_impl.exportInterval
+function helios_dcs.LuaExportActivityNextEvent(timeNow)
+    local previousClock = helios_private.clock
+    helios_private.clock = timeNow
+    if previousClock == 0 then
+        -- we just learned the time for the first time
+        helios_private.initTimers()
+    end
+    local nextEvent = timeNow + helios_impl.exportInterval
 
     -- process timers
     for timerName, timer in pairs(helios_private.state.timers) do
@@ -131,6 +126,12 @@ function helios_dcs.LuaExportActivityNextEvent(t)
                 if timerName == "autoLoad" then
                     helios_private.state.timers.autoLoad = nil
                     helios_private.autoLoad()
+                elseif timerName == "reload" then
+                    if helios_private.checkReload() then
+                        -- all our functions and state were just reset, so don't do anything
+                        -- and get called again right away
+                        return nextEvent + 1
+                    end
                 end
             else
                 if timer < nextEvent then
@@ -140,7 +141,6 @@ function helios_dcs.LuaExportActivityNextEvent(t)
             end
         end
     end
-    t = nextEvent
 
     -- check if vehicle type has changed
     local selfName = helios.selfName()
@@ -181,7 +181,7 @@ function helios_dcs.LuaExportActivityNextEvent(t)
     end
 
     helios_private.flush();
-    return t
+    return nextEvent
 end
 
 -- ========================= PUBLIC API FOR PROFILE DRIVERS ======================
@@ -278,6 +278,52 @@ end
 -- These functions are exported for use in mock testing, but are not for use by
 -- profile drivers or modules.  Keeping their interface stable allows the mock tester to continue
 -- to work.
+
+-- called either from LuaExportStart hook or from hot reload
+function helios_impl.init()
+    -- load socket library, if not already done
+    helios_private.socketLibrary = helios_private.socketLibrary or require("socket")
+
+    -- Simulation id
+    helios_private.simID = string.format("%08x*", os.time())
+
+    -- most recently detected selfName
+    helios_private.previousSelfName = ""
+
+    -- event time 'now' as told to us by DCS
+    helios_private.clock = 0
+
+    -- init with empty driver that exports nothing by default
+    -- NOTE: also clears state
+    helios_impl.installDriver(helios_private.createDriver(), "")
+
+    -- start service
+    helios_private.clientSocket = helios_private.socketLibrary.udp()
+    helios_private.clientSocket:setsockname("*", 0)
+    helios_private.clientSocket:setoption("broadcast", true)
+    helios_private.clientSocket:settimeout(.001) -- blocking, but for a very short time
+
+    -- if we are reloaded, we have to start using the new copies of these functions,
+    -- because they are bound to the new private variables
+    if helios_loader ~= nil then
+        helios_loader.reload = helios_private.reload
+        helios_loader.scriptChanged = helios_private.scriptChanged
+    end
+end
+
+function helios_impl.unload()
+    -- flush pending data, send DISCONNECT message so we can fire the Helios Disconnect event
+    helios_private.doSend("DISCONNECT", "")
+    helios_private.flush()
+
+    -- free file descriptor and release port
+    helios_private.clientSocket:close()
+end
+
+-- for hot reload, we also need to step out of the DCS hook chain
+function helios_impl.unhook()
+    helios_private.unhookDCS()
+end
 
 -- handle incoming message from Helios
 function helios_impl.dispatchCommand(command)
@@ -402,6 +448,7 @@ function helios_impl.installDriver(driver, driverName)
     -- shut down any existing driver
     if helios_private.driver ~= nil then
         helios_private.driver.unload()
+        helios_private.driver = nil
     end
 
     -- install driver
@@ -420,24 +467,44 @@ function helios_impl.notifyLoaded()
     helios_private.flush()
 end
 
+-- enable hot reloading of the script on changes
+function helios_impl.enableHotReload(fullPath)
+    local attributes = lfs.attributes(fullPath)
+    if attributes == nil then
+        log.write("HELIOS.EXPORT", log.ERROR, string.format("hot reloading will not work because the specified file '%s' does not exist", fullPath))
+        return
+    end
+
+    -- build a new global scope that does not get written when we reload
+    helios_loader = {
+        fullPath = fullPath,
+        modified = attributes.modification,
+        reload = helios_private.reload,
+        scriptChanged = helios_private.scriptChanged
+    }
+
+    -- stubs we register as DCS callbacks during hot reload if we are the only script in the chain
+    -- if we die on restart, these will remain as safe handlers
+    function helios_loader.LuaExportStart() end
+    function helios_loader.LuaExportStop() end
+    function helios_loader.LuaExportActivityNextEvent(t) return t end
+    function helios_loader.LuaExportBeforeNextFrame() end
+    function helios_loader.LuaExportAfterNextFrame() end
+end
+
+-- for testing
+function helios_impl.setSimID(value)
+    helios_private.simID = value
+end
+
 -- ========================= PRIVATE CODE ========================================
 
 -- luasocket
-helios_private.socketLibrary = nil -- lazy init
-
--- Simulation id
-helios_private.simID = string.format("%08x*", os.time())
-
--- most recently detected selfName
-helios_private.previousSelfName = ""
-
--- event time 'now' as told to us by DCS
-helios_private.clock = 0;
-
--- State data for export processing
-helios_private.state = {}
+helios_private.socketLibrary = nil -- lazy init, but not reset on hot reload
 
 function helios_private.clearState()
+    helios_private.state = {}
+
     helios_private.state.packetSize = 0
     helios_private.state.sendStrings = {}
     helios_private.state.lastData = {}
@@ -453,9 +520,17 @@ function helios_private.clearState()
 
     -- ticks of fast announcement remaining
     helios_private.state.fastAnnounceTicks = helios_impl.fastAnnounceDuration / helios_impl.exportInterval
+
+    -- restart timers if we know what time it is
+    if helios_private.clock > 0 then
+        helios_private.initTimers()
+    end
 end
 
 function helios_private.processArguments(device, arguments)
+    if arguments == nil then
+        return
+    end
     local lArgumentValue
     for lArgument, lFormat in pairs(arguments) do
         lArgumentValue = string.format(lFormat, device:get_argument_value(lArgument))
@@ -528,7 +603,6 @@ function helios_private.notifySelfName(selfName)
     helios_private.doSend("ACTIVE_VEHICLE", selfName)
     helios_private.flush()
 end
-
 
 function helios_private.findProfiles(selfName)
     local numProfiles = 0
@@ -635,6 +709,85 @@ function helios_private.processExports()
             helios_private.processArguments(mainPanetargetDevice, helios_private.driver.arguments)
             helios_private.driver.processLowImportance(mainPanetargetDevice)
             helios_private.state.tickCount = 0
+        end
+    end
+end
+
+-- shut down and reload.  NOTE: we will get a new dynamic local port, so Helios will see this like a DCS restart
+function helios_private.reload()
+    log.write("HELIOS.EXPORT", log.INFO, string.format("hot reloading script '%s'", helios_loader.fullPath))
+    helios_impl.unload()
+    helios_impl.unhook()
+    local success, result = pcall(dofile, helios_loader.fullPath)
+    if success then
+        -- install new version
+        helios_impl = result
+    else
+        log.write("HELIOS.EXPORT", log.ERROR, string.format("hot reload of script '%s' failed", helios_loader.fullPath))
+        if type(result) == "string" then
+            log.write("HELIOS.EXPORT", log.ERROR, result)
+        end
+    end
+    helios_impl.init()
+    return helios_impl
+end
+
+-- check for file change on main script
+function helios_private.scriptChanged()
+    local previous = helios_loader.modified or 0
+    local attributes = lfs.attributes(helios_loader.fullPath)
+    if attributes == nil then
+        if helios_loader.modified ~= nil then
+            -- log this once
+            log.write("HELIOS.EXPORT", log.ERROR, string.format("script '%s' is no longer accessible; hot reload will not work", helios_loader.fullPath))
+            helios_loader.modified = nil
+        end
+        return false
+    end
+    helios_loader.modified = attributes.modification
+    log.write("HELIOS.EXPORT", log.DEBUG, string.format("instance '%s' checking script '%s' modified at %d; previous version from %d",
+        helios_private.simID,
+        helios_loader.fullPath,
+        helios_loader.modified,
+        previous))
+    return helios_loader.modified > (1 + previous)
+end
+
+-- called on our reload check timer, returns true if reloaded
+function helios_private.checkReload()
+    if helios_loader ~= nil then
+        -- persist in case we reload now
+        helios_loader.timer =  helios_private.clock + helios_impl.hotReloadInterval
+
+        -- check for file change
+        if helios_loader.scriptChanged() then
+            -- reload everything
+            helios_loader.reload()
+            -- we are running an unnamed function at this point. tell caller to back out
+            return true
+        end
+        -- we are still here, just check again later
+        helios_private.state.timers.reload = helios_loader.timer
+    else
+        -- not supposed to happen
+        log.write("HELIOS.EXPORT", log.ERROR, "hot reload disabled")
+        helios_private.state.timers.reload = nil
+    end
+    return false
+end
+
+-- called when we first learn the clock time or when we reset the state
+function helios_private.initTimers()
+    log.write("HELIOS.EXPORT", log.DEBUG, string.format("initializing timers at (clock %f)", helios_private.clock))
+    if helios_loader ~= nil then
+        if helios_loader.timer ~= nil then
+            -- restore timer
+            helios_private.state.timers.reload = helios_loader.timer
+        else
+            -- start new one
+            helios_private.state.timers.reload =  helios_private.clock + helios_impl.hotReloadInterval
+            -- persist
+            helios_loader.timer = helios_private.state.timers.reload
         end
     end
 end
@@ -787,7 +940,7 @@ helios_modules_util.GetListIndicator = helios.parseIndication -- same signature
 
 -- ========================= CONNECTION TO DCS ===================================
 
--- save any previous exports
+-- save and chain any previous exports
 helios_private.previousHooks = {}
 helios_private.previousHooks.LuaExportStart = LuaExportStart
 helios_private.previousHooks.LuaExportStop = LuaExportStop
@@ -802,11 +955,14 @@ function helios_private.chainHook(functionName)
         local success, result = pcall(helios_dcs[functionName])
         if not success then
             log.write("HELIOS.EXPORT", log.ERROR, string.format("error return from Helios implementation of '%s'", functionName))
-            log.write("HELIOS.EXPORT", log.ERROR, result)
+            if type(result) == "string" then
+                log.write("HELIOS.EXPORT", log.ERROR, result)
+            end
         end
-        -- chain to next
-        if helios_private.previousHooks[functionName] ~= nil then
-            helios_private.previousHooks[functionName]()
+        -- chain to next if it isn't our safety stub left over from reload
+        local nextHandler = helios_private.previousHooks[functionName]
+        if nextHandler ~= nil and nextHandler ~= helios_loader[functionName] then
+            nextHandler()
         end
     end
 end
@@ -827,17 +983,48 @@ function LuaExportActivityNextEvent(timeNow)
         timeNext = result
     else
         log.write("HELIOS.EXPORT", log.ERROR, string.format("error return from Helios implementation of 'LuaExportActivityNextEvent'"))
-        log.write("HELIOS.EXPORT", log.ERROR, result)
+        if type(result) == "string" then
+            log.write("HELIOS.EXPORT", log.ERROR, result)
+        end
     end
 
     -- chain to next and keep closest event time that requires wake up
-    if helios_private.previousHooks.LuaExportActivityNextEvent ~= nil then
-        local timeOther = helios_private.previousHooks.LuaExportActivityNextEvent(timeNow)
+    -- chain only if it isn't our safety stub left over from reload
+    local nextHandler = helios_private.previousHooks.LuaExportActivityNextEvent
+    if nextHandler ~= nil and nextHandler ~= helios_loader.LuaExportActivityNextEvent then
+        local timeOther = nextHandler(timeNow)
         if timeOther < timeNext then
             timeNext = timeOther
         end
     end
     return timeNext
+end
+
+-- on hot reload, remove our old implementation from the DCS hooks
+function helios_private.unhookDCS()
+    if helios_loader == nil then
+        log.write("HELIOS.EXPORT", log.ERROR, string.format("logic error: attempted to use unhook without hot reload enabled; ignored"))
+        return
+    end
+
+    -- if we die during restart, we need to keep things in a safe state
+    -- these will catch any calls from our old hooks that other may have stored
+    helios_dcs.LuaExportStart =  helios_loader.LuaExportStart
+    helios_dcs.LuaExportStop = helios_loader.LuaExportStop
+    helios_dcs.LuaExportActivityNextEvent = helios_loader.LuaExportActivityNextEvent
+    helios_dcs.LuaExportBeforeNextFrame =  helios_loader.LuaExportBeforeNextFrame
+    helios_dcs.LuaExportAfterNextFrame = helios_loader.LuaExportAfterNextFrame
+
+    -- these functions must not suddenly become null, so we restore them or install
+    -- a dummy handler if we are the only script
+    LuaExportStart = helios_private.previousHooks.LuaExportStart or helios_loader.LuaExportStart
+    LuaExportStop = helios_private.previousHooks.LuaExportStop or helios_loader.LuaExportStop
+    LuaExportActivityNextEvent = helios_private.previousHooks.LuaExportActivityNextEvent or helios_loader.LuaExportActivityNextEvent
+    LuaExportBeforeNextFrame = helios_private.previousHooks.LuaExportBeforeNextFrame or helios_loader.LuaExportBeforeNextFrame
+    LuaExportAfterNextFrame = helios_private.previousHooks.LuaExportAfterNextFrame or helios_loader.LuaExportAfterNextFrame
+
+    -- NOTE: some other script may have stored our old DCS hooks, but they will
+    -- continue to workend
 end
 
 -- when this script is being tested, these functions are accessible to our tester

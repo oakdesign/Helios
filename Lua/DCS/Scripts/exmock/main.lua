@@ -13,8 +13,15 @@ package.path = package.path..';./exmock/?.lua;'
 package.cpath = package.cpath..';./exmock/?.dll;'
 
 -- mock implementation, only used when testing in LUA 5.1 runtime without DCS
-lfs = require("mock_lfs")
 log = require("mock_log")
+
+-- lfs is always provided by DCS
+lfs = require("lfs")
+
+-- extra function provided by DCS
+function lfs.writedir()
+    return "..\\"
+end
 
 -- mock tuning
 local helios_mock_private = {}
@@ -141,41 +148,51 @@ function LoGeoCoordinatesToLoCoordinates(x1, z1)
     return { x = x1, y = 0.0, z = z1};
 end
 
--- load export script as if we were DCS and gain privileged access
-local helios_impl = dofile(".\\Helios\\HeliosExport15.lua")
+-- load export script as if we were the main Export.lua running under DCS, and gain privileged access
+helios_mock.impl = dofile(lfs.writedir().."Scripts\\Helios\\HeliosExport15.lua")
+helios_mock.impl.enableHotReload(lfs.writedir().."Scripts\\Helios\\HeliosExport15.lua")
+
+-- luacheck: globals tostring
+function helios_mock.installReloaded(reloaded_helios_impl)
+    log.write('MOCK', log.DEBUG, string.format("switching helios implementation from '%s' to '%s'",
+        tostring(helios_mock.impl),
+        tostring(reloaded_helios_impl)))
+    helios_mock.impl = reloaded_helios_impl
+end
 
 -- set name of vehicle/aircraft to be reported by mock DCS
 function helios_mock.setSelf(name)
+    log.write('MOCK', log.ERROR, string.format("changing vehicle from '%s' to '%s'", helios_mock.selfName, name))
     helios_mock.selfName = name
 end
 
 function helios_mock.profileName()
-    return helios_impl.driverName
+    return helios_mock.impl.driverName
 end
 
 function helios_mock.loadDriver(selfName, profileName)
     -- NOTE: this isn't part of the helios API, enforced by luacheck
-    helios_impl.loadProfile(selfName, profileName)
+    helios_mock.impl.loadProfile(selfName, profileName)
 end
 
 function helios_mock.receiveLoadProfile(profileName)
-    helios_impl.dispatchCommand(string.format("P%s", profileName))
+    helios_mock.impl.dispatchCommand(string.format("P%s", profileName))
 end
 
 function helios_mock.framesUntilAutoLoad()
-    return math.ceil((helios_impl.autoLoadDelay + helios_impl.exportInterval) * helios_mock_private.fps)
+    return math.ceil((helios_mock.impl.autoLoadDelay + helios_mock.impl.exportInterval) * helios_mock_private.fps)
 end
 
 -- test loading module in compatibility mode
 function helios_mock.loadModuleDriver(selfName, moduleName)
-    helios_impl.cancelAutoLoad();
-    local driver = helios_impl.createModuleDriver(selfName, moduleName)
+    helios_mock.impl.cancelAutoLoad();
+    local driver = helios_mock.impl.createModuleDriver(selfName, moduleName)
     if driver == nil then
         log.write('MOCK', log.ERROR, string.format("failed to create module driver %s for %s", moduleName, selfName))
         return
     end
-    helios_impl.installDriver(driver, moduleName)
-    helios_impl.notifyLoaded()
+    helios_mock.impl.installDriver(driver, moduleName)
+    helios_mock.impl.notifyLoaded()
 end
 
 -- default test

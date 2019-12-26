@@ -7,22 +7,39 @@ std = {
         -- helios epxport API
         helios = {
             fields = {
-                "splitString",
-                "round",
-                "ensureString",
-                "textureToString",
-                "send",
-                "parseIndication",
-                "selfName",
                 "autoLoadDelay",
+                "ensureString",
+                "parseIndication",
+                "round",
+                "selfName",
+                "send",
+                "splitString",
+                "textureToString",
                 "version"
             }
         },
 
-        -- mutable globals
+        -- hot reload functionality
+        -- only present if hot reloading is enabled
+        helios_loader = {
+            fields = {
+                "fullPath",
+                "modified",
+                "reload",
+                "scriptChanged",
+                "timer",
+                "LuaExportStart",
+                "LuaExportStop",
+                "LuaExportActivityNextEvent",
+                "LuaExportBeforeNextFrame",
+                "LuaExportAfterNextFrame"
+            }
+        },
+
+        -- LUA mutable globals
         "package",
 
-        -- mutable export hooks
+        -- DCS mutable export hooks
         "LuaExportStart",
         "LuaExportBeforeNextFrame",
         "LuaExportAfterNextFrame",
@@ -33,55 +50,56 @@ std = {
         Helios_Udp = {
             fields = {
                 -- API functions
-                "Send",
                 "Flush",
-                "ResetChangeValues"
+                "ResetChangeValues",
+                "Send"
             }
         },
         Helios_Util = {
             fields = {
                 -- API functions
-                "Split",
-                "ValueConvert",
                 "Convert_Lamp",
+                "Convert_SW",
                 "Degrees",
                 "GetListIndicator",
-                "Convert_SW"
+                "Split",
+                "ValueConvert"
             }
         }
     },
     read_globals = {
         -- LUA std
-        "math",
-        "table",
-        "string",
-        "os",
-        "require",
         "dofile",
-        "type",
-        "pairs",
+        "io",
         "ipairs",
-        "tonumber",
+        "math",
+        "os",
+        "pairs",
         "pcall",
+        "require",
+        "string",
+        "table",
+        "tonumber",
+        "type",
 
         -- DCS
-        "list_indication",
         "GetDevice",
-        "LoGetSelfData",
-        "LoGetAltitudeAboveSeaLevel",
-        "LoGetAltitudeAboveGroundLevel",
-        "LoGetADIPitchBankYaw",
-        "LoGetEngineInfo",
-        "LoGetControlPanel_HSI",
-        "LoGetVerticalVelocity",
-        "LoGetIndicatedAirSpeed",
-        "LoGetRoute",
-        "LoGetAngleOfAttack",
+        "list_indication",
+        "LoGeoCoordinatesToLoCoordinates",
         "LoGetAccelerationUnits",
+        "LoGetADIPitchBankYaw",
+        "LoGetAltitudeAboveGroundLevel",
+        "LoGetAltitudeAboveSeaLevel",
+        "LoGetAngleOfAttack",
+        "LoGetControlPanel_HSI",
+        "LoGetEngineInfo",
         "LoGetGlideDeviation",
-        "LoGetSideDeviation",
+        "LoGetIndicatedAirSpeed",
         "LoGetNavigationInfo",
-        "LoGeoCoordinatesToLoCoordinates"
+        "LoGetRoute",
+        "LoGetSelfData",
+        "LoGetSideDeviation",
+        "LoGetVerticalVelocity"
     }
 }
 ignore = {
@@ -101,13 +119,13 @@ files["Scripts/Helios/Drivers/*/*.lua"] = {
             -- helios export API
             helios = {
                 fields = {
-                    "splitString",
-                    "round",
                     "ensureString",
-                    "textureToString",
-                    "send",
                     "parseIndication",
+                    "round",
                     "selfName",
+                    "send",
+                    "splitString",
+                    "textureToString",
                     "version"
                 }
             },
@@ -146,12 +164,14 @@ files["Scripts/Helios/Drivers/*/*.lua"] = {
             -- helios mock API
             helios_mock = {
                 fields = {
-                    "setSelf",
+                    "framesUntilAutoLoad",
+                    "impl",
+                    "installReloaded",
                     "loadDriver",
+                    "loadModuleDriver",
                     "profileName",
                     "receiveLoadProfile",
-                    "framesUntilAutoLoad",
-                    "loadModuleDriver"
+                    "setSelf"
                 }
             },
 
@@ -240,20 +260,20 @@ files["Scripts/Helios/Drivers/*/*.lua"] = {
             "LoSetCommand",
 
             -- DCS, to talk to flaming cliffs engine
-            "LoGetAltitudeAboveSeaLevel",
-            "LoGetAltitudeAboveGroundLevel",
-            "LoGetADIPitchBankYaw",
-            "LoGetEngineInfo",
-            "LoGetControlPanel_HSI",
-            "LoGetVerticalVelocity",
-            "LoGetIndicatedAirSpeed",
-            "LoGetRoute",
-            "LoGetAngleOfAttack",
+            "LoGeoCoordinatesToLoCoordinates",
             "LoGetAccelerationUnits",
+            "LoGetADIPitchBankYaw",
+            "LoGetAltitudeAboveGroundLevel",
+            "LoGetAltitudeAboveSeaLevel",
+            "LoGetAngleOfAttack",
+            "LoGetControlPanel_HSI",
+            "LoGetEngineInfo",
             "LoGetGlideDeviation",
-            "LoGetSideDeviation",
+            "LoGetIndicatedAirSpeed",
             "LoGetNavigationInfo",
-            "LoGeoCoordinatesToLoCoordinates"
+            "LoGetRoute",
+            "LoGetSideDeviation",
+            "LoGetVerticalVelocity"
         }
     },
     ignore = {
