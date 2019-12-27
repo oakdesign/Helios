@@ -133,6 +133,7 @@
     <Compile Include="Gauges\M2000C\Miscellaneous\FireWarning_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\PCI_Panel.cs" />
     <Compile Include="Gauges\M2000C\VorIlsChannel\VorIls_Panel.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInstallTypeConverter.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml.cs">
       <DependentUpon>DCSInterfaceEditor.xaml</DependentUpon>
     </Compile>

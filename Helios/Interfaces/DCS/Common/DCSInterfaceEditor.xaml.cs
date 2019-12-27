@@ -19,8 +19,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     using GadrocsWorkshop.Helios.Windows.Controls;
     using Microsoft.Win32;
     using System;
+    using System.Globalization;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Input;
 
     /// <summary>
@@ -36,10 +38,18 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         static DCSInterfaceEditor()
         {
             Type ownerType = typeof(DCSInterfaceEditor);
-
             CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(DCSConfigurator.AddDoFile, AddDoFile_Executed));
             CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(DCSConfigurator.RemoveDoFile, RemoveDoFile_Executed));
         }
+
+        public DCSInterfaceEditor()
+        {
+            InitializeComponent();
+            UpdateScriptDirectoryPath();
+            Configuration = new DCSConfigurator("DCS F/A-18C", "");
+        }
+
+        #region Commands
 
         private static void AddDoFile_Executed(object target, ExecutedRoutedEventArgs e)
         {
@@ -61,38 +71,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 editor.Configuration.DoFiles.Remove(file);
             }
         }
-
-        private string _dcsPath = null;
-        private uint _bestDCSInstallType = 0;
-
-        public DCSInterfaceEditor()
-        {
-            InitializeComponent();
-            _bestDCSInstallType = 3;
-            Configuration = new DCSConfigurator("DCS F/A-18C", DCSPath);
-            Configuration.ExportConfigPath = "Config\\Export";
-            switch (_bestDCSInstallType)
-            {
-                case 3:
-                    Configuration.DCSInstallType = "GA";
-                    Configuration.InstallTypeGA = true;
-                    break;
-                case 2:
-                    Configuration.DCSInstallType = "OpenBeta";
-                    Configuration.InstallTypeBeta = true;
-                    break;
-                case 1:
-                    Configuration.DCSInstallType = "OpenAlpha";
-                    Configuration.InstallTypeAlpha = true;
-                    break;
-                default:
-                    Configuration.DCSInstallType = "";
-                    Configuration.InstallTypeGA = false;
-                    Configuration.InstallTypeBeta = false;
-                    Configuration.InstallTypeAlpha = false;
-                    break;
-            }
-        }
+        #endregion
 
         #region Properties
 
@@ -101,85 +80,98 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             get { return (DCSConfigurator)GetValue(ConfigurationProperty); }
             set { SetValue(ConfigurationProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for Configuration.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ConfigurationProperty =
             DependencyProperty.Register("Configuration", typeof(DCSConfigurator), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
+        
+        /// <summary>
+        /// location where we will write Export.lua and related directories, dynamically calculated
+        /// </summary>
+        public string ScriptDirectoryPath
+        {
+            get { return (string)GetValue(ScriptDirectoryPathProperty); }
+        }
+        public static readonly DependencyProperty ScriptDirectoryPathProperty =
+            DependencyProperty.Register("ScriptDirectoryPath", typeof(String), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
 
-        public string DCSPath
+        /// <summary>
+        /// if set, we generate the Scripts/Export.lua stub in addition to the files in Scripts/Helios
+        /// </summary>
+        public bool GenerateExportLoader
+        {
+            get { return (bool)GetValue(GenerateExportLoaderProperty); }
+            set { SetValue(GenerateExportLoaderProperty, value); }
+        }
+        public static readonly DependencyProperty GenerateExportLoaderProperty =
+            DependencyProperty.Register("GenerateExportLoader", typeof(bool), typeof(DCSInterfaceEditor), new PropertyMetadata(true));
+
+
+        /// <summary>
+        /// selected install type 
+        /// </summary>
+        public InstallType SelectedInstallType {
+            get { return (InstallType)GetValue(SelectedInstallTypeProperty); }
+            set { SetValue(SelectedInstallTypeProperty, value); }
+        }
+        public static readonly DependencyProperty SelectedInstallTypeProperty =
+            DependencyProperty.Register(
+                "SelectedInstallType", 
+                typeof(InstallType), 
+                typeof(DCSInterfaceEditor), 
+                new PropertyMetadata(InstallType.GA, new PropertyChangedCallback(OnInstallTypeSelected)));
+
+        private static void OnInstallTypeSelected(DependencyObject target, DependencyPropertyChangedEventArgs e)
+        {
+            ((DCSInterfaceEditor)target).UpdateScriptDirectoryPath();
+        }
+
+        private void UpdateScriptDirectoryPath()
+        {
+            SetValue(ScriptDirectoryPathProperty, System.IO.Path.Combine(SavedGamesPath, SavedGamesName, "Scripts"));
+        }
+
+        private static Guid FolderSavedGames = new Guid("4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4");
+
+        public string SavedGamesPath
         {
             get
             {
-
-                if (_dcsPath == null)
+                // We attempt to get the Saved Games known folder from the native method to cater for situations
+                // when the locale of the installation has the folder name in non-English.
+                IntPtr pathPtr;
+                string savedGamesPath;
+                int hr = NativeMethods.SHGetKnownFolderPath(ref FolderSavedGames, 0, IntPtr.Zero, out pathPtr);
+                if (hr == 0)
                 {
-                    RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World");
-                    if (pathKey == null)
-                    {
-                        --_bestDCSInstallType;
-                        pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World OpenBeta");
-                    }
-                    if (pathKey == null)
-                    {
-                        --_bestDCSInstallType;
-                        pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World OpenAlpha");
-                    }
-                    if (pathKey == null)
-                    {
-                        --_bestDCSInstallType;
-                        pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS DCS");
-                    }
-
-                    if (pathKey != null)
-                    {
-                        _dcsPath = (string)pathKey.GetValue("Path");
-                        pathKey.Close();
-                        ConfigManager.LogManager.LogDebug("DCS F/A-18C Interface Editor - Found DCS Path (Path=\"" + _dcsPath + "\")");
-                    }
-                    else
-                    {
-                        ConfigManager.LogManager.LogDebug("DCS F/A-18C Interface Editor - No DCS Installation Paths Found in registry");
-                        _bestDCSInstallType = 0;
-                        _dcsPath = "";
-                    }
+                    savedGamesPath = System.Runtime.InteropServices.Marshal.PtrToStringUni(pathPtr);
+                    System.Runtime.InteropServices.Marshal.FreeCoTaskMem(pathPtr);
                 }
-                return _dcsPath;
-            }
-            set
-            {
-                _dcsPath = value;
+                else
+                {
+                    savedGamesPath = Environment.GetEnvironmentVariable("userprofile") + "Saved Games";
+                }
+                return savedGamesPath;
             }
         }
-        public void ForceDCSPath()
+    
+        public string SavedGamesName
         {
-            RegistryKey pathKey = null;
-            if (Configuration.InstallTypeGA)
+            get
             {
-                pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World");
-            }
-            else if (Configuration.InstallTypeBeta)
-            {
-                pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World OpenBeta");
-            }
-            else if (Configuration.InstallTypeAlpha)
-            {
-                pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World OpenAlpha");
-            }
-
-            if (pathKey != null)
-            {
-                _dcsPath = (string)pathKey.GetValue("Path");
-                Configuration.AppPath = _dcsPath;
-                pathKey.Close();
-                ConfigManager.LogManager.LogDebug("DCS F/A-18C Interface Editor - Found DCS Path (Path=\"" + _dcsPath + "\")");
-            }
-            else
-            {
-                _dcsPath = "";
-                Configuration.AppPath = "";
-                ConfigManager.LogManager.LogDebug("DCS F/A-18C Interface Editor - Forced DCS Install Type Path not found (Installation Type=\"" + Configuration.DCSInstallType + "\")");
+                switch (SelectedInstallType)
+                {
+                    case InstallType.OpenAlpha:
+                        return "DCS.OpenAlpha";
+                    case InstallType.OpenBeta:
+                        return "DCS.OpenBeta";
+                    case InstallType.GA:
+                    default:
+                        return "DCS";
+                }
             }
         }
+
+        public bool IsPathValid { get => true; }
+        public bool IsUpToDate { get => true; }
 
         #endregion
 
@@ -205,29 +197,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             }
         }
 
-        private void ResetPath(object sender, RoutedEventArgs e)
-        {
-            if (Configuration != null)
-            {
-                Configuration.AppPath = DCSPath;
-            }
-        }
-
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
             Configuration.RestoreConfig();
         }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            RadioButton _rb = (RadioButton)sender;
-            if (_rb.GroupName == "DCSInstallTypeGroup")
-            {
-                // an override for the installation type has been declared 
-                Configuration.DCSInstallType = (string)_rb.Tag;
-                ForceDCSPath();
-            }
-        }
-
     }
 }

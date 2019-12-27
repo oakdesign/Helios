@@ -5,12 +5,13 @@
                                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                  xmlns:HeliosSdk="clr-namespace:GadrocsWorkshop.Helios.Windows.Controls"
                                  xmlns:dcs="clr-namespace:GadrocsWorkshop.Helios.Interfaces.DCS.Common"
+                                 xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
                                  x:Name="DCSPropertiesWindow" Height="Auto" Width="Auto" Background="{StaticResource ToolBackground}" Padding="5">
     <FrameworkElement.Resources>
         <Style x:Key="PathInvalid" TargetType="{x:Type StackPanel}">
             <Setter Property="UIElement.Visibility" Value="Collapsed"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IsPathValid}" Value="False">
+                <DataTrigger Binding="{Binding ElementName=DCSPropertiesWindow, Path=IsPathValid}" Value="False">
                     <Setter Property="UIElement.Visibility" Value="Visible"/>
                 </DataTrigger>
             </Style.Triggers>
@@ -20,8 +21,8 @@
             <Style.Triggers>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IsUpToDate}" Value="True"/>
-                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IsPathValid}" Value="True"/>
+                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=IsUpToDate}" Value="True"/>
+                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=IsPathValid}" Value="True"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
                         <Setter Property="UIElement.Visibility" Value="Visible"/>
@@ -34,8 +35,8 @@
             <Style.Triggers>
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IsUpToDate}" Value="False"/>
-                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IsPathValid}" Value="True"/>
+                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=IsUpToDate}" Value="False"/>
+                        <Condition Binding="{Binding ElementName=DCSPropertiesWindow, Path=IsPathValid}" Value="True"/>
                     </MultiDataTrigger.Conditions>
                     <MultiDataTrigger.Setters>
                         <Setter Property="UIElement.Visibility" Value="Visible"/>
@@ -50,9 +51,10 @@
                 <TextBlock Margin="6,0,0,0" Text="{Binding}"/>
             </StackPanel>
         </DataTemplate>
+        <dcs:DCSInstallTypeConverter x:Key="DCSInstallTypeConverter"/>
     </FrameworkElement.Resources>
     <StackPanel>
-        <GroupBox Header="Properties">
+        <GroupBox Header="Configuration">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -69,42 +71,28 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Content="IP Address"/>
-                <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
+                <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="200"
                  MaxWidth="200" Text="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.IPAddress}"/>
-                <TextBlock Grid.Column="1" Grid.Row="1" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">
-          IP Address DCS will send it's data to. If you are running on the same machine 127.0.0.1 is recommended.
-                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" FontSize="10" FontStyle="Italic" TextWrapping="Wrap" Text="IP Address to which Export script will send data.  If you are running on the same machine 127.0.0.1 is recommended."/>
                 <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Content="Port"/>
-                <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="40"
+                <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40"
                  MaxWidth="40" Text="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.Port}"/>
-                <TextBlock Grid.Column="1" Grid.Row="3" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">
-          UDP Port number which will be used to communicate between Helios and DCS.
-                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="3" FontSize="10" FontStyle="Italic" TextWrapping="Wrap" Text="UDP port number to which Export script will send data and on which Helios will listen."/>
                 <Label Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Content="Export Frequency"/>
-                <TextBox Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Left" Width="40"
+                <TextBox Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40"
                  MaxWidth="40" Text="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.ExportFrequency}"/>
-                <TextBlock Grid.Column="1" Grid.Row="5" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">
-          Number of times per second that instrument guages will be exported per second (min 4).
-                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="5" FontSize="10" FontStyle="Italic" TextWrapping="Wrap" Text="Number of times per second that instrument gauges will be exported (minimum of 4)."/>
                 <Label Grid.Column="0" Grid.Row="6" HorizontalAlignment="Right" Content="Phantom Monitor Fix"/>
                 <CheckBox Grid.Column="1" Grid.Row="6" VerticalAlignment="Center"
                   IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.PhantomFix}"/>
-                <TextBlock Grid.Column="1" Grid.Row="7" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">
-          When checked Helios will move the DCS window to the top left corner of the main screen.
-                </TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="7" FontSize="10" FontStyle="Italic" TextWrapping="Wrap" Text="When checked, Helios will periodically move the DCS window to the top left corner of the main screen."/>
             </Grid>
         </GroupBox>
         <GroupBox Header="Third Party Scripts" Margin="0,4,0,0">
             <StackPanel>
-                <TextBlock Margin="4" TextWrapping="Wrap">
-          Helios will add the following scripts as dofile lines when it configures DCS exports. (Example:TARS = "./Config/Export/TARSExport.lua").
-                </TextBlock>
-                <Border BorderBrush="#FF808080" BorderThickness="0,1" Margin="12">
-                    <ItemsControl ItemTemplate="{StaticResource DoFileTemplate}"
-                        ItemsSource="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.DoFiles}"/>
-                </Border>
+                <TextBlock Margin="4,4,4,12" TextWrapping="Wrap"><Run Text="Helios will add the following scripts as dofile lines when it writes Export.lua. (Example: TARS = &quot;./TARS/TARSExport.lua&quot;)."/><LineBreak/><Run Text="Paths are relative to the directory containing Export.lua"/></TextBlock>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="NewDoFile" Width="200"/>
+                    <TextBox Name="NewDoFile" Width="200" Margin="4,0"/>
                     <Button Margin="6,0,0,0" Command="dcs:DCSConfigurator.AddDoFile"
                   CommandParameter="{Binding ElementName=NewDoFile, Path=Text}">Add File</Button>
                 </StackPanel>
@@ -112,60 +100,70 @@
         </GroupBox>
         <GroupBox Header="DCS Setup" Margin="0,4,0,0">
             <StackPanel>
-                <Grid>
+                <Grid Height="Auto" RenderTransformOrigin="0.501,0.627">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>    <!-- primary labels -->
+                        <ColumnDefinition Width="*"/>       <!-- primary controls and long messages-->
+                        <ColumnDefinition Width="Auto"/>    <!-- extra right side labels -->
+                        <ColumnDefinition Width="Auto"/>    <!-- extra right side controls -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Content="Install Path"/>
-                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                        <HeliosSdk:HeliosTextBox VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="200" MaxWidth="400"
-                                     Text="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.AppPath}"/>
-                        <Button Click="ResetPath" Margin="5 2 0 2">Reset</Button>
-                    </StackPanel>
-                    <TextBlock Margin="20,5,5,5"  Grid.Column="2"  Grid.Row="0" FontWeight="Normal" Text="DCS Installation Type" />
-                    <RadioButton GroupName="DCSInstallTypeGroup" Grid.Column="3" Grid.Row="0" Margin="5,5"  IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.InstallTypeGA}" Tag="GA" Checked="RadioButton_Checked">
-                        <TextBlock TextWrapping="Wrap" Text="GA" />
-                    </RadioButton>
-                    <RadioButton GroupName="DCSInstallTypeGroup" Grid.Column="4" Grid.Row="0" Margin="5,5" IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.InstallTypeBeta}" Tag="OpenBeta" Checked="RadioButton_Checked">
-                        <TextBlock TextWrapping="Wrap" Text="Open Beta"/>
-                    </RadioButton>
-                    <RadioButton GroupName="DCSInstallTypeGroup" Grid.Column="5" Grid.Row="0" Margin="5,5"  IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.InstallTypeAlpha}" Tag="OpenAlpha" Checked="RadioButton_Checked">
-                        <TextBlock TextWrapping="Wrap" Text="Open Alpha"/>
-                    </RadioButton>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="DCS Version"/>
+                    <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="Install Path"/>
+                    <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Content="Export.lua"/>
 
-                    <TextBlock Grid.Column="1" Grid.Row="1" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">
-        Path to your DCS install folder.
-                    </TextBlock>
-                    <CheckBox Name="cb_UseNewExport" IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.UseNewExport}" Grid.Column="5" Grid.Row="1"  Margin="5,5" FontSize="12" FontStyle="Normal"  >
-                        Use New Export.lua structure
-                    </CheckBox>
+                    <TextBlock Grid.Row="4" Grid.Column="1" FontSize="10" FontStyle="Italic" TextWrapping="Wrap" Margin="0,1,0,0">Path to which DCS will write Export.lua and related directories</TextBlock>
+                    <TextBlock Grid.Row="7" Grid.Column="1" FontSize="10" FontStyle="Italic" TextWrapping="Wrap">Uncheck to generate only the export files in the Helios subdirectory, to use your own Export.lua stub that you already have.</TextBlock>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <RadioButton GroupName="DCSInstallTypeGroup" 
+                                     Grid.Column="0" Grid.Row="0" 
+                                     VerticalContentAlignment="Center" 
+                                     Padding="0" Margin="0,0,16,0"
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.GA}, diag:PresentationTraceSources.TraceLevel=High}">
+                            <Label Content="GA" />
+                        </RadioButton>
+                        <RadioButton GroupName="DCSInstallTypeGroup" 
+                                     Grid.Column="0" Grid.Row="0" 
+                                     VerticalContentAlignment="Center" 
+                                     Padding="0" Margin="0,0,16,0"
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.OpenBeta}}">
+                            <Label Content="Open Beta"/>
+                        </RadioButton>
+                        <RadioButton GroupName="DCSInstallTypeGroup" 
+                                     Grid.Column="0" Grid.Row="0" 
+                                     VerticalContentAlignment="Center" 
+                                     Padding="0" Margin="0,0,16,0"
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.OpenAlpha}}">
+                            <Label Content="Open Alpha"/>
+                        </RadioButton>
+                    </StackPanel>
+                    <TextBlock Grid.Row="3" Grid.Column="1" MinWidth="200" MaxWidth="400" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ScriptDirectoryPath, ElementName=DCSPropertiesWindow}" Margin="0,4"/>
+                    <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding GenerateExportLoader, ElementName=DCSPropertiesWindow}"/>
+
+                    <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource PathInvalid}">
+                        <TextBlock Foreground="Red" VerticalAlignment="Center" Margin="0,0,12,0" TextWrapping="Wrap">Cannot find game install.</TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource UpToDateStyle}">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,12,0" TextWrapping="Wrap">Your DCS configuration is up to date.</TextBlock>
+                        <Button Click="Remove_Click" HorizontalAlignment="Right">Remove Helios Setup</Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource OutOfDateStyle}">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,12,0" TextWrapping="Wrap">In order for Helios to interface with DCS, an updated Export.lua file must be installed. This will back up an existing Export.lua file and deploy the necessary Helios configuration.</TextBlock>
+                        <Button Click="Configure_Click" HorizontalAlignment="Right">Setup DCS</Button>
+                    </StackPanel>
                 </Grid>
-                <StackPanel Style="{StaticResource PathInvalid}">
-                    <TextBlock Margin="4" Foreground="Red" TextWrapping="Wrap">
-            Cannot find game install.
-                    </TextBlock>
-                </StackPanel>
-                <StackPanel Style="{StaticResource UpToDateStyle}">
-                    <TextBlock Margin="4" TextWrapping="Wrap">
-            Your DCS configuration is up to date.
-                    </TextBlock>
-                    <Button Click="Remove_Click" Grid.Row="1" HorizontalAlignment="Right" Margin="2">Remove Helios Setup</Button>
-                </StackPanel>
-                <StackPanel Style="{StaticResource OutOfDateStyle}">
-                    <TextBlock Margin="4" TextWrapping="Wrap">
-            In order for Helios to interface with DCS, an updated Export.lua file must be installed. This will back up an existing Export.lua file and deploy the necessary Helios configuration.
-                    </TextBlock>
-                    <Button Click="Configure_Click" Grid.Row="1" HorizontalAlignment="Right" Margin="2">Setup DCS</Button>
-                </StackPanel>
             </StackPanel>
         </GroupBox>
     </StackPanel>
