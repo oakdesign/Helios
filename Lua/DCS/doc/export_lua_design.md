@@ -52,3 +52,6 @@ If we have Requirement 10, then we can have a version of Export.lua that reloads
 
 # Requirement 12: File naming should allow incompatible versions to coexist (not run)
 When we release a major version of Helios that introduces incompatible changes (if we have to) then there needs to be a way to tell that one file is the Export.lua for the previous version and one is for the new one.  Users will need this to migrate their changes they may have made to the Export script.  For example, if Helios 1.6 introduces a new Export.lua, then people can hit the "update Exports" button in Profile Editor and get a new HeliosExports16.lua that sits next to HeliosExports15.lua (modified).  Then they can switch to calling the new one (from Export.lua) after they migrate their changes.
+
+# Maybe Requirement 13:
+DCS Export can be tuned (via Export Frequence in Helios UI, which becones Export Interval in the scripts).   If anyone is actually using this to performance tune, then this should  be per profile and not one setting for all airplanes supported by the same Export.lua? 
