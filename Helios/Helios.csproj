@@ -137,7 +137,9 @@
     <Compile Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml.cs">
       <DependentUpon>DCSInterfaceEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\DCS\Common\DCSConfigurator2.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSExportProtocol.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSPhantomMonitorFix.cs" />
     <Compile Include="IProfileAwareInterface.cs" />
     <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />

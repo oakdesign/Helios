@@ -143,7 +143,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C
         #endregion
 
         public A10CInterface()
-            : base("DCS A10C", "A-10C")
+            : base("DCS A10C", "A-10C", "pack://application:,,,/Helios;component/Interfaces/DCS/A10C/ExportFunctions.lua")
         {
             AlternateName = "A-10C";  // this is the name that DCS uses to describe the aircraft being flown
 

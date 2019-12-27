@@ -23,17 +23,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(FA18CInterface.Editor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(DCSInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
     public class FA18CInterface : DCSInterface
     {
-        public class Editor: DCSInterfaceEditor
-        {   
-            public Editor()
-            {
-                Configuration.ExportFunctionsPath = "pack://application:,,,/Helios;component/Interfaces/DCS/FA18C/ExportFunctions.lua";
-            }
-        }
-
         #region Devices
         //  From devices.lua - DCS seem to want this to remain constant which is great 
         private const string FM_PROXY = "1";
@@ -110,7 +102,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
         #endregion
 
         public FA18CInterface()
-            : base("DCS F/A-18C", "FA-18C_hornet")
+            : base("DCS F/A-18C", "FA-18C_hornet", "pack://application:,,,/Helios;component/Interfaces/DCS/FA18C/ExportFunctions.lua")
         {
             #region Caution Indicators
             // Caution Light Indicator Panel

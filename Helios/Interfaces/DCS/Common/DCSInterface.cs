@@ -23,29 +23,23 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
     public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
     {
-        protected string _dcsPath;
-        protected bool _phantomFix;
-        protected int _phantomLeft;
-        protected int _phantomTop;
-        protected long _nextCheck = 0;
         protected string _exportDeviceName;
+        protected string _exportFunctionsPath;
+        protected DCSPhantomMonitorFix _phantomFix;
 
         // protocol to talk to DCS Export script (control messages)
         protected DCSExportProtocol _protocol;
 
-        public DCSInterface(string name, string exportDeviceName)
+        // phantom monitor fix 
+
+        public DCSInterface(string name, string exportDeviceName, string exportFunctionsPath)
             : base(name)
         {
             _exportDeviceName = exportDeviceName;
+            _exportFunctionsPath = exportFunctionsPath;
 
             // XXX temp until we get rid of alternate names
             AlternateName = exportDeviceName;
-
-            DCSConfigurator config = new DCSConfigurator(name, DCSPath);
-            Port = config.Port;
-            _phantomFix = config.PhantomFix;
-            _phantomLeft = config.PhantomFixLeft;
-            _phantomTop = config.PhantomFixTop;
 
             NetworkTriggerValue activeVehicle = new NetworkTriggerValue(this, "ACTIVE_VEHICLE", "ActiveVehicle", "Vehicle currently inhabited in DCS.", "Short name of vehicle");
             AddFunction(activeVehicle);
@@ -68,28 +62,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         public event EventHandler<ProfileStatus> ProfileStatusReceived;
         #endregion
 
-        private string DCSPath
-        {
-            get
-            {
-                if (_dcsPath == null)
-                {
-                    RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World");
-                    if (pathKey != null)
-                    {
-                        _dcsPath = (string)pathKey.GetValue("Path");
-                        pathKey.Close();
-                        ConfigManager.LogManager.LogDebug($"{Name} Interface Editor - Found DCS Path (Path=\"" + _dcsPath + "\")");
-                    }
-                    else
-                    {
-                        _dcsPath = "";
-                    }
-                }
-                return _dcsPath;
-            }
-        }
-
         // we only support selection based on aircraft type
         public IEnumerable<string> Tags {
             get
@@ -97,6 +69,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 return new string[] { _exportDeviceName };
             }
         }
+
+        /// <summary>
+        /// vehicle-specific file resource to include
+        /// </summary>
+        public string ExportFunctionsPath { get => _exportFunctionsPath; }
 
         protected override void OnProfileChanged(HeliosProfile oldProfile)
         {
@@ -115,21 +92,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         void Profile_Tick(object sender, EventArgs e)
         {
-            if (_phantomFix && System.Environment.TickCount - _nextCheck >= 0)
+            if (_phantomFix != null)
             {
-                System.Diagnostics.Process[] dcs = System.Diagnostics.Process.GetProcessesByName("DCS");
-                if (dcs.Length == 1)
-                {
-                    IntPtr hWnd = dcs[0].MainWindowHandle;
-                    NativeMethods.Rect dcsRect;
-                    NativeMethods.GetWindowRect(hWnd, out dcsRect);
-
-                    if (dcsRect.Width > 640 && (dcsRect.Left != _phantomLeft || dcsRect.Top != _phantomTop))
-                    {
-                        NativeMethods.MoveWindow(hWnd, _phantomLeft, _phantomTop, dcsRect.Width, dcsRect.Height, true);
-                    }
-                }
-                _nextCheck = System.Environment.TickCount + 5000;
+                _phantomFix.Profile_Tick(sender, e);
             }
         }
 
@@ -159,7 +124,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         protected override void OnProfileStarted()
         {
+            // these parts are only used at run time (i.e. not in the Profile Editor)
             _protocol = new DCSExportProtocol(this);
+            _phantomFix = new DCSPhantomMonitorFix(Name);
 
             // hook transport via event (transport is our base class) to know when we
             // have to reset our conversation with the client, because the client has 
@@ -172,6 +139,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             ClientChanged -= _protocol.BaseUDPInterface_ClientChanged;
             _protocol.Stop();
             _protocol = null;
+            _phantomFix = null;
         }
     }
 }

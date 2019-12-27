@@ -15,14 +15,9 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
     using GadrocsWorkshop.Helios.Windows.Controls;
-    using Microsoft.Win32;
     using System;
-    using System.Globalization;
     using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Data;
     using System.Windows.Input;
 
     /// <summary>
@@ -35,29 +30,57 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     /// </summary>
     public partial class DCSInterfaceEditor : HeliosInterfaceEditor
     {
+        // sub-configuration objects we path into
+        protected DCSConfigurator2 _configuration;
+        protected DCSPhantomMonitorFixConfig _phantomFix;
+
         static DCSInterfaceEditor()
         {
             Type ownerType = typeof(DCSInterfaceEditor);
-            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(DCSConfigurator.AddDoFile, AddDoFile_Executed));
-            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(DCSConfigurator.RemoveDoFile, RemoveDoFile_Executed));
+            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(AddDoFileCommand, AddDoFile_Executed));
+            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(RemoveDoFileCommand, RemoveDoFile_Executed));
         }
 
         public DCSInterfaceEditor()
         {
             InitializeComponent();
             UpdateScriptDirectoryPath();
-            Configuration = new DCSConfigurator("DCS F/A-18C", "");
+        }
+
+        /// <summary>
+        /// Called immediately after construction when our factory installs the Interface property
+        /// </summary>
+        protected override void OnInterfaceChanged(HeliosInterface oldInterface, HeliosInterface newInterface)
+        {
+            base.OnInterfaceChanged(oldInterface, newInterface);
+            if (newInterface is DCSInterface dcsInterface) {
+                _configuration = new DCSConfigurator2(
+                        dcsInterface,
+                        dcsInterface.Name,
+                        "pack://application:,,,/Helios;component/Interfaces/DCS/Common/Export.lua",
+                        dcsInterface.ExportFunctionsPath);
+                _phantomFix = new DCSPhantomMonitorFixConfig(dcsInterface.Name);
+            } else {
+                // provoke crash on attempt to use 
+                _configuration = null;
+                _phantomFix = null;
+            }
+            // need to rebind everything on the form
+            SetValue(ConfigurationProperty, _configuration);
+            SetValue(PhantomFixProperty, _phantomFix);
         }
 
         #region Commands
+        public static readonly RoutedUICommand AddDoFileCommand = new RoutedUICommand("Adds a dofile(...) to a DCS config.", "AddDoFile", typeof(DCSConfigurator));
+        public static readonly RoutedUICommand RemoveDoFileCommand = new RoutedUICommand("Removes a dofile(...) to a DCS config.", "RemoveDoFile", typeof(DCSConfigurator));
 
         private static void AddDoFile_Executed(object target, ExecutedRoutedEventArgs e)
         {
             DCSInterfaceEditor editor = target as DCSInterfaceEditor;
             string file = e.Parameter as string;
-            if (editor != null && !string.IsNullOrWhiteSpace(file) && !editor.Configuration.DoFiles.Contains(file))
+            if (editor != null && !string.IsNullOrWhiteSpace(file) && !editor._configuration.DoFiles.Contains(file))
             {
-                editor.Configuration.DoFiles.Add((string)e.Parameter);
+                editor._configuration.DoFiles.Add((string)e.Parameter);
                 editor.NewDoFile.Text = "";
             }
         }
@@ -66,23 +89,28 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
             DCSInterfaceEditor editor = target as DCSInterfaceEditor;
             string file = e.Parameter as string;
-            if (editor != null && !string.IsNullOrWhiteSpace(file) && editor.Configuration.DoFiles.Contains(file))
+            if (editor != null && !string.IsNullOrWhiteSpace(file) && editor._configuration.DoFiles.Contains(file))
             {
-                editor.Configuration.DoFiles.Remove(file);
+                editor._configuration.DoFiles.Remove(file);
             }
         }
         #endregion
 
         #region Properties
-
-        public DCSConfigurator Configuration
-        {
-            get { return (DCSConfigurator)GetValue(ConfigurationProperty); }
-            set { SetValue(ConfigurationProperty, value); }
-        }
+        /// <summary>
+        /// used by UI binding paths.
+        /// </summary>
+        public DCSConfigurator2 Configuration { get; }
         public static readonly DependencyProperty ConfigurationProperty =
-            DependencyProperty.Register("Configuration", typeof(DCSConfigurator), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
-        
+            DependencyProperty.Register("Configuration", typeof(DCSConfigurator2), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
+
+        /// <summary>
+        /// used by UI binding paths
+        /// </summary>
+        public DCSPhantomMonitorFixConfig PhantomFix { get; }
+        public static readonly DependencyProperty PhantomFixProperty =
+            DependencyProperty.Register("PhantomFix", typeof(DCSPhantomMonitorFixConfig), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
+
         /// <summary>
         /// location where we will write Export.lua and related directories, recalculated by calling UpdateScriptDirectoryPath
         /// </summary>
@@ -92,18 +120,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         }
         public static readonly DependencyProperty ScriptDirectoryPathProperty =
             DependencyProperty.Register("ScriptDirectoryPath", typeof(String), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
-
-        /// <summary>
-        /// if set, we generate the Scripts/Export.lua stub in addition to the files in Scripts/Helios
-        /// </summary>
-        public bool GenerateExportLoader
-        {
-            get { return (bool)GetValue(GenerateExportLoaderProperty); }
-            set { SetValue(GenerateExportLoaderProperty, value); }
-        }
-        public static readonly DependencyProperty GenerateExportLoaderProperty =
-            DependencyProperty.Register("GenerateExportLoader", typeof(bool), typeof(DCSInterfaceEditor), new PropertyMetadata(true));
-
 
         /// <summary>
         /// selected install type 
@@ -173,8 +189,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         public bool IsPathValid { get => true; }
         public bool IsUpToDate { get => true; }
 
-        #endregion
-
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
@@ -182,7 +196,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private void Configure_Click(object sender, RoutedEventArgs e)
         {
-            if (Configuration.UpdateExportConfig())
+            if (_configuration.UpdateExportConfig())
             {
                 MessageBox.Show(Window.GetWindow(this), "DCS F/A-18C has been configured.");
             }
@@ -194,7 +208,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
-            Configuration.RestoreConfig();
+            _configuration.RestoreConfig();
         }
+        #endregion
     }
 }
