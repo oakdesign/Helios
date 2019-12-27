@@ -84,7 +84,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             DependencyProperty.Register("Configuration", typeof(DCSConfigurator), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
         
         /// <summary>
-        /// location where we will write Export.lua and related directories, dynamically calculated
+        /// location where we will write Export.lua and related directories, recalculated by calling UpdateScriptDirectoryPath
         /// </summary>
         public string ScriptDirectoryPath
         {
@@ -131,7 +131,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private static Guid FolderSavedGames = new Guid("4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4");
 
-        public string SavedGamesPath
+        private string SavedGamesPath
         {
             get
             {
@@ -152,8 +152,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 return savedGamesPath;
             }
         }
-    
-        public string SavedGamesName
+
+        private string SavedGamesName
         {
             get
             {
@@ -177,11 +177,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (e.Property == InterfaceProperty)
-            {
-                Configuration.UDPInterface = Interface as BaseUDPInterface;
-            }
-
             base.OnPropertyChanged(e);
         }
 

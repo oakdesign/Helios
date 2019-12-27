@@ -24,7 +24,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
     using System;
 
     [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(FA18CInterface.Editor), typeof(UniqueHeliosInterfaceFactory))]
-    public class FA18CInterface : BaseUDPInterface
+    public class FA18CInterface : DCSInterface
     {
         public class Editor: DCSInterfaceEditor
         {   
