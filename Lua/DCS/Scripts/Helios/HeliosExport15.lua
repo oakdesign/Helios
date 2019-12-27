@@ -18,10 +18,12 @@ local helios_impl = {}
 -- local scope for private code, to avoid name clashes
 local helios_private = {}
 
--- report start up before configuration happens
+-- report start up before configuration happens, in case of error in the configuration
 log.write("HELIOS.EXPORT", log.INFO, string.format("initializing Helios Export script version %s", helios.version))
 
 -- ========================= CONFIGURATION ======================================
+-- This section will be configured by a combination of the Helios Profile Editor
+-- and editing by the user.
 
 -- address to which we send
 helios_private.host = "127.0.0.1"
@@ -79,11 +81,11 @@ local helios_module_names = {
 }
 
 -- ========================= HOOKS CALLED BY DCS =================================
+-- DCS Export Functions call these indirectly
 
--- local scope for DCS callbacks
-local helios_dcs = {}
+-- global scope for DCS callbacks, so we can replace them on reload
+helios_dcs = {}
 
--- DCS Export Functions
 function helios_dcs.LuaExportStart()
     -- called once just before mission start.
     package.path = package.path .. ";.\\LuaSocket\\?.lua"
@@ -158,22 +160,22 @@ function helios_dcs.LuaExportActivityNextEvent(timeNow)
         helios_private.processExports()
     end
 
-    local heartBeat = false
+    local heartBeat = nil
     if helios_private.clock > (helios_impl.announceInterval + helios_private.state.lastSend) then
         -- if we sent nothing for a long time, send something just to let Helios discover us
-        heartBeat = true
+        heartBeat = helios_impl.announceInterval
     end
     if helios_private.state.fastAnnounceTicks > 0 then
         -- immediately after changing vehicle or otherwise resetting, announce very fast
         helios_private.state.fastAnnounceTicks = helios_private.state.fastAnnounceTicks - 1
         if helios_private.clock > (helios_impl.fastAnnounceInterval + helios_private.state.lastSend) then
-            heartBeat = true
+            heartBeat = helios_impl.fastAnnounceInterval
         end
     end
 
-    if heartBeat then
+    if heartBeat ~= nil then
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("sending alive announcement after %f seconds without any data sent (clock %f, sent %f)",
-            helios_impl.announceInterval,
+            heartBeat,
             helios_private.clock,
             helios_private.state.lastSend
         ))
@@ -185,6 +187,8 @@ function helios_dcs.LuaExportActivityNextEvent(timeNow)
 end
 
 -- ========================= PUBLIC API FOR PROFILE DRIVERS ======================
+-- These are the functions that may be used in Scripts/Helios/Drivers/*/*.lua files
+-- to implement support for a specific vehicle and profile.
 
 function helios.splitString(str, delim, maxNb)
     -- quickly handle edge case
@@ -793,15 +797,19 @@ function helios_private.initTimers()
 end
 
 -- ========================= MODULE COMPATIBILITY LAYER ==========================
+-- These functions make this script compatible with Capt Zeen Helios modules.
+-- Simply place the modules in the Scripts/Helios/Mods folder and make sure they
+-- referenced in the table helios_module_names near the top of this script.
 
--- for modules, this will be global scope Helios_Udp
+-- when a module is running, this will be global scope Helios_Udp
 local helios_modules_udp = {
 }
 
--- for modules, this will be global scope Helios_Util
+-- when a module is running, this will be global scope Helios_Util
 local helios_modules_util = {
 }
 
+-- creates a wrapper around a Helios Module to make it act as a Helios Driver
 function helios_impl.createModuleDriver(selfName, moduleName)
     local driver = helios_private.createDriver()
     driver.moduleName = moduleName
@@ -939,6 +947,11 @@ end
 helios_modules_util.GetListIndicator = helios.parseIndication -- same signature
 
 -- ========================= CONNECTION TO DCS ===================================
+-- these are the functions we actually export, and third party scripts
+-- may retain. Therefore, these functions won't be replaced on a
+-- hot reload, because they are already saved by the caller.
+-- So they just call our most recent implementation indirectly
+-- via helios_dcs, which is updated on reload.
 
 -- save and chain any previous exports
 helios_private.previousHooks = {}
@@ -1015,10 +1028,6 @@ function helios_private.unhookDCS()
     helios_dcs.LuaExportBeforeNextFrame =  helios_loader.LuaExportBeforeNextFrame
     helios_dcs.LuaExportAfterNextFrame = helios_loader.LuaExportAfterNextFrame
 
-    -- XXX this does not actually work, and possibly can't work.  other export scripts will have our previous
-    -- hook stored and we don't indirect this hook through a global table, so it will call our old private code and crash
-    -- XXX TODO try making helios_dcs an indirect table that is global and test with a chained export
-
     -- these functions must not suddenly become null, so we restore them or install
     -- a dummy handler if we are the only script
     LuaExportStart = helios_private.previousHooks.LuaExportStart or helios_loader.LuaExportStart
@@ -1026,10 +1035,22 @@ function helios_private.unhookDCS()
     LuaExportActivityNextEvent = helios_private.previousHooks.LuaExportActivityNextEvent or helios_loader.LuaExportActivityNextEvent
     LuaExportBeforeNextFrame = helios_private.previousHooks.LuaExportBeforeNextFrame or helios_loader.LuaExportBeforeNextFrame
     LuaExportAfterNextFrame = helios_private.previousHooks.LuaExportAfterNextFrame or helios_loader.LuaExportAfterNextFrame
-
-    -- NOTE: some other script may have stored our old DCS hooks, but they will
-    -- continue to work
 end
 
 -- when this script is being tested, these functions are accessible to our tester
+-- they are also used to transfer to a new version of this script on hot reload
 return helios_impl
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again
+-- changed by test reload3
+-- changed by test reload3 again

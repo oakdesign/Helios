@@ -46,6 +46,17 @@ std = {
         "LuaExportStop",
         "LuaExportActivityNextEvent",
 
+        -- current implementations of DCS export hooks
+        helios_dcs = {
+            fields = {
+                "LuaExportStart",
+                "LuaExportStop",
+                "LuaExportActivityNextEvent",
+                "LuaExportBeforeNextFrame",
+                "LuaExportAfterNextFrame"
+            }
+        },
+
         -- compatibility with modules
         Helios_Udp = {
             fields = {
@@ -171,7 +182,8 @@ files["Scripts/Helios/Drivers/*/*.lua"] = {
                     "loadModuleDriver",
                     "profileName",
                     "receiveLoadProfile",
-                    "setSelf"
+                    "setSelf",
+                    "sleepRatio"
                 }
             },
 

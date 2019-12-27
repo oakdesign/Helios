@@ -7,6 +7,7 @@
 helios_mock = {}
 helios_mock.nextValue = 0
 helios_mock.selfName = ""
+helios_mock.sleepRatio = 0.9
 
 -- load modules from our containing directory
 package.path = package.path..';./exmock/?.lua;'
@@ -224,8 +225,8 @@ for _, eventFrame in ipairs(eventFrames) do
         log.write('MOCK', log.DEBUG, string.format("frame %d", progress))
         LuaExportBeforeNextFrame()
         frame = progress
-        -- HACK: sleep to slow down
-        socket.select(nil, nil, 0.9 / helios_mock_private.fps)
+        -- sleep to slow down
+        socket.select(nil, nil, helios_mock.sleepRatio / helios_mock_private.fps)
         LuaExportAfterNextFrame()
 
         local clock = frame / helios_mock_private.fps

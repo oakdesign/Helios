@@ -1,7 +1,10 @@
 --luacheck: globals io LuaExportActivityNextEvent tostring
 helios_mock.test = {
-    [1] = function()
+    [0] = function()
+        helios_mock.sleepRatio = 0.1
         log.mock_filter_facility("MOCK")
+    end,
+    [1] = function()
         helios_mock.impl.setSimID("ORIGINAL*")
         log.write('RELOAD', log.DEBUG, string.format("global LuaExportActivityNextEvent '%s'", tostring(LuaExportActivityNextEvent)))
 
