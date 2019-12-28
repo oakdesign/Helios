@@ -14,26 +14,36 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    public class DCSVehicleImpersonation: DependencyObject, EditableComboBoxModel.IData
+    public class DCSVehicleImpersonation: DependencyObject
     {
         private DCSInterface _dcsInterface;
 
         // a lot of code that just connects to a combobox
-        private EditableComboBoxModel _bindings;
+        private EditableComboBoxModel _impersonatedNameSelection;
 
         public DCSVehicleImpersonation(DCSInterface dcsInterface)
         {
             _dcsInterface = dcsInterface;
 
-            // since we don't do anything else, we just implement this interface ourselves instead
-            // of having an adapter object for the specific attribute
-            _bindings = new EditableComboBoxModel(this);
-            SetValue(ImpersonatedVehicleNameProperty, _bindings);
+            // instead of using a callback interface, we can use lambdas to bind specific values, so
+            // we could have multiple combobox models supported by this class
+            _impersonatedNameSelection = new EditableComboBoxModel();
+            _impersonatedNameSelection.LoadItemSet = () => CreateItemSet();
+            _impersonatedNameSelection.GetCurrentValue = () => _dcsInterface.ImpersonatedVehicleName;
+            _impersonatedNameSelection.GetDefaultValue = () => _dcsInterface.VehicleName;
+            _impersonatedNameSelection.SetCurrentValue = (value) => _dcsInterface.ImpersonatedVehicleName = value;
+            _impersonatedNameSelection.Init();
+            _impersonatedNameSelection.NewItemAdded += OnItemAdded;
+            SetValue(ImpersonatedVehicleNameProperty, _impersonatedNameSelection);
+        }
+
+        private void OnItemAdded(object sender, EditableComboBoxModel.NewItemAddedArgs e)
+        {
+            // XXX persist e.value
         }
 
         /// <summary>
@@ -45,15 +55,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         }
 
         // access to the bindings for WPF
-        public EditableComboBoxModel ImpersonatedVehicleName { get => _bindings; }
+        public EditableComboBoxModel ImpersonatedVehicleName { get => _impersonatedNameSelection; }
         public static readonly DependencyProperty ImpersonatedVehicleNameProperty =
             DependencyProperty.Register("ImpersonatedVehicleName", typeof(EditableComboBoxModel), typeof(DCSVehicleImpersonation), new PropertyMetadata(null));
 
-        string EditableComboBoxModel.IData.CurrentValue { get => _dcsInterface.ImpersonatedVehicleName; set => _dcsInterface.ImpersonatedVehicleName = value; }
-
-        string EditableComboBoxModel.IData.DefaultValue => _dcsInterface.VehicleName;
-
-        SortedSet<string> EditableComboBoxModel.IData.CreateItemSet()
+        SortedSet<string> CreateItemSet()
         {
             SortedSet<string> vehicles = new SortedSet<string>
             {
@@ -66,11 +72,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             };
             // XXX load set from config file and merge
             return vehicles;
-        }
-
-        void EditableComboBoxModel.IData.OnItemAdded(string newItem)
-        {
-            // XXX persist
         }
     }
 }

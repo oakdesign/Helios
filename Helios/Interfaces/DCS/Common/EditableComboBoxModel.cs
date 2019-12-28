@@ -25,51 +25,48 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     /// </summary>
     public class EditableComboBoxModel: DependencyObject
     {
-        public interface IData
+        public EditableComboBoxModel()
         {
-            /// <summary>
-            /// configured value or null if no value selected or after reset
-            /// </summary>
-            string CurrentValue { get; set; }
-
-            /// <summary>
-            /// value to display when CurrentValue is null
-            /// </summary>
-            string DefaultValue { get; }
-
-            /// <summary>
-            /// Get the current collection of items.
-            /// </summary>
-            /// <returns></returns>
-            SortedSet<string> CreateItemSet();
-
-            /// <summary>
-            /// called the first time each new value is entered that was not in the collection
-            /// </summary>
-            /// <param name="newItem"></param>
-            void OnItemAdded(string newItem);
         }
 
-        public EditableComboBoxModel(IData factory)
+        // lambdas to be provided by the parent
+        public Func<SortedSet<String>> LoadItemSet;
+        public Func<string> GetDefaultValue;
+        public Func<string> GetCurrentValue;
+        public new Action<string> SetCurrentValue;
+        public event EventHandler<NewItemAddedArgs> NewItemAdded;
+
+        /// <summary>
+        /// late start after populating all the lambdas
+        /// </summary>
+        public void Init()
         {
-            _factory = factory;
-            _items = factory.CreateItemSet();
+            _items = LoadItemSet();
             _itemsExport = new ObservableCollection<string>(_items);
             SetValue(ItemsSourcePropertyKey, _itemsExport);
 
             // default
-            if (factory.CurrentValue != null)
+            if (GetCurrentValue() != null)
             {
-                AddItem(factory.CurrentValue);
-                Text = factory.CurrentValue;
+                AddItem(GetCurrentValue());
+                Text = GetCurrentValue();
             }
             else
             {
-                Text = factory.DefaultValue;
+                Text = GetDefaultValue();
             }
 
             // the default value is always a valid selection
-            AddItem(factory.DefaultValue);
+            AddItem(GetDefaultValue());
+        }
+
+        public class NewItemAddedArgs : EventArgs
+        {
+            public string Value { get; }
+            internal NewItemAddedArgs(string value)
+            {
+                Value = value;
+            }
         }
 
         /// <summary>
@@ -97,8 +94,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             if (value == "")
             {
                 // reset to default
-                value = model._factory.DefaultValue;
-                model._factory.CurrentValue = null;
+                value = model.GetDefaultValue();
+                model.SetCurrentValue(null);
 
                 if (value != "")
                 {
@@ -119,7 +116,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
             get { 
                 string configured = (string)GetValue(SelectedItemProperty);
-                return configured ?? _factory.DefaultValue;
+                return configured ?? GetDefaultValue();
             }
             set { 
                 SetValue(SelectedItemProperty, value); 
@@ -133,12 +130,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             // if DependencyProperty access is selected for write, this gets called instead of Text.set
             string value = e.NewValue as string;
             EditableComboBoxModel model = d as EditableComboBoxModel;
-            if (value == model._factory.DefaultValue)
+            if (value == model.GetDefaultValue())
             {
                 // unset to use default
                 value = null;
             }
-            model._factory.CurrentValue = value;
+            model.SetCurrentValue(value);
         }
 
         /// <summary>
@@ -151,9 +148,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         public static readonly DependencyPropertyKey ItemsSourcePropertyKey = DependencyProperty.RegisterReadOnly(
             "ItemsSource", typeof(ObservableCollection<string>), typeof(EditableComboBoxModel), new PropertyMetadata(null));
         public static readonly DependencyProperty ItemsSourceProperty = ItemsSourcePropertyKey.DependencyProperty;
-
-        // the data provider
-        private IData _factory;
 
         // customizable set of values for combo box
         private SortedSet<string> _items;
@@ -184,7 +178,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 index++;
             }
             _itemsExport.Insert(index, value);
-            _factory.OnItemAdded(value);
+            NewItemAdded?.Invoke(this, new NewItemAddedArgs(value));
         }
     }
 }
