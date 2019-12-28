@@ -140,6 +140,7 @@
     <Compile Include="Interfaces\DCS\Common\DCSConfigurator2.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSExportProtocol.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSPhantomMonitorFix.cs" />
+    <Compile Include="Interfaces\DCS\Common\EditableComboBoxModel.cs" />
     <Compile Include="Interfaces\DCS\Common\EnumComboBoxConverter.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSVehicleImpersonation.cs" />
     <Compile Include="IProfileAwareInterface.cs" />

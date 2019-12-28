@@ -19,17 +19,41 @@ using System.Windows;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    public class DCSVehicleImpersonation: DependencyObject
+    public class DCSVehicleImpersonation: DependencyObject, EditableComboBoxModel.IData
     {
         private DCSInterface _dcsInterface;
 
-        // customizable set of DCS vehicles we know about
-        private SortedSet<string> _vehicles = CreateVehicleSet();
+        // a lot of code that just connects to a combobox
+        private EditableComboBoxModel _bindings;
 
-        // the same data in the only format that WPF can bind successfully at the moment
-        private ObservableCollection<string> _vehiclesExport;
+        public DCSVehicleImpersonation(DCSInterface dcsInterface)
+        {
+            _dcsInterface = dcsInterface;
 
-        private static SortedSet<string> CreateVehicleSet()
+            // since we don't do anything else, we just implement this interface ourselves instead
+            // of having an adapter object for the specific attribute
+            _bindings = new EditableComboBoxModel(this);
+            SetValue(ImpersonatedVehicleNameProperty, _bindings);
+        }
+
+        /// <summary>
+        /// the Helios name of the interface
+        /// </summary>
+        public string InterfaceName
+        {
+            get => _dcsInterface.Name;
+        }
+
+        // access to the bindings for WPF
+        public EditableComboBoxModel ImpersonatedVehicleName { get => _bindings; }
+        public static readonly DependencyProperty ImpersonatedVehicleNameProperty =
+            DependencyProperty.Register("ImpersonatedVehicleName", typeof(EditableComboBoxModel), typeof(DCSVehicleImpersonation), new PropertyMetadata(null));
+
+        string EditableComboBoxModel.IData.CurrentValue { get => _dcsInterface.ImpersonatedVehicleName; set => _dcsInterface.ImpersonatedVehicleName = value; }
+
+        string EditableComboBoxModel.IData.DefaultValue => _dcsInterface.VehicleName;
+
+        SortedSet<string> EditableComboBoxModel.IData.CreateItemSet()
         {
             SortedSet<string> vehicles = new SortedSet<string>
             {
@@ -44,109 +68,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             return vehicles;
         }
 
-        public DCSVehicleImpersonation(DCSInterface dcsInterface)
+        void EditableComboBoxModel.IData.OnItemAdded(string newItem)
         {
-            _dcsInterface = dcsInterface;
-            _vehicles = CreateVehicleSet();
-            _vehiclesExport = new ObservableCollection<string>(_vehicles);
-            SetValue(VehiclesPropertyKey, _vehiclesExport);
-
-            // default
-            if (dcsInterface.ImpersonatedVehicleName != null)
-            {
-                AddVehicle(dcsInterface.ImpersonatedVehicleName);
-                NewVehicle = dcsInterface.ImpersonatedVehicleName;
-            }
-            else
-            {
-                NewVehicle = dcsInterface.VehicleName;
-            }
-
-            // the interface vehicle name is always a valid selection
-            AddVehicle(dcsInterface.VehicleName);
-        }
-
-        /// <summary>
-        /// the Helios name of the interface
-        /// </summary>
-        public string InterfaceName
-        {
-            get => _dcsInterface.Name;
-        }
-
-        /// <summary>
-        /// this Property is bound to the contents of the combobox to detect when the user enters 
-        /// a value that is not in the combobox list
-        /// </summary>
-        public string NewVehicle
-        {
-            get { 
-                return (string)GetValue(NewVehicleProperty); 
-            }
-            set
-            {
-                SetValue(NewVehicleProperty, value);
-                AddVehicle(value);
-            }
-        }
-        public static readonly DependencyProperty NewVehicleProperty =
-            DependencyProperty.Register("NewVehicle", typeof(string), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
-
-        /// <summary>
-        /// This is the selected value for the combobox
-        /// </summary>
-        public string SelectedVehicle
-        {
-            get { 
-                string configured = (string)GetValue(SelectedVehicleProperty);
-                return configured ?? _dcsInterface.VehicleName;
-            }
-            set { 
-                if (value == _dcsInterface.VehicleName)
-                {
-                    // unset to use default
-                    value = null;
-                }
-                _dcsInterface.ImpersonatedVehicleName = value;
-                SetValue(SelectedVehicleProperty, value); 
-            }
-        }
-        public static readonly DependencyProperty SelectedVehicleProperty =
-            DependencyProperty.Register("SelectedVehicle", typeof(string), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
-
-        /// <summary>
-        /// This is the list of currently allowed values for the combobox
-        /// </summary>
-        public IEnumerable<string> Vehicles
-        {
-            get { return (ObservableCollection<string>)GetValue(VehiclesProperty); }
-        }
-        public static readonly DependencyPropertyKey VehiclesPropertyKey =
-            DependencyProperty.RegisterReadOnly("Vehicles", typeof(ObservableCollection<string>), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
-        public static readonly DependencyProperty VehiclesProperty = VehiclesPropertyKey.DependencyProperty;
-
-        /// <summary>
-        /// add a value to the list of vehicles, if not already there, and export the list in the format required for WPF to bind it
-        /// </summary>
-        /// <param name="value"></param>
-        private void AddVehicle(string value)
-        {
-            if (!_vehicles.Contains(value))
-            {
-                _vehicles.Add(value);
-                // this is very inefficient but almost never happens
-                // so I will do this rather than include some sorted observable collection
-                int index = 0;
-                foreach (string vehicle in _vehicles)
-                {
-                    if (vehicle == value)
-                    {
-                        break;
-                    }
-                    index++;
-                }
-                _vehiclesExport.Insert(index, value);
-            }
+            // XXX persist
         }
     }
 }

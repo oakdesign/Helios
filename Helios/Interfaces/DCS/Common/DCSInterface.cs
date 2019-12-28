@@ -55,12 +55,10 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         #region Events
         // this event indicates that the interface received an indication that a profile that 
         // matches the specified hint should be loaded
-        [field: NonSerialized]
         public event EventHandler<ProfileHint> ProfileHintReceived;
 
         // this event indicates that the interface received an indication that the specified
         // profile name is loaded on the other side of the interface
-        [field: NonSerialized]
         public event EventHandler<ProfileStatus> ProfileStatusReceived;
         #endregion
 
