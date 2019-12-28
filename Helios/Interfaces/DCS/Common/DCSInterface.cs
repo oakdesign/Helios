@@ -20,26 +20,28 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
     using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
+    using System.Xml;
 
     public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
     {
-        protected string _exportDeviceName;
-        protected string _exportFunctionsPath;
-        protected DCSPhantomMonitorFix _phantomFix;
+        private string _vehicleName;
+        private string _impersonatedVehicleName;
+        private string _exportFunctionsPath;
+        private DCSPhantomMonitorFix _phantomFix;
 
         // protocol to talk to DCS Export script (control messages)
-        protected DCSExportProtocol _protocol;
+        private DCSExportProtocol _protocol;
 
         // phantom monitor fix 
 
-        public DCSInterface(string name, string exportDeviceName, string exportFunctionsPath)
+        public DCSInterface(string name, string vehicleName, string exportFunctionsPath)
             : base(name)
         {
-            _exportDeviceName = exportDeviceName;
+            _vehicleName = vehicleName;
             _exportFunctionsPath = exportFunctionsPath;
 
             // XXX temp until we get rid of alternate names
-            AlternateName = exportDeviceName;
+            AlternateName = vehicleName;
 
             NetworkTriggerValue activeVehicle = new NetworkTriggerValue(this, "ACTIVE_VEHICLE", "ActiveVehicle", "Vehicle currently inhabited in DCS.", "Short name of vehicle");
             AddFunction(activeVehicle);
@@ -66,14 +68,25 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         public IEnumerable<string> Tags {
             get
             {
-                return new string[] { _exportDeviceName };
+                return new string[] { _impersonatedVehicleName ?? _vehicleName };
             }
+        }
+
+        public string VehicleName
+        {
+            get => _vehicleName;
         }
 
         /// <summary>
         /// vehicle-specific file resource to include
         /// </summary>
         public string ExportFunctionsPath { get => _exportFunctionsPath; }
+        
+        /// <summary>
+        /// If not null, the this interface instance is configured to impersonate the specified vehicle name.  This means
+        /// that Helios should select it for the given vehicle, instead of the one that the interface natively supports.
+        /// </summary>
+        public string ImpersonatedVehicleName { get => _impersonatedVehicleName; set => _impersonatedVehicleName = value; }
 
         protected override void OnProfileChanged(HeliosProfile oldProfile)
         {
@@ -140,6 +153,24 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             _protocol.Stop();
             _protocol = null;
             _phantomFix = null;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            if (reader.Name.Equals("ImpersonatedVehicleName"))
+            {
+                ImpersonatedVehicleName = reader.ReadElementString("ImpersonatedVehicleName");
+            }
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            base.WriteXml(writer);
+            if (ImpersonatedVehicleName != null)
+            {
+                writer.WriteElementString("ImpersonatedVehicleName", ImpersonatedVehicleName);
+            }
         }
     }
 }

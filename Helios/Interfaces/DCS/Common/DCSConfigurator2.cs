@@ -286,8 +286,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         }
         private bool CheckConfig(String exportFile)
         {
+            return false;
+
+            // XXX rewrite
             try
             {
+
                 string exportLuaPath = System.IO.Path.Combine(SavedGamesPath, "Scripts", exportFile);
                 return CheckFile(exportLuaPath, _heliosExportLUAMD5);
             }

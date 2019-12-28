@@ -33,6 +33,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         // sub-configuration objects we path into
         protected DCSConfigurator2 _configuration;
         protected DCSPhantomMonitorFixConfig _phantomFix;
+        protected DCSVehicleImpersonation _vehicleImpersonation;
 
         static DCSInterfaceEditor()
         {
@@ -60,6 +61,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                         "pack://application:,,,/Helios;component/Interfaces/DCS/Common/Export.lua",
                         dcsInterface.ExportFunctionsPath);
                 _phantomFix = new DCSPhantomMonitorFixConfig(dcsInterface.Name);
+                _vehicleImpersonation = new DCSVehicleImpersonation(dcsInterface);
             } else {
                 // provoke crash on attempt to use 
                 _configuration = null;
@@ -68,6 +70,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             // need to rebind everything on the form
             SetValue(ConfigurationProperty, _configuration);
             SetValue(PhantomFixProperty, _phantomFix);
+            SetValue(VehicleImpersonationProperty, _vehicleImpersonation);
         }
 
         #region Commands
@@ -112,6 +115,13 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             DependencyProperty.Register("PhantomFix", typeof(DCSPhantomMonitorFixConfig), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
 
         /// <summary>
+        /// used by UI binding paths
+        /// </summary>
+        public DCSVehicleImpersonation VehicleImpersonation { get; }
+        public static readonly DependencyProperty VehicleImpersonationProperty =
+            DependencyProperty.Register("VehicleImpersonation", typeof(DCSVehicleImpersonation), typeof(DCSInterfaceEditor), new PropertyMetadata(null));
+
+        /// <summary>
         /// location where we will write Export.lua and related directories, recalculated by calling UpdateScriptDirectoryPath
         /// </summary>
         public string ScriptDirectoryPath
@@ -124,16 +134,16 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         /// <summary>
         /// selected install type 
         /// </summary>
-        public InstallType SelectedInstallType {
-            get { return (InstallType)GetValue(SelectedInstallTypeProperty); }
+        public DCSInstallType SelectedInstallType {
+            get { return (DCSInstallType)GetValue(SelectedInstallTypeProperty); }
             set { SetValue(SelectedInstallTypeProperty, value); }
         }
         public static readonly DependencyProperty SelectedInstallTypeProperty =
             DependencyProperty.Register(
                 "SelectedInstallType", 
-                typeof(InstallType), 
+                typeof(DCSInstallType), 
                 typeof(DCSInterfaceEditor), 
-                new PropertyMetadata(InstallType.GA, new PropertyChangedCallback(OnInstallTypeSelected)));
+                new PropertyMetadata(DCSInstallType.GA, new PropertyChangedCallback(OnInstallTypeSelected)));
 
         private static void OnInstallTypeSelected(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
@@ -175,11 +185,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             {
                 switch (SelectedInstallType)
                 {
-                    case InstallType.OpenAlpha:
+                    case DCSInstallType.OpenAlpha:
                         return "DCS.OpenAlpha";
-                    case InstallType.OpenBeta:
+                    case DCSInstallType.OpenBeta:
                         return "DCS.OpenBeta";
-                    case InstallType.GA:
+                    case DCSInstallType.GA:
                     default:
                         return "DCS";
                 }
@@ -198,11 +208,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
             if (_configuration.UpdateExportConfig())
             {
-                MessageBox.Show(Window.GetWindow(this), "DCS F/A-18C has been configured.");
+                MessageBox.Show(Window.GetWindow(this), $"DCS export scripts for {Interface.Name} have been configured.");
             }
             else
             {
-                MessageBox.Show(Window.GetWindow(this), "Error updating DCS F/A-18C configuration.  Please do one of the following and try again:\n\nOption 1) Run Helios as Administrator\nOption 2) Install DCS outside the Program Files Directory\nOption 3) Disable UAC.");
+                MessageBox.Show(Window.GetWindow(this), $"Error updating DCS export scripts for {Interface.Name}.");
             }
         }
 

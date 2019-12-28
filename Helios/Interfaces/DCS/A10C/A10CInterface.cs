@@ -22,7 +22,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.A10C", "DCS A-10C", typeof(A10CInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.A10C", "DCS A-10C", typeof(DCSInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
     public class A10CInterface : DCSInterface
     {
         #region Devices

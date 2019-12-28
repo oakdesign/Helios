@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
-{  
-    public enum InstallType
-    {
-        GA,
-        OpenBeta,
-        OpenAlpha
-    }
-    public class DCSInstallTypeConverter : IValueConverter
+{
+    public class EnumComboBoxConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

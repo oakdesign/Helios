@@ -71,10 +71,10 @@
                 <TextBlock Margin="6,0,0,0" Text="{Binding}"/>
             </StackPanel>
         </DataTemplate>
-        <dcs:DCSInstallTypeConverter x:Key="DCSInstallTypeConverter"/>
+        <dcs:EnumComboBoxConverter x:Key="DCSInstallTypeConverter"/>
     </FrameworkElement.Resources>
     <StackPanel>
-        <GroupBox Header="Configuration">
+        <GroupBox Header="DCS Configuration">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -105,7 +105,7 @@
                 <Label Grid.Column="0" Grid.Row="6" HorizontalAlignment="Right" Content="Phantom Monitor Fix"/>
                 <Grid Grid.Column="1" Grid.Row="6">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="50"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -142,10 +142,8 @@
             <StackPanel>
                 <Grid Height="Auto" RenderTransformOrigin="0.501,0.627">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>    <!-- primary labels -->
+                        <ColumnDefinition Width="Auto" MinWidth="50"/>    <!-- primary labels -->
                         <ColumnDefinition Width="*"/>       <!-- primary controls and long messages-->
-                        <ColumnDefinition Width="Auto"/>    <!-- extra right side labels -->
-                        <ColumnDefinition Width="Auto"/>    <!-- extra right side controls -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"/>
@@ -171,26 +169,52 @@
                                      Grid.Column="0" Grid.Row="0" 
                                      VerticalContentAlignment="Center" 
                                      Padding="0" Margin="0,0,16,0"
-                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.GA}}">
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:DCSInstallType.GA}}">
                             <Label Content="GA" />
                         </RadioButton>
                         <RadioButton GroupName="DCSInstallTypeGroup" 
                                      Grid.Column="0" Grid.Row="0" 
                                      VerticalContentAlignment="Center" 
                                      Padding="0" Margin="0,0,16,0"
-                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.OpenBeta}}">
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:DCSInstallType.OpenBeta}}">
                             <Label Content="Open Beta"/>
                         </RadioButton>
                         <RadioButton GroupName="DCSInstallTypeGroup" 
                                      Grid.Column="0" Grid.Row="0" 
                                      VerticalContentAlignment="Center" 
                                      Padding="0" Margin="0,0,16,0"
-                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:InstallType.OpenAlpha}}">
+                                     IsChecked="{Binding SelectedInstallType, ElementName=DCSPropertiesWindow, Converter={StaticResource DCSInstallTypeConverter}, ConverterParameter={x:Static dcs:DCSInstallType.OpenAlpha}}">
                             <Label Content="Open Alpha"/>
                         </RadioButton>
                     </StackPanel>
                     <TextBlock Grid.Row="3" Grid.Column="1" MinWidth="200" MaxWidth="400" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding ScriptDirectoryPath, ElementName=DCSPropertiesWindow}" Margin="0,4"/>
                     <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding ElementName=DCSPropertiesWindow, Path=Configuration.GenerateExportLoader}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Profile-Specific Settings" Margin="0,4,0,0">
+            <StackPanel>
+                <Grid Height="Auto" RenderTransformOrigin="0.501,0.627">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="50"/>
+                        <!-- primary labels -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- primary controls and long messages-->
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="DCS Vehicle"/>
+                    <ComboBox 
+                        Grid.Row="1" Grid.Column="1"
+                        IsEditable="True"
+                        ItemsSource="{Binding ElementName=DCSPropertiesWindow, Path=VehicleImpersonation.Vehicles, diag:PresentationTraceSources.TraceLevel=High}"
+                        SelectedItem="{Binding ElementName=DCSPropertiesWindow, Path=VehicleImpersonation.SelectedVehicle}"
+                        Text="{Binding ElementName=DCSPropertiesWindow, Path=VehicleImpersonation.NewVehicle, UpdateSourceTrigger=LostFocus, diag:PresentationTraceSources.TraceLevel=High}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource Documentation}" 
+                               Text="{Binding ElementName=DCSPropertiesWindow, Path=VehicleImpersonation.InterfaceName, StringFormat='DCS Aircraft/Vehicle for which this profile can be selected. Change this only if you are using an export script that maps this aircraft to the {0} interface.'}" />
                 </Grid>
             </StackPanel>
         </GroupBox>

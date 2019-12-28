@@ -133,13 +133,15 @@
     <Compile Include="Gauges\M2000C\Miscellaneous\FireWarning_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\PCI_Panel.cs" />
     <Compile Include="Gauges\M2000C\VorIlsChannel\VorIls_Panel.cs" />
-    <Compile Include="Interfaces\DCS\Common\DCSInstallTypeConverter.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInstallType.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml.cs">
       <DependentUpon>DCSInterfaceEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\DCS\Common\DCSConfigurator2.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSExportProtocol.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSPhantomMonitorFix.cs" />
+    <Compile Include="Interfaces\DCS\Common\EnumComboBoxConverter.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSVehicleImpersonation.cs" />
     <Compile Include="IProfileAwareInterface.cs" />
     <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />
