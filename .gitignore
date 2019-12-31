@@ -21,4 +21,5 @@ setup.exe
 Keypress Receiver Installer/Release/Keypress Receiver Setup.msi
 !/Docs/*.txt
 /UpgradeLog3.htm
+.vs/slnx.sqlite
 /Lua
