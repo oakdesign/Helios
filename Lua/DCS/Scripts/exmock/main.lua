@@ -36,13 +36,12 @@ end
 
 function helios_mock_device.get_argument_value(self, index)  --luacheck: no unused
     -- value goes from 0 to 100 and then wraps repeatedly
-    return helios_mock.makeValue(0, 100, 1.0)
+    return helios_mock.makeValue(-1, 1, 0.01)
 end
 
 function helios_mock.makeValue(min, max, resolution)
     local iteration = helios_mock.nextValue % ((max - min) / resolution)
     local value = min + (resolution * iteration)
-    helios_mock.nextValue = helios_mock.nextValue + 1
     return value
 end
 
@@ -226,6 +225,7 @@ for _, eventFrame in ipairs(eventFrames) do
         LuaExportBeforeNextFrame()
         frame = progress
         -- sleep to slow down
+        helios_mock.nextValue = helios_mock.nextValue + 1
         socket.select(nil, nil, helios_mock.sleepRatio / helios_mock_private.fps)
         LuaExportAfterNextFrame()
 
