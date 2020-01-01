@@ -203,10 +203,5 @@ namespace GadrocsWorkshop.Helios
                 handler.Invoke(this, args);
             }
         }
-
-        public bool TriggerBound
-        {
-            get => TriggerFired != null;
-        }
     }
 }

@@ -72,32 +72,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.Network
             }
         }
 
-        /// <summary>
-        /// true if this network value is currently bound to anything
-        /// NOTE: this is expensive to use, and should not be used in ProcessNetworkData path
-        /// </summary>
-        public bool IsBound
-        {
-            get
-            {
-                foreach(IHeliosValue value in Values)
-                {
-                    if (value.ValueBound)
-                    {
-                        return true;
-                    }
-                }
-                foreach (IBindingTrigger trigger in Triggers)
-                {
-                    if (trigger.TriggerBound)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
         public abstract void Reset();
 
         public abstract ExportDataElement[] GetDataElements();

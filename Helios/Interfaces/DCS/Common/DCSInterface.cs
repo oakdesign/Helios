@@ -59,28 +59,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
             public string ID { get => _id; }
 
-            // too expensive for Release mode
-            [Conditional("DEBUG")]
-            private void DebugCheckBound()
-            {
-                bool found = false;
-                foreach (NetworkFunction target in _subscriptions.Values)
-                {
-                    if (target.IsBound)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    ConfigManager.LogManager.LogWarning($"data received for unbound element {_id}");
-                }
-            }
-
             public override void ProcessNetworkData(string id, string value)
             {
-                DebugCheckBound();
                 foreach (NetworkFunction target in _subscriptions.Values)
                 {
                     target.ProcessNetworkData(id, value);

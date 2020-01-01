@@ -69,11 +69,5 @@ namespace GadrocsWorkshop.Helios
         /// Source object which fires this trigger.
         /// </summary>
         HeliosObject Source { get; }
-
-        /// <summary>
-        /// true if the trigger is currently the source of any bindings
-        /// </summary>
-        /// <returns></returns>
-        bool TriggerBound { get; }
     }
 }

@@ -26,11 +26,5 @@ namespace GadrocsWorkshop.Helios
         /// Returns teh binding value for this value attribute of a HeliosObject
         /// </summary>
         BindingValue Value { get; }
-
-        /// <summary>
-        /// true if the value is currently the source of any bindings
-        /// </summary>
-        /// <returns></returns>
-        bool ValueBound { get; }
     }
 }
