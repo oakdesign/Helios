@@ -37,7 +37,11 @@ namespace GadrocsWorkshop.Helios.ProfileEditor.ViewModel
         private bool _isExpanded;
 
         private ProfileExplorerInterfaceHierarchy _interfaces;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <param name="includeTypes">is a mask of all the sorts of items to show, and differs between the profile explorer, bindings panels, etc.</param>
         public ProfileExplorerTreeItem(HeliosProfile profile, ProfileExplorerTreeItemType includeTypes)
             : this(profile.Name, "", null, includeTypes)
         {
@@ -55,7 +59,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor.ViewModel
 
             if (includeTypes.HasFlag(ProfileExplorerTreeItemType.Interface))
             {
-                _interfaces = new ProfileExplorerInterfaceHierarchy(this, profile);
+                _interfaces = new ProfileExplorerInterfaceHierarchy(this, profile, includeTypes);
                 if (_interfaces.HasChildren)
                 {
                     // if collection of interfaces is not empty (has children), add the whole collection to our children (as one node)
@@ -597,6 +601,9 @@ namespace GadrocsWorkshop.Helios.ProfileEditor.ViewModel
         private class ProfileExplorerInterfaceHierarchy
         {
             public bool HasChildren { get => Root.HasChildren; }
+
+            private ProfileExplorerTreeItemType _includeTypes;
+
             public ProfileExplorerTreeItem Root { get; internal set; }
 
             // interfaces for which we have yet to find the parent, indexed by parent type ID
@@ -605,9 +612,10 @@ namespace GadrocsWorkshop.Helios.ProfileEditor.ViewModel
             // active tree nodes, by type ID
             private Dictionary<string, List<ProfileExplorerTreeItem>> _active = new Dictionary<string, List<ProfileExplorerTreeItem>>();
 
-            public ProfileExplorerInterfaceHierarchy(ProfileExplorerTreeItem parent, HeliosProfile profile)
+            public ProfileExplorerInterfaceHierarchy(ProfileExplorerTreeItem parent, HeliosProfile profile, ProfileExplorerTreeItemType includeTypes)
             {
-                Root = new ProfileExplorerTreeItem("Interfaces", "", parent, ProfileExplorerTreeItemType.Interface | ProfileExplorerTreeItemType.Folder);
+                _includeTypes = includeTypes;
+                Root = new ProfileExplorerTreeItem("Interfaces", "", parent, includeTypes);
                 foreach (HeliosInterface heliosInterface in profile.Interfaces)
                 {
                     AddItem(heliosInterface);
@@ -696,7 +704,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor.ViewModel
 
             private void DoAdd(ProfileExplorerTreeItem parent, HeliosInterface newInterface)
             {
-                ProfileExplorerTreeItem item = new ProfileExplorerTreeItem(newInterface, parent, ProfileExplorerTreeItemType.Interface);
+                ProfileExplorerTreeItem item = new ProfileExplorerTreeItem(newInterface, parent, _includeTypes);
                 parent.Children.Add(item);
                 PublishNode(item, newInterface, newInterface.TypeIdentifier);
 
