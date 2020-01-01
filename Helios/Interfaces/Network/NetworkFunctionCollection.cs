@@ -13,24 +13,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace GadrocsWorkshop.Helios
+namespace GadrocsWorkshop.Helios.Interfaces.Network
 {
-    public interface IHeliosValue : IBindingElement
+    using GadrocsWorkshop.Helios.Collections;
+
+    public class NetworkFunctionCollection : NoResetObservablecollection<NetworkFunction>
     {
-        /// <summary>
-        /// Name used to identify this helios oject value.
-        /// </summary>
-        string ValueID { get; }
-
-        /// <summary>
-        /// Returns teh binding value for this value attribute of a HeliosObject
-        /// </summary>
-        BindingValue Value { get; }
-
-        /// <summary>
-        /// true if the value is currently the source of any bindings
-        /// </summary>
-        /// <returns></returns>
-        bool ValueBound { get; }
     }
 }

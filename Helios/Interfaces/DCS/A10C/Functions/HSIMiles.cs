@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Collections.ObjectModel;
@@ -28,7 +28,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 
         private HeliosValue _distance;
 
-        public HSIMiles(BaseUDPInterface sourceInterface)
+        public HSIMiles(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _distance = new HeliosValue(sourceInterface, BindingValue.Empty, "HSI", "Distance to beacon", "Range in nautical miles to the currently selected steerpoint or TACAN station.", "", BindingValueUnits.NauticalMiles);

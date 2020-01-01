@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Globalization;
@@ -35,7 +35,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
         private HeliosValue _channel;
         private HeliosValue _mode;
 
-        public TACANChannel(BaseUDPInterface sourceInterface)
+        public TACANChannel(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _channel = new HeliosValue(sourceInterface, BindingValue.Empty, "TACAN", "Channel", "Currently tuned TACAN channel.", "", BindingValueUnits.Numeric);

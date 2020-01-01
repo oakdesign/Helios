@@ -16,13 +16,14 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
     using GadrocsWorkshop.Helios.ComponentModel;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using GadrocsWorkshop.Helios.ProfileAwareInterface;
-    using GadrocsWorkshop.Helios.UDPInterface;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.Xml;
-
 
     [HeliosInterface("Helios.DCSExport2", "DCS Exports", typeof(DCSInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class DCSInterface : BaseUDPInterface, IProfileAwareInterface
@@ -45,7 +46,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             private string _id;
             private Dictionary<object, NetworkFunction> _subscriptions = new Dictionary<object, NetworkFunction>(); 
                 
-            public DemuxFunction(BaseUDPInterface sourceInterface, string id):
+            public DemuxFunction(HeliosNetworkInterface sourceInterface, string id):
                 base(sourceInterface)
             {
                 this._id = id;
@@ -56,8 +57,28 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 return new ExportDataElement[] { new ExportDataElement(_id) };
             }
 
+            // too expensive for Release mode
+            [Conditional("DEBUG")]
+            private void DebugCheckBound()
+            {
+                bool found = false;
+                foreach (NetworkFunction target in _subscriptions.Values)
+                {
+                    if (target.IsBound)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    ConfigManager.LogManager.LogWarning($"data received for unbound element {_id}");
+                }
+            }
+
             public override void ProcessNetworkData(string id, string value)
             {
+                DebugCheckBound();
                 foreach (NetworkFunction target in _subscriptions.Values)
                 {
                     target.ProcessNetworkData(id, value);

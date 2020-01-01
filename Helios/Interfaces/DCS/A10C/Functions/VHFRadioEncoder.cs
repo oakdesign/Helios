@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -25,7 +25,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
         private double _lastData = 0d;
         private HeliosValue _windowValue;
 
-		public VHFRadioEncoder(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
+		public VHFRadioEncoder(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
 			 : base(sourceInterface, deviceId, buttonId, argId, argValue, argMin, argMax, device, name, false, "%.3f")
 		{
             _windowValue = new HeliosValue(sourceInterface, new BindingValue(0.0d), device, name + " window", "Current value displayed in this encoder.", argMin.ToString() + "-" + argMax.ToString(), BindingValueUnits.Text);

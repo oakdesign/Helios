@@ -51,6 +51,16 @@ namespace GadrocsWorkshop.Helios
             UpdateId();
         }
 
+        public bool ValueBound
+        {
+            get => (Execute != null);
+        }
+
+        public bool TriggerBound
+        {
+            get => (TriggerFired != null);
+        }
+
         private void UpdateId()
         {
             _id = "";

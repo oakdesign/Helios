@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GadrocsWorkshop.Helios.UDPInterface
+namespace GadrocsWorkshop.Helios.Interfaces.Network
 {
     // a network function that presents as a changeable string value
     public class NetworkTriggerValue : NetworkFunction
@@ -21,7 +21,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         // fired when a value is received, in addition to firing any Helios bindings
         public event EventHandler<Value> ValueReceived;
 
-        public NetworkTriggerValue(BaseUDPInterface sourceInterface, string id, string name, string description, string valueDescription)
+        public NetworkTriggerValue(HeliosNetworkInterface sourceInterface, string id, string name, string description, string valueDescription)
             : base(sourceInterface)
         {
             _id = id;

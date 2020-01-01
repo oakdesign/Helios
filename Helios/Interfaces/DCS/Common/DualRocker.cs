@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
 
     public class DualRocker : NetworkFunction
     {
@@ -44,12 +44,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private bool _release2 = false;
 
-        public DualRocker(BaseUDPInterface sourceInterface, string deviceId, string button1Id, string button2Id, string releaseButtonId, string releaseButton2Id, string argId, string device, string name, bool vertical)
+        public DualRocker(HeliosNetworkInterface sourceInterface, string deviceId, string button1Id, string button2Id, string releaseButtonId, string releaseButton2Id, string argId, string device, string name, bool vertical)
             : this(sourceInterface, deviceId, button1Id, button2Id, releaseButtonId, releaseButton2Id, argId, device, name, vertical, "1", "-1", "0", "%1d")
         {
         }
 
-        public DualRocker(BaseUDPInterface sourceInterface, string deviceId, string button1Id, string button2Id, string releaseButtonId, string releaseButton2Id, string argId, string device, string name, bool vertical, string push1Value, string push2Value, string releaseValue, string exportFormat)
+        public DualRocker(HeliosNetworkInterface sourceInterface, string deviceId, string button1Id, string button2Id, string releaseButtonId, string releaseButton2Id, string argId, string device, string name, bool vertical, string push1Value, string push2Value, string releaseValue, string exportFormat)
             : base(sourceInterface)
         {
             _id = argId;

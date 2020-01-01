@@ -13,11 +13,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace GadrocsWorkshop.Helios.UDPInterface
+namespace GadrocsWorkshop.Helios.Interfaces.Network
 {
-    using GadrocsWorkshop.Helios.Collections;
-
-    public class NetworkFunctionCollection : NoResetObservablecollection<NetworkFunction>
+    public interface INetworkInterface
     {
+        void SendData(string text);
     }
 }

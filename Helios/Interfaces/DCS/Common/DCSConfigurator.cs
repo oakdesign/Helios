@@ -15,7 +15,8 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using GadrocsWorkshop.Helios.Util;
     using Microsoft.Win32;
     using System;

@@ -15,7 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Collections.ObjectModel;

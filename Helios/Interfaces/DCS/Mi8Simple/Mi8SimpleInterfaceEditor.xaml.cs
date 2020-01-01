@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Mi8Simple
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using GadrocsWorkshop.Helios.Windows.Controls;
     using Microsoft.Win32;
     using System;

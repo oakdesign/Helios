@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Collections.ObjectModel;
     using System.Globalization;
@@ -30,7 +30,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 
         private HeliosValue _frequency;
 
-        public ILSFrequency(BaseUDPInterface sourceInterface)
+        public ILSFrequency(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _frequency = new HeliosValue(sourceInterface, BindingValue.Empty, "ILS", "Frequency", "Currently tuned ILS frequency.", "", BindingValueUnits.Numeric);

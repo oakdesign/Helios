@@ -13,8 +13,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace GadrocsWorkshop.Helios.UDPInterface
+namespace GadrocsWorkshop.Helios.Interfaces.UDPInterface
 {
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.ProfileAwareInterface;
     using System;
     using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
     using System.Timers;
 
 
-    public class BaseUDPInterface : HeliosInterface
+    public class BaseUDPInterface : HeliosNetworkInterface
     {
         // const during lifetime, no access control required
         private readonly AsyncCallback _socketDataCallback;
@@ -716,7 +717,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             }
         }
 
-        public void SendData(string data)
+        public override void SendData(string data)
         {
             try
             {

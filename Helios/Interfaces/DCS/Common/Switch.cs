@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Collections.Generic;
     using System.Diagnostics;
 
@@ -37,7 +37,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #region Static Factories
 
-        public static Switch CreateToggleSwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId, 
+        public static Switch CreateToggleSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string action, string argId, 
                                                     string position1Value, string position1Name, 
                                                     string position2Value, string position2Name, 
                                                     string device, string name, string exportFormat)
@@ -45,7 +45,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             return new Switch(sourceInterface, deviceId, argId, new SwitchPosition[] { new SwitchPosition(position1Value, position1Name, action), new SwitchPosition(position2Value, position2Name, action) }, device, name, exportFormat);
         }
 
-        public static Switch CreateThreeWaySwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId,
+        public static Switch CreateThreeWaySwitch(HeliosNetworkInterface sourceInterface, string deviceId, string action, string argId,
                                                     string position1Value, string position1Name,
                                                     string position2Value, string position2Name,
                                                     string position3Value, string position3Name,
@@ -56,7 +56,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     device, name, exportFormat);
         }
 
-        public static Switch CreateRotarySwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId, string device, string name, string exportFormat, params string[] positionData)
+        public static Switch CreateRotarySwitch(HeliosNetworkInterface sourceInterface, string deviceId, string action, string argId, string device, string name, string exportFormat, params string[] positionData)
         {
             Debug.Assert(positionData.Length > 2, "DCS rotary switch definition must have more than one position.");
             Debug.Assert(positionData.Length % 2 == 0, "DCS rotary switch definition data inclomplete.");
@@ -72,12 +72,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #endregion
 
-        public Switch(BaseUDPInterface sourceInterface, string deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat)
+        public Switch(HeliosNetworkInterface sourceInterface, string deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat)
             : this(sourceInterface, deviceId, argId, positions, device, name, exportFormat, false)
         {
         }
 
-        public Switch(BaseUDPInterface sourceInterface, string deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat, bool everyFrame)
+        public Switch(HeliosNetworkInterface sourceInterface, string deviceId, string argId, SwitchPosition[] positions, string device, string name, string exportFormat, bool everyFrame)
             : base(sourceInterface)
         {
             _id = argId;

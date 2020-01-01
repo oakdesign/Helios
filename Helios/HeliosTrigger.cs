@@ -204,5 +204,9 @@ namespace GadrocsWorkshop.Helios
             }
         }
 
+        public bool TriggerBound
+        {
+            get => TriggerFired != null;
+        }
     }
 }

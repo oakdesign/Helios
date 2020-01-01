@@ -18,7 +18,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
     using GadrocsWorkshop.Helios.ComponentModel;
     using GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions;
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using Microsoft.Win32;
     using System;
 

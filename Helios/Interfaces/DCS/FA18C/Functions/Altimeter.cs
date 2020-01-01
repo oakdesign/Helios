@@ -16,7 +16,8 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Collections.ObjectModel;
@@ -30,7 +31,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C.Functions
         private string _altID;
         private string _pressID;
 
-        public Altimeter(BaseUDPInterface sourceInterface, string instrumentClass, string altitudeDeviceId, string altitudeName, string altitudeDescription, string altitudeComments, string pressureDeviceId, string pressureName, string pressureDescription, string pressureComments)
+        public Altimeter(HeliosNetworkInterface sourceInterface, string instrumentClass, string altitudeDeviceId, string altitudeName, string altitudeDescription, string altitudeComments, string pressureDeviceId, string pressureName, string pressureDescription, string pressureComments)
             : base(sourceInterface)
         {
             _dataElements = new DCSDataElement[] { new DCSDataElement(altitudeDeviceId, null, true), new DCSDataElement(pressureDeviceId, null, true) };

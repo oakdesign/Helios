@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -30,7 +30,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 
         private HeliosValue _range;
 
-        public HSIRange(BaseUDPInterface sourceInterface)
+        public HSIRange(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             //            AddFunction(new ScaledNetworkValue(this, "117", 100d, "HSI", "Range to bearing", "Range in kilometers to current beacon.", "", BindingValueUnits.Kilometers), true);

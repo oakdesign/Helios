@@ -18,7 +18,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.MiG21
 {
     using GadrocsWorkshop.Helios.ComponentModel;
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
 
     [HeliosInterface("Helios.MiG21", "DCS MiG21", typeof(MiG21InterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class MiG21Interface : BaseUDPInterface

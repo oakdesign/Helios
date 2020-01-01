@@ -15,7 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Globalization;
 
     public class FlagValue : NetworkFunction
@@ -25,12 +25,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private HeliosValue _value;
 
-        public FlagValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description)
+        public FlagValue(HeliosNetworkInterface sourceInterface, string id, string device, string name, string description)
             : this(sourceInterface, id, device, name, description, "%0.1f")
         {
         }
 
-        public FlagValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string exportFormat)
+        public FlagValue(HeliosNetworkInterface sourceInterface, string id, string device, string name, string description, string exportFormat)
             : base(sourceInterface)
         {
             _id = id;

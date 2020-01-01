@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -26,7 +26,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 
         private HeliosValue _one_digit_display;
 
-        public SMCMultipleDisplay(BaseUDPInterface sourceInterface)
+        public SMCMultipleDisplay(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _one_digit_display = new HeliosValue(sourceInterface, BindingValue.Empty, "Stores Management", "Stores multiple display", "Multiple value", "", BindingValueUnits.Numeric);

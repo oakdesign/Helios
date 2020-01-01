@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
 
     public class NetworkValue : NetworkFunction
     {
@@ -20,12 +20,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private string _format;
         private HeliosValue _value;
 
-        public NetworkValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit)
+        public NetworkValue(HeliosNetworkInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit)
             : this(sourceInterface, id, device, name, description, valueDescription, unit, "%.4f")
         {
         }
 
-        public NetworkValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
+        public NetworkValue(HeliosNetworkInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
             : base(sourceInterface)
         {
             _id = id;

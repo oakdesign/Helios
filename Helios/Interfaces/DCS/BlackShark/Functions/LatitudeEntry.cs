@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -29,7 +29,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 
         private HeliosValue _variation;
 
-        public LatitudeEntry(BaseUDPInterface sourceInterface)
+        public LatitudeEntry(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _variation = new HeliosValue(sourceInterface, BindingValue.Empty, "PShK-7 Latitude Entry", "Latitude Entry Display", "", "", BindingValueUnits.Degrees);

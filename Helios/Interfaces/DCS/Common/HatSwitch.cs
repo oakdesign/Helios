@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -39,7 +39,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private Dictionary<string, HatPosition> _positionByValue = new Dictionary<string, HatPosition>();
         private Dictionary<HatPosition, string> _sendData = new Dictionary<HatPosition, string>();
 
-        public HatSwitch(BaseUDPInterface sourceInterface, string deviceId, string argId,
+        public HatSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string argId,
                     string leftAction, string leftValue,
                     string upAction, string upValue,
                     string rightAction, string rightValue,
@@ -50,7 +50,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
         }
 
-        public HatSwitch(BaseUDPInterface sourceInterface, string deviceId, string argId, 
+        public HatSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string argId, 
                             string leftAction, string leftValue, 
                             string upAction, string upValue, 
                             string rightAction, string rightValue, 

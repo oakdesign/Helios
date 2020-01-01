@@ -16,7 +16,8 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
+    using GadrocsWorkshop.Helios.Interfaces.UDPInterface;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Collections.ObjectModel;
@@ -29,7 +30,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
         private HeliosValue _altitude;
         private HeliosValue _pressure;
 
-        public Altimeter(BaseUDPInterface sourceInterface)
+        public Altimeter(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _altitude = new HeliosValue(sourceInterface, BindingValue.Empty, "Altimeter", "Altitude", "Barometric altitude above sea level of the aircraft.", "Value is adjusted per altimeter pressure setting.", BindingValueUnits.Feet);

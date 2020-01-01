@@ -18,7 +18,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C
     using GadrocsWorkshop.Helios.ComponentModel;
     using GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions;
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using Microsoft.Win32;
     using System;
 

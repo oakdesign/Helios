@@ -16,10 +16,9 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.Util;
     using System;
-    using System.Collections.ObjectModel;
     using System.Globalization;
 
     class Altimeter : NetworkFunction
@@ -30,7 +29,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
         private string _altID;
         private string _pressID;
 
-        public Altimeter(BaseUDPInterface sourceInterface, string instrumentClass, string altitudeDeviceId, string altitudeName, string altitudeDescription,string altitudeComments, string pressureDeviceId,string pressureName,string pressureDescription, string pressureComments)
+        public Altimeter(HeliosNetworkInterface sourceInterface, string instrumentClass, string altitudeDeviceId, string altitudeName, string altitudeDescription,string altitudeComments, string pressureDeviceId,string pressureName,string pressureDescription, string pressureComments)
             : base(sourceInterface)
         {
             _altID = altitudeDeviceId;

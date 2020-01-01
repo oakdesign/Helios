@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Globalization;
 
     class GuardedSwitch : Switch
@@ -29,7 +29,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #region Static Factories
 
-        public static GuardedSwitch CreateToggleSwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId,
+        public static GuardedSwitch CreateToggleSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string action, string argId,
                                                     string guardAction, string guardArgId, string guardUpValue, string guardDownValue,
                                                     string position1Value, string position1Name,
                                                     string position2Value, string position2Name,
@@ -38,7 +38,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             return new GuardedSwitch(sourceInterface, deviceId, argId, guardAction, guardArgId, guardUpValue, guardDownValue, new SwitchPosition[] { new SwitchPosition(position1Value, position1Name, action), new SwitchPosition(position2Value, position2Name, action) }, device, name, exportFormat);
         }
 
-        public static GuardedSwitch CreateThreeWaySwitch(BaseUDPInterface sourceInterface, string deviceId, string action, string argId,
+        public static GuardedSwitch CreateThreeWaySwitch(HeliosNetworkInterface sourceInterface, string deviceId, string action, string argId,
                                                     string guardAction, string guardArgId, string guardUpValue, string guardDownValue,
                                                     string position1Value, string position1Name,
                                                     string position2Value, string position2Name,
@@ -52,12 +52,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         #endregion
 
-        public GuardedSwitch(BaseUDPInterface sourceInterface, string deviceId, string argId, string guardAction, string guardArgId, string guardUpValue, string guardDownValue, SwitchPosition[] positions, string device, string name, string exportFormat)
+        public GuardedSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string argId, string guardAction, string guardArgId, string guardUpValue, string guardDownValue, SwitchPosition[] positions, string device, string name, string exportFormat)
             : this(sourceInterface, deviceId, argId, guardAction, guardArgId, guardUpValue, guardDownValue, positions, device, name, exportFormat, false)
         {
         }
 
-        public GuardedSwitch(BaseUDPInterface sourceInterface, string deviceId, string argId, string guardAction, string guardArgId, string guardUpValue, string guardDownValue, SwitchPosition[] positions, string device, string name, string exportFormat, bool everyFrame)
+        public GuardedSwitch(HeliosNetworkInterface sourceInterface, string deviceId, string argId, string guardAction, string guardArgId, string guardUpValue, string guardDownValue, SwitchPosition[] positions, string device, string name, string exportFormat, bool everyFrame)
             : base(sourceInterface, deviceId, argId, positions, device, name, exportFormat, everyFrame)
         {
             _guardArgId = guardArgId;

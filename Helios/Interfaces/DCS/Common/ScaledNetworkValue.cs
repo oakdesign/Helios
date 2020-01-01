@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Globalization;
 
     public class ScaledNetworkValue : NetworkFunction
@@ -27,31 +27,31 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         private HeliosValue _value;
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
+        public ScaledNetworkValue(HeliosNetworkInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
             : this(sourceInterface, id, scale, device, name, description, valueDescription, unit, "%.4f")
         {
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
+        public ScaledNetworkValue(HeliosNetworkInterface sourceInterface, string id, CalibrationPointCollectionDouble scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, string exportFormat)
             : this(sourceInterface, id, device, name, description, valueDescription, unit, 0d, exportFormat)
         {
             _calibratedScale = scale;
             _scale = 0d;
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
+        public ScaledNetworkValue(HeliosNetworkInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit)
             : this(sourceInterface, id, scale, device, name, description, valueDescription, unit, 0d, "%.4f")
         {
         }
 
-        public ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
+        public ScaledNetworkValue(HeliosNetworkInterface sourceInterface, string id, double scale, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
             : this(sourceInterface, id, device, name, description, valueDescription, unit, baseValue, exportFormat)
         {
             _calibratedScale = null;
             _scale = scale;
         }
 
-        private ScaledNetworkValue(BaseUDPInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
+        private ScaledNetworkValue(HeliosNetworkInterface sourceInterface, string id, string device, string name, string description, string valueDescription, BindingValueUnit unit, double baseValue, string exportFormat)
             : base(sourceInterface)
         {
             _id = id;

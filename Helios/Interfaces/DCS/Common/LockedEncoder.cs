@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Globalization;
 
     class LockedEncoder : NetworkFunction
@@ -26,7 +26,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosAction _incrementAction;
         private HeliosAction _decrementAction;
 
-        public LockedEncoder(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, string device, string name)
+        public LockedEncoder(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, string device, string name)
             : base(sourceInterface)
         {
             _incrementPrefix = "C" + deviceId + "," + buttonId + ",";

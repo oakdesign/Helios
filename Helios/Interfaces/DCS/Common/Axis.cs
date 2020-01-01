@@ -15,7 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -37,12 +37,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosAction _incrementAction;
         private HeliosAction _decrementAction;
 
-        public Axis(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
+        public Axis(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name)
             : this(sourceInterface, deviceId, buttonId, argId, argValue, argMin, argMax, device, name, false, "%.3f")
         {
         }
 
-        public Axis(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name, bool loop, string exportFormat)
+        public Axis(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, double argMin, double argMax, string device, string name, bool loop, string exportFormat)
             : base(sourceInterface)
         {
             _id = argId;

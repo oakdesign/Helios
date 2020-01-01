@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -26,7 +26,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 
         private HeliosValue _five_digit_display;
 
-        public FuelTotalDisplay(BaseUDPInterface sourceInterface)
+        public FuelTotalDisplay(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _five_digit_display = new HeliosValue(sourceInterface, BindingValue.Empty, "Fuel Quantity", "Total display", "Fuel Total value", "", BindingValueUnits.Numeric);

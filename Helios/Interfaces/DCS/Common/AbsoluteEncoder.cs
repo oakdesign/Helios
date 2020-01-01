@@ -15,7 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -38,7 +38,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosAction _incrementAction;
         private HeliosAction _decrementAction;
 
-        public AbsoluteEncoder(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, double argMin, double argMax, string device, string name, bool loop, string exportFormat)
+        public AbsoluteEncoder(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, double argMin, double argMax, string device, string name, bool loop, string exportFormat)
             : base(sourceInterface)
         {
             _id = argId;

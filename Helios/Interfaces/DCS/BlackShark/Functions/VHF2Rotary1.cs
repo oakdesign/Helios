@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -25,7 +25,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
         private ExportDataElement[] _elements;
         private HeliosValue _value;
 
-        public VHF2Rotary1(BaseUDPInterface sourceInterface, string id, string device, string name)
+        public VHF2Rotary1(HeliosNetworkInterface sourceInterface, string id, string device, string name)
             : base(sourceInterface)
         {
             _elements = new ExportDataElement[] { new DCSDataElement(id, "%.3f", true) };

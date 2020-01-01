@@ -144,6 +144,8 @@
     <Compile Include="Interfaces\DCS\Common\EnumComboBoxConverter.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSVehicleImpersonation.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSVehicleInterface.cs" />
+    <Compile Include="Interfaces\Network\HeliosNetworkInterface.cs" />
+    <Compile Include="Interfaces\Network\INetworkInterface.cs" />
     <Compile Include="IProfileAwareInterface.cs" />
     <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />
@@ -587,8 +589,8 @@
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
     <Compile Include="Interfaces\DCS\Common\DualNetworkValue.cs" />
     <Compile Include="Interfaces\DCS\Common\DualRocker.cs" />
-    <Compile Include="UDPInterface\NetworkTriggerValue.cs" />
-    <Compile Include="UDPInterface\NetworkTrigger.cs" />
+    <Compile Include="Interfaces\Network\NetworkTriggerValue.cs" />
+    <Compile Include="Interfaces\Network\NetworkTrigger.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml.cs">
@@ -770,10 +772,10 @@
     <Compile Include="TextFormat.cs" />
     <Compile Include="TextHorizontalAlignment.cs" />
     <Compile Include="TextVerticalAlignment.cs" />
-    <Compile Include="UDPInterface\BaseUDPInterface.cs" />
-    <Compile Include="UDPInterface\ExportDataElement.cs" />
-    <Compile Include="UDPInterface\NetworkFunction.cs" />
-    <Compile Include="UDPInterface\NetworkFunctionCollection.cs" />
+    <Compile Include="Interfaces\UDPInterface\BaseUDPInterface.cs" />
+    <Compile Include="Interfaces\Network\ExportDataElement.cs" />
+    <Compile Include="Interfaces\Network\NetworkFunction.cs" />
+    <Compile Include="Interfaces\Network\NetworkFunctionCollection.cs" />
     <Compile Include="UndoManager.cs" />
     <Compile Include="UndoManagerBatch.cs" />
     <Compile Include="UniqueHeliosInterfaceFactory.cs" />

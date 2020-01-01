@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System.Globalization;
 
     public class RotaryEncoder : NetworkFunction
@@ -26,12 +26,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosAction _incrementAction;
         private HeliosAction _decrementAction;
 
-        public RotaryEncoder(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, string device, string name)
+        public RotaryEncoder(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, double argValue, string device, string name)
             : this(sourceInterface, deviceId, buttonId, buttonId, argId, argValue, device, name)
         {
         }
 
-        public RotaryEncoder(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, string device, string name)
+        public RotaryEncoder(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string button2Id, string argId, double argValue, string device, string name)
             : base(sourceInterface)
         {
             _incrementPrefix = "C" + deviceId + "," + button2Id + ",";

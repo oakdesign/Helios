@@ -13,22 +13,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace GadrocsWorkshop.Helios.UDPInterface
+namespace GadrocsWorkshop.Helios.Interfaces.Network
 {
     public abstract class NetworkFunction
     {
         private bool _debug;
-        private BaseUDPInterface _sourceInterface;
+        private HeliosNetworkInterface _sourceInterface;
         private HeliosTriggerCollection _triggers = new HeliosTriggerCollection();
         private HeliosActionCollection _actions = new HeliosActionCollection();
         private HeliosValueCollection _values = new HeliosValueCollection();
 
-        protected NetworkFunction(BaseUDPInterface sourceInterface)
+        protected NetworkFunction(HeliosNetworkInterface sourceInterface)
         {
             _sourceInterface = sourceInterface;
         }
 
-        public BaseUDPInterface SourceInterface
+        public HeliosNetworkInterface SourceInterface
         {
             get
             {
@@ -69,6 +69,32 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             set
             {
                 _debug = value;
+            }
+        }
+
+        /// <summary>
+        /// true if this network value is currently bound to anything
+        /// NOTE: this is expensive to use, and should not be used in ProcessNetworkData path
+        /// </summary>
+        public bool IsBound
+        {
+            get
+            {
+                foreach(IHeliosValue value in Values)
+                {
+                    if (value.ValueBound)
+                    {
+                        return true;
+                    }
+                }
+                foreach (IBindingTrigger trigger in Triggers)
+                {
+                    if (trigger.TriggerBound)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 

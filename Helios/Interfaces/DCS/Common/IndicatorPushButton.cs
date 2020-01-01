@@ -12,7 +12,7 @@
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
 
     public class IndicatorPushButton : NetworkFunction
     {
@@ -31,12 +31,12 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private HeliosValue _value;
         private HeliosValue _indicatorValue;
 
-        public IndicatorPushButton(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name)
+        public IndicatorPushButton(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name)
             : this(sourceInterface, deviceId, buttonId, argId, device, name, "0.2", "0.0")
         {
         }
 
-        public IndicatorPushButton(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name, string pushValue, string releaseValue)
+        public IndicatorPushButton(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name, string pushValue, string releaseValue)
             : base(sourceInterface)
         {
             _id = argId;

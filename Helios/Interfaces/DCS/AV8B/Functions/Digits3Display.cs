@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -25,7 +25,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B.Functions
         private static DCSDataElement[] _dataElements;
         private HeliosValue _three_digit_display;
 
-        public Digits3Display(BaseUDPInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name)
+        public Digits3Display(HeliosNetworkInterface sourceInterface, string deviceId, string buttonId, string argId, string device, string name)
             : base(sourceInterface)
         {
             _dataElements = new DCSDataElement[] { new DCSDataElement(buttonId, null, false) };

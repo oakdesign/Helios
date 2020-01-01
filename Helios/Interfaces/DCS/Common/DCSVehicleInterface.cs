@@ -13,12 +13,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using GadrocsWorkshop.Helios.UDPInterface;
+using GadrocsWorkshop.Helios.Interfaces.Network;
 using System.Xml;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
-    public class DCSVehicleInterface: HeliosInterface
+    public class DCSVehicleInterface: HeliosNetworkInterface
     {
         // duplicate this information with type info
         DCSInterface _transport;
@@ -33,7 +33,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             _transport = parent as DCSInterface;
         }
 
-        protected DCSInterface NetworkInterface { get => ParentInterface as DCSInterface; }
+        // XXX eliminate
+        protected HeliosNetworkInterface NetworkInterface { get => this; }
 
         protected void AddFunction(NetworkFunction function)
         {
@@ -71,6 +72,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         {
             // REVISIT: I believe we don't need to do anything here, because interfaces can't be put back into a profile after deletion
             base.ReconnectBindings();
+        }
+
+        public override void SendData(string text)
+        {
+            _transport.SendData(text);
         }
     }
 }

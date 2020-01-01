@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using System;
     using System.Globalization;
 
@@ -29,7 +29,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark.Functions
 
         private HeliosValue _variation;
 
-        public MagVariation(BaseUDPInterface sourceInterface)
+        public MagVariation(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _variation = new HeliosValue(sourceInterface, BindingValue.Empty, "ZMS-3 Magnetic Variation", "Variation Display", "", "", BindingValueUnits.Degrees);

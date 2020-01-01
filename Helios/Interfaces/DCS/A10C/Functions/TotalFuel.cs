@@ -16,7 +16,7 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Interfaces.Network;
     using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Globalization;
@@ -27,7 +27,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 
         private HeliosValue _fuel;
 
-        public TotalFuel(BaseUDPInterface sourceInterface)
+        public TotalFuel(HeliosNetworkInterface sourceInterface)
             : base(sourceInterface)
         {
             _fuel = new HeliosValue(sourceInterface, BindingValue.Empty, "Fuel Gauge", "Total Fuel", "Fuel amount shown on the totalizer.", "", BindingValueUnits.Pounds);
