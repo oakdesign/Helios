@@ -23,6 +23,7 @@ namespace GadrocsWorkshop.Helios.ComponentModel
     {
         private Type _interfaceEditorType;
         private string _typeIdentifier;
+        private string _parentTypeIdentifier;
         private string _name;
         private bool _autoAdd;
         private Type _factory;
@@ -30,6 +31,8 @@ namespace GadrocsWorkshop.Helios.ComponentModel
         /// <param name="typeIdentifier">Unique identifier used for persistance.
         /// Recommended to follow conventions of {module name}.{interface}.  Helios.* is reserved for helios's included controls.</param>
         /// <param name="name">Display name used for this interface in the ui.</param>
+        /// <param name="interfaceEditor">Instance factory for interface editor dialog.</param>
+        /// 
         public HeliosInterfaceAttribute(string typeIdentifier, string name, Type interfaceEditor) : this(typeIdentifier, name, interfaceEditor, typeof(HeliosInterfaceFactory))
         {
         }
@@ -37,6 +40,7 @@ namespace GadrocsWorkshop.Helios.ComponentModel
         /// <param name="typeIdentifier">Unique identifier used for persistance.
         /// Recommended to follow conventions of {module name}.{interface}.  Helios.* is reserved for helios's included controls.</param>
         /// <param name="name">Display name used for this interface in the ui.</param>
+        /// <param name="interfaceEditor">Instance factory for interface editor dialog.</param>
         /// <param name="factory">Instance factory used to populate new interface dialog.</param>
         /// 
         public HeliosInterfaceAttribute(string typeIdentifier, string name, Type interfaceEditor, Type factory) 
@@ -47,12 +51,37 @@ namespace GadrocsWorkshop.Helios.ComponentModel
             _factory = factory;
         }
 
+        public HeliosInterfaceAttribute(string typeIdentifier, string name): this(typeIdentifier, name, null, typeof(HeliosInterfaceFactory))
+        {
+            // utility
+        }
+
         public string TypeIdentifier
         {
             get
             {
                 return _typeIdentifier;
             }
+        }
+
+        /// <summary>
+        /// if not null, interface must be created as child of interface with the given type ID
+        /// </summary>
+        public string Parent
+        {
+            get => _parentTypeIdentifier;
+            set => _parentTypeIdentifier = value;
+        }
+
+        /// <summary>
+        /// override of the type identifier to use for uniqueness test;  any interfaces
+        /// with the same TypeIdentifier OR UniquenessKey are considered equivalent for 
+        /// uniqueness test.
+        /// </summary>
+        public string UniquenessKey
+        {
+            get;
+            set;
         }
 
         public string Name
@@ -72,7 +101,7 @@ namespace GadrocsWorkshop.Helios.ComponentModel
         }
 
         /// <summary>
-        /// If true an isntance of this control will automatically be added to a new profile.
+        /// If true an instance of this control will automatically be added to a new profile.
         /// </summary>
         public bool AutoAdd
         {

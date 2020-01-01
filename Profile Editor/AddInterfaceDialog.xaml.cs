@@ -88,7 +88,7 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                     {
                         foreach (HeliosInterface newInterface in descriptor.GetNewInstances(_profile))
                         {
-                            ConfigManager.LogManager.LogInfo("Adding " + newInterface.Name + " Type: " + descriptor.InterfaceType.BaseType.Name + " to add interface list.");
+                            ConfigManager.LogManager.LogInfo("Adding " + newInterface.Name + " Type Identifier: " + descriptor.TypeIdentifier + " to add interface list.");
                             AvailableInterfaces.Add(newInterface);
                         }
                     }

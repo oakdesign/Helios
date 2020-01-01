@@ -15,6 +15,7 @@
 
 namespace GadrocsWorkshop.Helios.UDPInterface
 {
+    using GadrocsWorkshop.Helios.ProfileAwareInterface;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -30,6 +31,12 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         private readonly AsyncCallback _socketDataCallback;
         private static readonly System.Text.Encoding _iso_8859_1 = System.Text.Encoding.GetEncoding("iso-8859-1");  // This is the locale of the lua exports program
 
+        // event handlers are thread safe, no access control required
+        /// <summary>
+        /// event to notify potentially other threads that the client connection has changed
+        /// </summary>
+        public event EventHandler<ProfileAwareInterface.ClientChange> ClientChanged;
+
         /// <summary>
         /// accessed only by main thread
         /// </summary>
@@ -42,7 +49,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             private Dictionary<string, NetworkFunction> _functionsById = new Dictionary<string, NetworkFunction>();
 
             private EndPoint _client = null;
-            private string _clientID = "";
+            private string _clientID = ClientChange.NO_CLIENT;
 
             private HeliosTrigger _connectedTrigger;
             private HeliosTrigger _disconnectedTrigger;
@@ -657,7 +664,9 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 { 
                     ConfigManager.LogManager.LogInfo("UDP interface new client connected, sending data reset command. (Interface=\"" + Name + "\", Client=\"" + _main.Client.ToString() + "\", Client ID=\"" + packetClientID + "\")");
                     _main.ConnectedTrigger.FireTrigger(BindingValue.Empty);
+                    string fromValue = _main.ClientID ?? ProfileAwareInterface.ClientChange.NO_CLIENT;
                     _main.ClientID = packetClientID;
+                    ClientChanged?.Invoke(this, new ProfileAwareInterface.ClientChange() { FromOpaqueHandle = fromValue, ToOpaqueHandle = packetClientID });
                     SendData("R");
                 }
 
@@ -711,7 +720,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         {
             try
             {
-                if (_main.Client != null && _main.ClientID.Length > 0)
+                if ((_main.Client != null) && (_main.ClientID != ClientChange.NO_CLIENT))
                 {
                     ConfigManager.LogManager.LogDebug("UDP interface sending data. (Interface=\"" + Name + "\", Data=\"" + data + "\")");
                     SendContext context = new SendContext();
@@ -746,6 +755,10 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             CloseSocket();
             if (_main.StartupTimer != null)
                 _main.StartupTimer.Stop();
+
+
+            // hook for descendants
+            OnProfileStopped();
         }
 
 
@@ -783,25 +796,27 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             try
             {
                 _main.Client = new IPEndPoint(IPAddress.Any, 0);
-                _main.ClientID = "";
+                _main.ClientID = ClientChange.NO_CLIENT;
                 OpenSocket();
 
                 // 10 seconds for Delayed Startup
                 Timer timer = new Timer(10000);
                 timer.AutoReset = false; // only once
                 timer.Elapsed += OnStartupTimer;
-                timer.Start();
                 _main.StartupTimer = timer;
+                timer.Start();
+                ConfigManager.LogManager.LogDebug("Startup timer started.");
 
-                ConfigManager.LogManager.LogInfo("Startup timer started.");
                 WaitForData(new ReceiveContext());
+
+                // hook for descendants
+                OnProfileStarted();
             }
             catch (System.Net.Sockets.SocketException se)
             {
                 ConfigManager.LogManager.LogError("UDP interface startup error. (Interface=\"" + Name + "\")");
                 ConfigManager.LogManager.LogError("UDP Socket Exception on Profile Start.  " + se.Message, se);
             }
-
         }
 
         /// <summary>
@@ -850,6 +865,24 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                 function.Reset();
             }
             SendData("R");
+        }
+
+        public bool CanSend
+        {
+            get
+            {
+                return _shared.Started;
+            }
+        }
+
+        protected virtual void OnProfileStarted()
+        {
+            // no code in base implementation
+        }
+
+        protected virtual void OnProfileStopped()
+        {
+            // no code in base implementation
         }
     }
 }

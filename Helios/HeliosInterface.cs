@@ -21,15 +21,26 @@ namespace GadrocsWorkshop.Helios
     public abstract class HeliosInterface : HeliosObject
     {
         private string _typeIdentifier;
-        private string _basetypeIdentifier;
+        private HeliosInterface _parentInterface;
 
-        protected HeliosInterface(string name)
+        protected HeliosInterface(HeliosInterface parentInterface, string name)
             : base(name)
         {
+            _parentInterface = parentInterface;
         }
 
-        #region Properties
+        protected HeliosInterface(string name)
+            : this(null, name)
+        {
+            // utility
+        }
 
+        /// <summary>
+        /// null if this is is a top-level interface, otherwise has a stable reference to the parent interface
+        /// </summary>
+        public HeliosInterface ParentInterface { get => _parentInterface; }
+
+        #region Properties
         public override string TypeIdentifier
         {
             get
@@ -40,18 +51,6 @@ namespace GadrocsWorkshop.Helios
                     _typeIdentifier = descriptor.TypeIdentifier;
                 }
                 return _typeIdentifier;
-            }
-        }
-        public string BaseTypeIdentifier
-        {
-            get
-            {
-                if (_basetypeIdentifier == null)
-                {
-                    HeliosInterfaceDescriptor descriptor = ConfigManager.ModuleManager.InterfaceDescriptors[this.GetType()];
-                    _basetypeIdentifier = descriptor.InterfaceType.BaseType.Name;
-                }
-                return _basetypeIdentifier;
             }
         }
 

@@ -21,11 +21,14 @@ namespace GadrocsWorkshop.Helios
     {
         private delegate object CreateObjectDelegate(string type, string typeId);
         private CreateObjectDelegate _objectCreator;
+        private delegate HeliosInterface CreateInterfaceDelegate(string typeId, HeliosInterfaceCollection loaded);
+        private CreateInterfaceDelegate _interfaceCreator;
         private Dispatcher _dispatcher;
 
         public BaseDeserializer(Dispatcher dispatcher)
         {
             _objectCreator = new CreateObjectDelegate(DispCreateNewObject);
+            _interfaceCreator = new CreateInterfaceDelegate(DispCreateNewInterface);
             _dispatcher = dispatcher;
         }
 
@@ -37,6 +40,48 @@ namespace GadrocsWorkshop.Helios
         protected object CreateNewObject(string type, string typeId)
         {
             return Dispatcher.Invoke(_objectCreator, type, typeId);
+        }
+
+        protected HeliosInterface CreateNewInterface(string typeId, HeliosInterfaceCollection loaded)
+        {
+            return Dispatcher.Invoke(_interfaceCreator, typeId, loaded) as HeliosInterface;
+        }
+
+        private HeliosInterface DispCreateNewInterface(string typeId, HeliosInterfaceCollection loaded)
+        {
+            HeliosInterfaceDescriptor descriptor = ConfigManager.ModuleManager.InterfaceDescriptors[typeId];
+            if (descriptor == null)
+            {
+                ConfigManager.LogManager.LogError("Ignoring interface not supported by this version of Helios: " + typeId);
+                return null;
+            }
+
+            HeliosInterface heliosInterface = null;
+            if (descriptor.ParentTypeIdentifier != null)
+            {
+                foreach (HeliosInterface candidate in loaded)
+                {
+                    if (candidate.TypeIdentifier == descriptor.ParentTypeIdentifier)
+                    {
+                        // bind to first matching interface
+                        heliosInterface = descriptor.CreateInstance(candidate);
+                        break;
+                    }
+                }
+                if (heliosInterface == null)
+                {
+                    ConfigManager.LogManager.LogError($"Child interface {typeId} could not locate its parent {descriptor.ParentTypeIdentifier}; interface not loaded");
+                }
+            } 
+            else
+            {
+                heliosInterface = descriptor.CreateInstance();
+            }
+            if (heliosInterface != null)
+            {
+                heliosInterface.Dispatcher = _dispatcher;
+            }
+            return heliosInterface;
         }
 
         private object DispCreateNewObject(string type, string typeId)
@@ -57,18 +102,7 @@ namespace GadrocsWorkshop.Helios
                     return visual;
 
                 case "Interface":
-                    HeliosInterfaceDescriptor descriptor = ConfigManager.ModuleManager.InterfaceDescriptors[typeId];
-                    if (descriptor == null)
-                    {
-                        ConfigManager.LogManager.LogError("Ignoring interface not supported by this version of Helios: " + typeId);
-                        return null;
-                    }
-                    HeliosInterface heliosInterface = descriptor != null ? descriptor.CreateInstance() : null;
-                    if (heliosInterface != null)
-                    {
-                        heliosInterface.Dispatcher = _dispatcher;
-                    }                    
-                    return heliosInterface;
+                    throw new System.Exception("logic error: use CreateNewInterface for interfaces");
 
                 case "Binding":
                     return new HeliosBinding();

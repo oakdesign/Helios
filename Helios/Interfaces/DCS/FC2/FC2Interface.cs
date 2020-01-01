@@ -20,7 +20,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FC2
     using GadrocsWorkshop.Helios.UDPInterface;
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
 
-    [HeliosInterface("Helios.FC2", "Flaming Cliffs 2", typeof(FC2InterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.FC2", "Flaming Cliffs 2", typeof(FC2InterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class FC2Interface : BaseUDPInterface
     {
         public FC2Interface()

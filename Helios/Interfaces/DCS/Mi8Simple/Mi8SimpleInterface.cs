@@ -22,7 +22,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Mi8Simple
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.Mi8Simple", "DCS  Mi8 (Simple)", typeof(Mi8SimpleInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.Mi8Simple", "DCS  Mi8 (Simple)", typeof(Mi8SimpleInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class  Mi8SimpleInterface : BaseUDPInterface
     {
         private string _dcsPath;

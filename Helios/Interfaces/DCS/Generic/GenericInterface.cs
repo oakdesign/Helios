@@ -22,7 +22,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Generic
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.DCS", "DCS Generic Interface", typeof(GenericInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.DCS", "DCS Generic Interface", typeof(GenericInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class GenericInterface : BaseUDPInterface
     {
         private string _dcsPath;

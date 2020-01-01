@@ -133,6 +133,18 @@
     <Compile Include="Gauges\M2000C\Miscellaneous\FireWarning_Panel.cs" />
     <Compile Include="Gauges\M2000C\Miscellaneous\PCI_Panel.cs" />
     <Compile Include="Gauges\M2000C\VorIlsChannel\VorIls_Panel.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInstallType.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml.cs">
+      <DependentUpon>DCSInterfaceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\DCS\Common\DCSConfigurator2.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSExportProtocol.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSPhantomMonitorFix.cs" />
+    <Compile Include="Interfaces\DCS\Common\EditableComboBoxModel.cs" />
+    <Compile Include="Interfaces\DCS\Common\EnumComboBoxConverter.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSVehicleImpersonation.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSVehicleInterface.cs" />
+    <Compile Include="IProfileAwareInterface.cs" />
     <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />
     <Compile Include="Collections\KeyedObservableCollection.cs" />
@@ -575,14 +587,14 @@
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
     <Compile Include="Interfaces\DCS\Common\DualNetworkValue.cs" />
     <Compile Include="Interfaces\DCS\Common\DualRocker.cs" />
+    <Compile Include="UDPInterface\NetworkTriggerValue.cs" />
+    <Compile Include="UDPInterface\NetworkTrigger.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml.cs">
       <DependentUpon>F14BInterfaceEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\DCS\FA18C\FA18CInterface.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml.cs">
-      <DependentUpon>FA18CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterface.cs" />
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml.cs">
       <DependentUpon>AV8BInterfaceEditor.xaml</DependentUpon>
@@ -731,6 +743,7 @@
     <Compile Include="UnitConverters\TimeConverter.cs" />
     <Compile Include="Units\NozzlePositionPercentUnit.cs" />
     <Compile Include="Units\NozzlePositionUnit.cs" />
+    <Compile Include="Util\Tokenizer.cs" />
     <Compile Include="Windows\Controls\AnalogBar.cs" />
     <Compile Include="Windows\Controls\AxisBar.cs" />
     <Compile Include="Windows\Controls\ButtonIndicator.cs" />
@@ -2958,11 +2971,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
+    <Page Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml">
+    <Page Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

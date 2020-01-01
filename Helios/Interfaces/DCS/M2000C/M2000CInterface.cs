@@ -22,7 +22,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.M2000C
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.M2000C", "DCS M2000C", typeof(M2000CInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.M2000C", "DCS M2000C", typeof(M2000CInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class M2000CInterface : BaseUDPInterface
     {
         private string _dcsPath;

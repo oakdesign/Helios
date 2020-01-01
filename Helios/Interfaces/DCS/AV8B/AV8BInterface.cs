@@ -22,7 +22,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.AV8B
     using Microsoft.Win32;
     using System;
 
-    [HeliosInterface("Helios.AV8B", "DCS AV-8B", typeof(AV8BInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.AV8B", "DCS AV-8B", typeof(AV8BInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class AV8BInterface : BaseUDPInterface
     {
         private string _dcsPath;

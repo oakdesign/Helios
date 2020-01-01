@@ -15,6 +15,7 @@
 
 namespace GadrocsWorkshop.Helios
 {
+    using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -411,11 +412,11 @@ namespace GadrocsWorkshop.Helios
             string[] components;
             if (reference.StartsWith("{"))
             {
-                components = reference.Substring(1, reference.Length - 2).Split(';');
+                components = Tokenizer.TokenizeAtLeast(reference.Substring(1, reference.Length - 2), 4, ';');
             }
             else
             {
-                components = reference.Split(';');
+                components = Tokenizer.TokenizeAtLeast(reference, 4, ';');
             }
             string refType = components[0];
             string path = components[1];
@@ -576,8 +577,20 @@ namespace GadrocsWorkshop.Helios
 
         #region Interfaces
 
-        public void SerializeInterface(HeliosInterface heliosInterface, XmlWriter xmlWriter)
+        public void SerializeInterface(HeliosInterface heliosInterface, HashSet<HeliosInterface> serialized, XmlWriter xmlWriter)
         {
+            if (serialized.Contains(heliosInterface))
+            {
+                // already done
+                return;
+            }
+            // stop any loops
+            serialized.Add(heliosInterface);
+            if (heliosInterface.ParentInterface != null)
+            {
+                // recurse
+                SerializeInterface(heliosInterface.ParentInterface, serialized, xmlWriter);
+            }
             xmlWriter.WriteStartElement("Interface");
             xmlWriter.WriteAttributeString("TypeIdentifier", heliosInterface.TypeIdentifier);
             xmlWriter.WriteAttributeString("Name", heliosInterface.Name);
@@ -585,10 +598,14 @@ namespace GadrocsWorkshop.Helios
             xmlWriter.WriteEndElement(); // Interface
         }
 
-        public HeliosInterface DeserializeInterface(XmlReader xmlReader)
+        public HeliosInterface DeserializeInterface(XmlReader xmlReader, HeliosInterfaceCollection loaded)
         {
             string interfaceType = xmlReader.GetAttribute("TypeIdentifier");
-            HeliosInterface heliosInterface = (HeliosInterface)CreateNewObject("Interface", interfaceType);
+
+            // context switch to main to create object in right dispatcher
+            HeliosInterface heliosInterface = (HeliosInterface)CreateNewInterface(interfaceType, loaded);
+
+            // install if success
             if (heliosInterface != null)
             {
                 String name = xmlReader.GetAttribute("Name");
@@ -614,10 +631,14 @@ namespace GadrocsWorkshop.Helios
 
         public void SerializeInterfaces(HeliosInterfaceCollection interfaces, XmlWriter xmlWriter)
         {
+            // track what interfaces are already serialized
+            HashSet<HeliosInterface> serialized = new HashSet<HeliosInterface>();
+
+            // now write them, with any parent interfaces emitted first by recursion
             xmlWriter.WriteStartElement("Interfaces");
             foreach (HeliosInterface heliosInterface in interfaces)
             {
-                SerializeInterface(heliosInterface, xmlWriter);
+                SerializeInterface(heliosInterface, serialized, xmlWriter);
             }
             xmlWriter.WriteEndElement(); // Interfaces
         }
@@ -629,7 +650,9 @@ namespace GadrocsWorkshop.Helios
                 xmlReader.ReadStartElement("Interfaces");
                 while (xmlReader.NodeType != XmlNodeType.EndElement)
                 {
-                    HeliosInterface heliosInterface = DeserializeInterface(xmlReader);
+                    // allow interfaces to access their parent interface, if any
+                    // REVISIT: we could be paranoid and provide a read-only view
+                    HeliosInterface heliosInterface = DeserializeInterface(xmlReader, destination);
                     if (heliosInterface != null)
                     {
                         destination.Add(heliosInterface);

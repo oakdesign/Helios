@@ -15,7 +15,6 @@
 
 namespace GadrocsWorkshop.Helios
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -35,12 +34,7 @@ namespace GadrocsWorkshop.Helios
             {
                 if (IsUnique(descriptor, profile))
                 {
-                    HeliosInterface newInterface = (HeliosInterface)Activator.CreateInstance(descriptor.InterfaceType);
-                    if (newInterface == null)
-                    {
-                        ConfigManager.LogManager.LogWarning("New interface is null.");
-                    }
-                    interfaces.Add(newInterface);
+                    AddInterfaceIfReady(interfaces, descriptor, CreateIndex(profile));
                 }
                 else
                 {
@@ -57,7 +51,7 @@ namespace GadrocsWorkshop.Helios
 
             if (descriptor != null && descriptor.AutoAdd && IsUnique(descriptor, profile))
             {
-                interfaces.Add((HeliosInterface)Activator.CreateInstance(descriptor.InterfaceType));
+                AddInterfaceIfReady(interfaces, descriptor, CreateIndex(profile));
             }
 
             return interfaces;
@@ -67,24 +61,11 @@ namespace GadrocsWorkshop.Helios
         {
             foreach (HeliosInterface heliosInterface in profile.Interfaces)
             {
-                if (descriptor.InterfaceType.BaseType.Name != "BaseUDPInterface")
+                HeliosInterfaceDescriptor interfaceDescriptor = ConfigManager.ModuleManager.InterfaceDescriptors[heliosInterface.GetType()];
+                if (interfaceDescriptor.UniquenessKey.Equals(descriptor.UniquenessKey))
                 {
-                    HeliosInterfaceDescriptor interfaceDescriptor = ConfigManager.ModuleManager.InterfaceDescriptors[heliosInterface.GetType()];
-                    if (interfaceDescriptor.TypeIdentifier.Equals(descriptor.TypeIdentifier))
-                    {
-                        // If any existing interfaces in the profile have the same type identifier do not add them.
-                        return false;
-                    }
-                } else
-                {
-                    string _a = heliosInterface.TypeIdentifier;
-                    string _b = heliosInterface.BaseTypeIdentifier;
-                    HeliosInterfaceDescriptor interfaceDescriptor = ConfigManager.ModuleManager.InterfaceDescriptors[heliosInterface.GetType()];
-                    if (interfaceDescriptor.TypeIdentifier.Equals(descriptor.TypeIdentifier) || heliosInterface.BaseTypeIdentifier == "BaseUDPInterface")
-                    {
-                        // If any existing interfaces in the profile have the same type identifier do not add them.
-                        return false;
-                    }                    
+                    // If any existing interfaces in the profile are in the same uniqueness class, do not add it
+                    return false;
                 }
             }
 

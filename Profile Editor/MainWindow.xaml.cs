@@ -755,6 +755,8 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                     dialog.SelectedInterface.Name = name;
 
                     ConfigManager.UndoManager.AddUndoItem(new InterfaceAddUndoEvent(Profile, dialog.SelectedInterface));
+                    // XXX check dialog.SelectedInterface for interface dependency, add both and add undo events for both (together?)
+                    // XXX or one if dependency was already met
                     Profile.Interfaces.Add(dialog.SelectedInterface);
                     AddNewDocument(dialog.SelectedInterface);
                 }

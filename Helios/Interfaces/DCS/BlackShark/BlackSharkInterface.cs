@@ -19,7 +19,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.BlackShark
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
     using GadrocsWorkshop.Helios.UDPInterface;
 
-    [HeliosInterface("Helios.KA50", "DCS Black Shark", typeof(BlackSharkInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    [HeliosInterface("Helios.KA50", "DCS Black Shark", typeof(BlackSharkInterfaceEditor), typeof(UniqueHeliosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class BlackSharkInterface : BaseUDPInterface
     {
         #region Devices

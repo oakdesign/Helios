@@ -15,10 +15,12 @@
 
 namespace GadrocsWorkshop.Helios.ProfileEditor
 {
+    using GadrocsWorkshop.Helios;
     using GadrocsWorkshop.Helios.ProfileEditor.UndoEvents;
     using GadrocsWorkshop.Helios.ProfileEditor.ViewModel;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -135,27 +137,49 @@ namespace GadrocsWorkshop.Helios.ProfileEditor
                 }
                 else if (item.ItemType.HasFlag(ProfileExplorerTreeItemType.Interface))
                 {
-                    HeliosInterface interfaceItem = item.ContextItem as HeliosInterface;
-                    if (interfaceItem != null)
+                    HeliosInterface deletedInterface = item.ContextItem as HeliosInterface;
+                    if (deletedInterface != null)
                     {
-                        if (MessageBox.Show(Window.GetWindow(this), "Are you sure you want to remove the " + interfaceItem.Name + " interface from the profile.  This will remove all bindings associated with this interface.", "Remove Interface", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.None) == MessageBoxResult.Yes)
+                        if (MessageBox.Show(Window.GetWindow(this), "Are you sure you want to remove the " + deletedInterface.Name + " interface from the profile.  This will remove all bindings associated with this interface.", "Remove Interface", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No, MessageBoxOptions.None) == MessageBoxResult.Yes)
                         {
-                            ConfigManager.UndoManager.AddUndoItem(new InterfaceDeleteUndoEvent(Profile, interfaceItem));
-                            OnDeleting(interfaceItem);
-                            Profile.Interfaces.Remove(interfaceItem);
+                            // also must delete all child interfaces.  we do it in such an order that children get deleted before their parents
+                            Stack<HeliosInterface> descendants = new Stack<HeliosInterface>();
+
+                            // brute force find them all
+                            descendants.Push(deletedInterface);
+                            FindAllDescendants(descendants, Profile, deletedInterface);
+
+                            ConfigManager.UndoManager.AddUndoItem(new InterfaceDeleteUndoEvent(Profile, descendants));
+                            foreach(HeliosInterface heliosInterface in descendants)
+                            {
+                                OnDeleting(heliosInterface);
+                                Profile.Interfaces.Remove(heliosInterface);
+                            }
                         }
                     }
                 }
             }
         }
 
+        private static void FindAllDescendants(Stack<HeliosInterface> descendants, HeliosProfile profile, HeliosInterface parent)
+        {
+            foreach(HeliosInterface heliosInterface in profile.Interfaces)
+            {
+                if (heliosInterface.ParentInterface == parent)
+                {
+                    // check for infinite loop in Debug
+                    Debug.Assert(!descendants.Contains(heliosInterface));
+                    descendants.Push(heliosInterface);
+
+                    // recurse
+                    FindAllDescendants(descendants, profile, heliosInterface);
+                }
+            }
+        }
+
         public void OnDeleting(HeliosObject item)
         {
-            EventHandler<ItemDeleteEventArgs> handler = ItemDeleting;
-            if (handler != null)
-            {
-                handler.Invoke(this, new ItemDeleteEventArgs(item));
-            }
+            ItemDeleting?.Invoke(this, new ItemDeleteEventArgs(item));
         }
     }
 }
