@@ -37,7 +37,6 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         {
             static private int _id = System.Threading.Thread.CurrentThread.ManagedThreadId;
 
-            private int _port = 9089;
             private NetworkFunctionCollection _functions = new NetworkFunctionCollection();
             private Dictionary<string, NetworkFunction> _functionsById = new Dictionary<string, NetworkFunction>();
 
@@ -52,20 +51,6 @@ namespace GadrocsWorkshop.Helios.UDPInterface
 
             // XXX to be removed
             private string _alternatename = "";
-
-            public int Port
-            {
-                get
-                {
-                    Debug.Assert(System.Threading.Thread.CurrentThread.ManagedThreadId == _id);
-                    return _port;
-                }
-                set
-                {
-                    Debug.Assert(System.Threading.Thread.CurrentThread.ManagedThreadId == _id);
-                    _port = value;
-                }
-            }
 
             public NetworkFunctionCollection Functions
             {
@@ -196,6 +181,8 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             private Queue<ReceiveContext> _receiveContexts = new Queue<ReceiveContext>();
             private const int _cachedReceiveContexts = 16;
 
+            private int _port = 9089;
+
             // lock on all the other fields, public access ok so we can lock larger
             // sections of code and rely on re-entrant locking to avoid deadlock
             public object Lock { get; } = new object();
@@ -225,6 +212,24 @@ namespace GadrocsWorkshop.Helios.UDPInterface
                     lock (Lock)
                     {
                         _socket = value;
+                    }
+                }
+            }
+
+            public int Port
+            {
+                get
+                {
+                    lock (Lock)
+                    {
+                        return _port;
+                    }
+                }
+                set
+                {
+                    lock (Lock)
+                    {
+                        _port = value;
                     }
                 }
             }
@@ -432,14 +437,21 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         {
             get
             {
-                return _main.Port;
+                return _shared.Port;
             }
             set
             {
-                if (!_main.Port.Equals(value))
+                int oldValue;
+                lock(_shared.Lock)
                 {
-                    int oldValue = _main.Port;
-                    _main.Port = value;
+                    oldValue = _shared.Port;
+                    if (!_shared.Port.Equals(value))
+                    {
+                        _shared.Port = value;
+                    }
+                }
+                if (!oldValue.Equals(value))
+                {
                     OnPropertyChanged("Port", oldValue, value, false);
                 }
             }
@@ -692,6 +704,7 @@ namespace GadrocsWorkshop.Helios.UDPInterface
             ConfigManager.LogManager.LogWarning("UDP interface short packet received. (Interface=\"" + Name + "\")");
         }
 
+        // WARNING: called on both Main and Socket threads, depending on where the failure occurred
         private bool HandleSocketException(SocketException se)
         {
             if ((SocketError)se.ErrorCode == SocketError.ConnectionReset)
@@ -749,9 +762,10 @@ namespace GadrocsWorkshop.Helios.UDPInterface
         }
 
 
+        // WARNING: called on both Main and Socket threads, depending on where a socket exception occurred
         private void OpenSocket()
         {
-            EndPoint bindEndPoint = new IPEndPoint(IPAddress.Any, Port);
+            EndPoint bindEndPoint = new IPEndPoint(IPAddress.Any, _shared.Port);
             Socket socket = new Socket(AddressFamily.InterNetwork,
                                       SocketType.Dgram,
                                       ProtocolType.Udp);
