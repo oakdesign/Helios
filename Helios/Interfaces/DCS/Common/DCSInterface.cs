@@ -30,12 +30,64 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
         private string _vehicleName;
         private string _impersonatedVehicleName;
         private string _exportFunctionsPath;
+
+        // phantom monitor fix 
         private DCSPhantomMonitorFix _phantomFix;
 
         // protocol to talk to DCS Export script (control messages)
         private DCSExportProtocol _protocol;
 
-        // phantom monitor fix 
+        // demultiplexers for all the network codes we support
+        private Dictionary<string, DemuxFunction> _demuxes = new Dictionary<string, DemuxFunction>();
+
+        private class DemuxFunction : NetworkFunction
+        {
+            private string _id;
+            private Dictionary<object, NetworkFunction> _subscriptions = new Dictionary<object, NetworkFunction>(); 
+                
+            public DemuxFunction(BaseUDPInterface sourceInterface, string id):
+                base(sourceInterface)
+            {
+                this._id = id;
+            }
+
+            public override ExportDataElement[] GetDataElements()
+            {
+                return new ExportDataElement[] { new ExportDataElement(_id) };
+            }
+
+            public override void ProcessNetworkData(string id, string value)
+            {
+                foreach (NetworkFunction target in _subscriptions.Values)
+                {
+                    target.ProcessNetworkData(id, value);
+                }
+            }
+
+            public override void Reset()
+            {
+                foreach (NetworkFunction target in _subscriptions.Values)
+                {
+                    target.Reset();
+                }
+            }
+            
+            public void Subscribe(object key, NetworkFunction target)
+            {
+                _subscriptions.Add(key, target);
+            }
+
+            public void Unsubscribe(object key)
+            {
+                _subscriptions.Remove(key);
+            }
+
+            // REVISIT: use this to cull any demuxes that no longer serve anyone
+            public bool IsEmpty()
+            {
+                return _subscriptions.Count == 0;
+            }
+        }
 
         public DCSInterface(string name):
             base(name)
@@ -180,6 +232,30 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             if (ImpersonatedVehicleName != null)
             {
                 writer.WriteElementString("ImpersonatedVehicleName", ImpersonatedVehicleName);
+            }
+        }
+
+        internal void Subscribe(object key, NetworkFunction function)
+        {
+            foreach (ExportDataElement element in function.GetDataElements())
+            {
+                // lazy create a de-multiplexer
+                DemuxFunction demux;
+                if (!_demuxes.TryGetValue(element.ID, out demux))
+                {
+                    demux = new DemuxFunction(this, element.ID);
+                    _demuxes.Add(element.ID, demux);
+                    AddFunction(demux);
+                }
+                demux.Subscribe(key, function);
+            }
+        }
+
+        internal void Unsubscribe(object key)
+        {
+            foreach(DemuxFunction demux in _demuxes.Values)
+            {
+                demux.Unsubscribe(key);
             }
         }
     }

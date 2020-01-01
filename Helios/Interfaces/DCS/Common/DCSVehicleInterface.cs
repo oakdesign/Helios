@@ -20,6 +20,9 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 {
     public class DCSVehicleInterface: HeliosInterface
     {
+        // duplicate this information with type info
+        DCSInterface _transport;
+
         public DCSVehicleInterface(HeliosInterface parent, string name, string vehicleName, string exportFunctionsPath) :
             base(parent, name)
         {
@@ -27,14 +30,15 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             {
                 throw new System.Exception("DCS vehicle interfaces must be attached to DCSInterface as their parent");
             }
-            // XXX
+            _transport = parent as DCSInterface;
         }
 
         protected DCSInterface NetworkInterface { get => ParentInterface as DCSInterface; }
 
         protected void AddFunction(NetworkFunction function)
         {
-            // XXX hook into ProcessNetworkData of _networkInterface
+            // hook into ProcessNetworkData of _networkInterface
+            _transport.Subscribe(this, function);
 
             // advertise functions
             Triggers.AddSlave(function.Triggers);
@@ -54,6 +58,19 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
 
         public override void WriteXml(XmlWriter writer)
         {
+        }
+
+        public override void DisconnectBindings()
+        {
+            // we are removed from the profile, cancel our subscriptions
+            _transport.Unsubscribe(this);
+            base.DisconnectBindings();
+        }
+
+        public override void ReconnectBindings()
+        {
+            // REVISIT: I believe we don't need to do anything here, because interfaces can't be put back into a profile after deletion
+            base.ReconnectBindings();
         }
     }
 }
