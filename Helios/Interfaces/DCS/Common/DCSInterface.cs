@@ -57,6 +57,8 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 return new ExportDataElement[] { new ExportDataElement(_id) };
             }
 
+            public string ID { get => _id; }
+
             // too expensive for Release mode
             [Conditional("DEBUG")]
             private void DebugCheckBound()
@@ -107,6 +109,20 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
             public bool IsEmpty()
             {
                 return _subscriptions.Count == 0;
+            }
+
+            private int _numBindings = 0;
+
+            internal bool BindingRemoved()
+            {
+                _numBindings--;
+                return _numBindings < 1;
+            }
+
+            internal bool BindingAdded()
+            {
+                _numBindings++;
+                return _numBindings == 1;
             }
         }
 
@@ -269,6 +285,39 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                     AddFunction(demux);
                 }
                 demux.Subscribe(key, function);
+
+                // now note any binding strings that mean that this demux is active, so we can dynamically enable it
+                foreach(IBindingTrigger trigger in function.Triggers)
+                {
+                    _relevantBindings[new BindingKey(trigger)] = demux;
+                }
+            }
+        }
+
+        private Dictionary<BindingKey, DemuxFunction> _relevantBindings = new Dictionary<BindingKey, DemuxFunction>(new BindingKey.Comparer());
+
+        private class BindingKey
+        {
+            private string _source;
+            private string _binding;
+
+            public class Comparer : IEqualityComparer<BindingKey>
+            {
+                public bool Equals(BindingKey x, BindingKey y)
+                {
+                    return (x._source == y._source) && (x._binding == y._binding);
+                }
+
+                public int GetHashCode(BindingKey obj)
+                {
+                    return (obj._source + obj._binding).GetHashCode();
+                }
+            }
+
+            public BindingKey(IBindingTrigger trigger)
+            {
+                _source = HeliosSerializer.GetReferenceName(trigger.Source);
+                _binding = trigger.TriggerID;
             }
         }
 
@@ -279,5 +328,42 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 demux.Unsubscribe(key);
             }
         }
+
+        internal void BindingRemoved(HeliosBinding binding)
+        {
+            ConfigManager.LogManager.LogDebug($"removed binding {binding.Trigger.TriggerID}");
+            if (_relevantBindings.TryGetValue(new BindingKey(binding.Trigger), out DemuxFunction demux))
+            {
+                bool deactivate = demux.BindingRemoved();
+                if (deactivate)
+                {
+                    ConfigManager.LogManager.LogDebug($"demux for data element {demux.ID} can be deactivated");
+                    // XXX dynamic unsubscribe
+                }
+            }
+            else
+            {
+                ConfigManager.LogManager.LogError($"removed binding {binding.Trigger.TriggerID} from demux interface that was not previously subscribed");
+            }
+        }
+
+        internal void BindingAdded(HeliosBinding binding)
+        {
+            ConfigManager.LogManager.LogDebug($"adding binding {binding.Trigger.TriggerID}");
+            if (_relevantBindings.TryGetValue(new BindingKey(binding.Trigger), out DemuxFunction demux))
+            {
+                bool activate = demux.BindingAdded();
+                if (activate)
+                {
+                    ConfigManager.LogManager.LogDebug($"demux for data element {demux.ID} should be activated");
+                    // XXX dyanmic subscribe
+                }
+            }
+            else
+            {
+                ConfigManager.LogManager.LogError($"added binding {binding.Trigger.TriggerID} to demux interface that was not previously subscribed");
+            }
+        }
+
     }
 }

@@ -14,6 +14,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using GadrocsWorkshop.Helios.Interfaces.Network;
+using System;
+using System.Collections.Specialized;
 using System.Xml;
 
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
@@ -31,6 +33,27 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.Common
                 throw new System.Exception("DCS vehicle interfaces must be attached to DCSInterface as their parent");
             }
             _transport = parent as DCSInterface;
+            OutputBindings.CollectionChanged += OutputBindings_CollectionChanged;
+        }
+
+        private void OutputBindings_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add ||
+                e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                foreach (HeliosBinding binding in e.NewItems)
+                {
+                    _transport.BindingAdded(binding);
+                }
+            }
+            if (e.Action == NotifyCollectionChangedAction.Remove ||
+                e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                foreach (HeliosBinding binding in e.OldItems)
+                {
+                    _transport.BindingRemoved(binding);
+                }
+            }
         }
 
         // XXX eliminate
