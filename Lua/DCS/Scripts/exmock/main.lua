@@ -149,8 +149,8 @@ function LoGeoCoordinatesToLoCoordinates(x1, z1)
 end
 
 -- load export script as if we were the main Export.lua running under DCS, and gain privileged access
-helios_mock.impl = dofile(lfs.writedir().."Scripts\\Helios\\HeliosExport15.lua")
-helios_mock.impl.enableHotReload(lfs.writedir().."Scripts\\Helios\\HeliosExport15.lua")
+helios_mock.impl = dofile(lfs.writedir().."Scripts\\Helios\\HeliosExport16.lua")
+helios_mock.impl.enableHotReload(lfs.writedir().."Scripts\\Helios\\HeliosExport16.lua")
 
 -- luacheck: globals tostring
 function helios_mock.installReloaded(reloaded_helios_impl)

@@ -331,10 +331,14 @@ function helios_impl.dispatchCommand(command)
     if (commandCode == "D") then
         local driverName = rest
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("driver '%s' requested by Helios", driverName))
-        helios_impl.loadDriver(driverName)
+        local selfName = helios_impl.loadDriver(driverName)
+        helios_impl.notifySelfName(selfName)
+        helios_impl.notifyLoaded()
     elseif (commandCode == "M") then
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("use of module requested by Helios"))
-        helios_impl.loadModule()
+        local selfName = helios_impl.loadModule()
+        helios_impl.notifySelfName(selfName)
+        helios_impl.notifyLoaded()
     elseif helios_private.driver.processInput ~= nil then
         -- delegate commands other than 'P'
         helios_private.driver.processInput(command)
@@ -359,17 +363,16 @@ function helios_impl.loadDriver(driverName)
 
     -- check if request is allowed
     local currentSelfName = helios.selfName()
+    log.write("HELIOS.EXPORT", log.DEBUG, string.format("attempt to load driver '%s' for '%s'", driverName, currentSelfName))
     if currentSelfName ~= driverName then
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("cannot load driver '%s' while vehicle '%s' is active", driverName, currentSelfName))
         -- tell Helios to choose something that makes sense, but don't disable driver
-        helios_private.notifySelfName(currentSelfName)
-        return
+        return currentSelfName
     -- check if request is already satisfied
     elseif helios_impl.driverName == driverName then
         -- do nothing
         log.write("HELIOS.EXPORT", log.INFO, string.format("driver '%s' for '%s' is already loaded", driverName, currentSelfName))
-        helios_impl.notifyLoaded()
-        return
+        return currentSelfName
     else
         -- now try to load specific driver
         local driverPath = string.format("%sScripts\\Helios\\Drivers\\%s.lua", lfs.writedir(), driverName)
@@ -412,29 +415,20 @@ function helios_impl.loadDriver(driverName)
 
     -- actually install the driver
     helios_impl.installDriver(driver, newDriverName)
-
-    -- tell Helios about it
-    helios_impl.notifyLoaded()
-
-    if not success then
-        -- solicit matching driver
-        helios_private.notifySelfName(currentSelfName)
-    end
+    return currentSelfName
 end
 
 -- load the module for the current vehicle, even if we previously loaded a driver
 function helios_impl.loadModule()
     local currentSelfName = helios.selfName()
+    log.write("HELIOS.EXPORT", log.DEBUG, string.format("attempt to load module for '%s'", currentSelfName))
     local moduleName = helios_module_names[currentSelfName]
-    -- we must always respond with confirming the current vehicle, in case this
-    -- request is like a hello from a new client
-    helios_private.notifySelfName(currentSelfName)
     if moduleName == nil then
-        return
+        return currentSelfName
     end
     if helios_impl.moduleName ~= nil then
         log.write("HELIOS.EXPORT", log.DEBUG, string.format("module '%s' already active for '%s'", moduleName, currentSelfName))
-        return
+        return currentSelfName
     end
     local modulePath = string.format("%sScripts\\Helios\\Mods\\%s.lua", lfs.writedir(), moduleName)
     if (lfs.attributes(modulePath) ~= nil) then
@@ -443,8 +437,7 @@ function helios_impl.loadModule()
         local driver = helios_impl.createModuleDriver(currentSelfName, moduleName)
         if driver ~= nil then
             helios_impl.installDriver(driver, moduleName)
-            helios_impl.notifyLoaded()
-            return
+            return currentSelfName
         end
         -- if we fail, we just leave the previous driver installed
     end
@@ -609,7 +602,7 @@ function helios_private.createDriver()
     return driver
 end
 
-function helios_private.notifySelfName(selfName)
+function helios_impl.notifySelfName(selfName)
     -- export code for 'currently active vehicle, reserved across all DCS interfacess
     log.write("HELIOS.EXPORT", log.INFO, string.format("notifying Helios of active vehicle '%s'", selfName))
     helios_private.doSend("ACTIVE_VEHICLE", selfName)
@@ -622,7 +615,6 @@ function helios_private.handleSelfNameChange(selfName)
         log.INFO,
         string.format("changed vehicle from '%s' to '%s'", helios_private.previousSelfName, selfName)
     )
-    helios_private.notifySelfName(selfName)
     helios_private.previousSelfName = selfName
 
     -- no matter what, the current driver is done
@@ -637,6 +629,10 @@ function helios_private.handleSelfNameChange(selfName)
         -- try driver or give up
         helios_impl.loadDriver(selfName);
     end
+
+    -- tell Helios results
+    helios_impl.notifySelfName(selfName)
+    helios_impl.notifyLoaded()
 end
 
 --- default implementation of exports, used if not overridden by the driver

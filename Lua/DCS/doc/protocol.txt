@@ -5,8 +5,8 @@ participant Export
 group 1: Helios using its own exports
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Helios->Export:LoadDriver(FA-18C_hornet)
@@ -15,6 +15,7 @@ Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile uses Helios exports
 Helios->Export:LoadDriver(A-10C)
 Export->Export:SwitchFromModuleToDriver
+Helios<-Export:ActiveVehicle(A-10C)
 Helios<-Export:ActiveDriver(A-10C)
 Helios->Helios:AutoStart(my_A10_profile_name)
 
@@ -23,8 +24,8 @@ end
 group 1b: Helios using its own exports (CZ profile active)
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenF18C)
 Helios->Export:LoadModule()
@@ -33,6 +34,7 @@ Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile uses Helios exports
 Helios->Export:LoadDriver(A-10C)
 Export->Export:SwitchFromModuleToDriver
+Helios<-Export:ActiveVehicle(A-10C)
 Helios<-Export:ActiveDriver(A-10C)
 Helios->Helios:AutoStart(my_A10_profile_name)
 
@@ -40,8 +42,8 @@ end
 group 2: Helios using Capt Zeen profile
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Helios->Export:LoadDriver(FA-18C_hornet)
@@ -55,8 +57,8 @@ end
 group 2b: Helios active profile is Capt Zeen profile 
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenF18C)
 Helios->Export:LoadModule()
@@ -69,8 +71,8 @@ end
 group 3: Legacy Helios running Capt Zeen profile
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenA10C)
 Heliosx-Export:ActiveVehicle(A-10C)
@@ -82,13 +84,13 @@ end
 group 4: Legacy Helios running Profile with its own Exports
 
 Export->Export:EnterVehicle(FA-18C_hornet)
-Heliosx-Export:ActiveVehicle(FA-18C_hornet)
 Export-xExport:LoadModule(FA-18C_hornet)
 note over Export:must not have matching module installed for this to work
 Export->Export:LoadDriver(FA-18C_hornet)
+Heliosx-Export:ActiveVehicle(FA-18C_hornet)
 Heliosx-Export:ActiveDriver(FA-18C_hornet)
 Helios<-Helios:Start(my_F18_profile_name)
-Heliosx-Export:ActiveVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(FA-18C_hornet)
 Heliosx-Export:ActiveDriver(FA-18C_hornet)
 note over Helios: Works as today
 
@@ -96,8 +98,8 @@ end
 group 100: Legacy Helios running wrong profile
 
 Export->Export:EnterVehicle(A-10C)
-Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveVehicle(A-10C)
 Heliosx-Export:ActiveModule(Helios_A-10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Heliosx-Export:ActiveVehicle(A-10C)

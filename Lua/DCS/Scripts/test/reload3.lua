@@ -17,14 +17,14 @@ helios_mock.test = {
         assert(helios_mock.driverName() == "FA-18C_hornet", "driver not active")
     end,
     [12] = function()
-        local fd = io.open("Helios\\HeliosExport15.lua", "a")
+        local fd = io.open("Helios\\HeliosExport16.lua", "a")
         fd:write("\n-- changed by test reload3")
         fd:close();
     end,
     [412] = function()
         helios_mock.impl.setSimID("SECOND*")
         log.write('RELOAD', log.DEBUG, string.format("global LuaExportActivityNextEvent '%s'", tostring(LuaExportActivityNextEvent)))
-        local fd = io.open("Helios\\HeliosExport15.lua", "a")
+        local fd = io.open("Helios\\HeliosExport16.lua", "a")
         fd:write("\n-- changed by test reload3 again")
         fd:close();
     end,
