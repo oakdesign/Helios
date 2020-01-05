@@ -43,6 +43,7 @@ namespace net.derammo.HelBIOS
         bool AllocateUniqueNamePair(string deviceName, string itemName);
 
         void RegisterInteger(SchemaVersion1.ItemDefinition.Output output, Action<int> code);
+        void RegisterString(SchemaVersion1.ItemDefinition.Output output, Action<string> code);
     }
 
     internal interface IFunction

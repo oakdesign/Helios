@@ -32,9 +32,7 @@ namespace net.derammo.HelBIOS
         /// <summary>
         /// event to notify potentially other threads that the client connection has changed
         /// </summary>
-#pragma warning disable CS0067 // The event 'MulticastListener.ClientChanged' is never used
         public event EventHandler<GadrocsWorkshop.Helios.ProfileAwareInterface.ClientChange> ClientChanged;
-#pragma warning restore CS0067 // The event 'MulticastListener.ClientChanged' is never used
 
         /// <summary>
         /// accessed only by main thread

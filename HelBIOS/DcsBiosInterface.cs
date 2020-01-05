@@ -44,9 +44,7 @@ namespace net.derammo.HelBIOS
 
         public IEnumerable<string> InstalledVehicles { get => _installedVehicles.Keys; }
 
-#pragma warning disable CS0067 // The event 'DcsBiosInterface.ProfileStatusReceived' is never used
         public event EventHandler<ProfileStatus> ProfileStatusReceived;
-#pragma warning restore CS0067 // The event 'DcsBiosInterface.ProfileStatusReceived' is never used
         public event EventHandler<ProfileHint> ProfileHintReceived;
 
         internal string GetDefinitionFilePath(string name)
@@ -54,9 +52,7 @@ namespace net.derammo.HelBIOS
             return _installedVehicles[name];
         }
 
-#pragma warning disable CS0067 // The event 'DcsBiosInterface.ClientChanged' is never used
         public event EventHandler<ClientChange> ClientChanged;
-#pragma warning restore CS0067 // The event 'DcsBiosInterface.ClientChanged' is never used
 
         public override void ReadXml(XmlReader reader)
         {

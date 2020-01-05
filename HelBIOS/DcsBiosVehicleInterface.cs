@@ -36,7 +36,7 @@ namespace net.derammo.HelBIOS
         {
             _factories.Add(ItemDefinition.ControlType.selector, new SelectorFactory());
             _factories.Add(ItemDefinition.ControlType.analog_gauge, new AnalogGaugeFactory());
-
+            _factories.Add(ItemDefinition.ControlType.display, new DisplayFactory());
         }
 
         public DcsBiosVehicleInterface(HeliosInterface parentInterface, string name) : base(parentInterface, name)
@@ -159,6 +159,12 @@ namespace net.derammo.HelBIOS
         public void RegisterInteger(ItemDefinition.Output output, Action<int> code)
         {
             ExportProtocol.IDataReceiver receiver = new IntegerReceiver(output, code);
+            _parent.RegisterReceiver(receiver);
+        }
+
+        public void RegisterString(ItemDefinition.Output output, Action<string> code)
+        {
+            ExportProtocol.IDataReceiver receiver = new StringReceiver(output, code);
             _parent.RegisterReceiver(receiver);
         }
 
