@@ -11,6 +11,7 @@ Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Helios->Export:LoadDriver(FA-18C_hornet)
 Helios<-Export:ActiveVehicle(A-10C)
+Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile uses Helios exports
 Helios->Export:LoadDriver(A-10C)
 Export->Export:SwitchFromModuleToDriver
@@ -28,6 +29,7 @@ Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenF18C)
 Helios->Export:LoadModule()
 Helios<-Export:ActiveVehicle(A-10C)
+Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile uses Helios exports
 Helios->Export:LoadDriver(A-10C)
 Export->Export:SwitchFromModuleToDriver
@@ -44,6 +46,7 @@ Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Helios->Export:LoadDriver(FA-18C_hornet)
 Helios<-Export:ActiveVehicle(A-10C)
+Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile is Capt Zeen profile
 Helios->Helios:AutoStart(CaptZeenA10C)
 
@@ -58,6 +61,7 @@ Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenF18C)
 Helios->Export:LoadModule()
 Helios<-Export:ActiveVehicle(A-10C)
+Helios<-Export:ActiveModule(Helios_A10C)
 note over Helios: Most recent A-10C profile is Capt Zeen profile
 Helios->Helios:AutoStart(CaptZeenA10C)
 
@@ -70,6 +74,7 @@ Export->Export:LoadModule(Helios_A10C)
 Heliosx-Export:ActiveModule(Helios_A10C)
 Helios<-Helios:Start(CaptZeenA10C)
 Heliosx-Export:ActiveVehicle(A-10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
 note over Helios: Works as today
 
 end
@@ -84,6 +89,7 @@ Export->Export:LoadDriver(FA-18C_hornet)
 Heliosx-Export:ActiveDriver(FA-18C_hornet)
 Helios<-Helios:Start(my_F18_profile_name)
 Heliosx-Export:ActiveVehicle(A-10C)
+Heliosx-Export:ActiveDriver(FA-18C_hornet)
 note over Helios: Works as today
 
 end
@@ -92,8 +98,10 @@ group 100: Legacy Helios running wrong profile
 Export->Export:EnterVehicle(A-10C)
 Heliosx-Export:ActiveVehicle(A-10C)
 Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A-10C)
 Helios<-Helios:Start(my_F18_profile_name)
 Heliosx-Export:ActiveVehicle(A-10C)
+Heliosx-Export:ActiveModule(Helios_A-10C)
 note over Helios: Fails just as it does today
 
 end
