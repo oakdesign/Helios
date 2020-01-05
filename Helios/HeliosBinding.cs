@@ -363,24 +363,11 @@ namespace GadrocsWorkshop.Helios
                     {
                         _executing = true;
                         BindingValue value = BindingValue.Empty;
-                        //LuaInterpreter["TriggerValue"] = e.Value.NaitiveValue;
-                        switch (e.Value.NaitiveType)
-                        {
-                            case BindingValueType.Boolean:
-                                LuaInterpreter["TriggerValue"] = e.Value.BoolValue;
-                                break;
-                            case BindingValueType.String:
-                                LuaInterpreter["TriggerValue"] = e.Value.StringValue;
-                                break;
-                            case BindingValueType.Double:
-                                LuaInterpreter["TriggerValue"] = e.Value.DoubleValue;
-                                break;
-                        }
-
                         if (HasCondition)
                         {
                             try
                             {
+                                InitializeLua(e);
                                 object[] conditionReturnValues = LuaInterpreter.DoString(_condition);
                                 if (conditionReturnValues.Length >= 1)
                                 {
@@ -428,7 +415,7 @@ namespace GadrocsWorkshop.Helios
                             case BindingValueSources.LuaScript:
                                 try
                                 {
-
+                                    InitializeLua(e);
                                     object[] returnValues = LuaInterpreter.DoString(Value);
                                     if (returnValues.Length >= 1)
                                     {
@@ -453,7 +440,8 @@ namespace GadrocsWorkshop.Helios
                                 }
                                 break;
                         }
-                        if(Action.Target.Dispatcher == null) {
+                        if (Action.Target.Dispatcher == null)
+                        {
                             // if we don't have a dispatcher, likely because this is a composite device, we use the dispatcher object from the owner of the trigger
                             // this seems to work and was the best I could come up with, but it is very much a kludge because I could not work out the proper way
                             // to have a dispatcher created for Actions
@@ -467,6 +455,24 @@ namespace GadrocsWorkshop.Helios
                     }
                     _executing = false;
                 }
+            }
+        }
+
+        // we call this function on any paths that use Lua as an optimization, so we don't allocate Lua unless we need it
+        private void InitializeLua(HeliosTriggerEventArgs e)
+        {
+            //LuaInterpreter["TriggerValue"] = e.Value.NaitiveValue;
+            switch (e.Value.NaitiveType)
+            {
+                case BindingValueType.Boolean:
+                    LuaInterpreter["TriggerValue"] = e.Value.BoolValue;
+                    break;
+                case BindingValueType.String:
+                    LuaInterpreter["TriggerValue"] = e.Value.StringValue;
+                    break;
+                case BindingValueType.Double:
+                    LuaInterpreter["TriggerValue"] = e.Value.DoubleValue;
+                    break;
             }
         }
 

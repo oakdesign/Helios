@@ -8,7 +8,6 @@ TestResults
 *.suo
 /packages
 Helios *.zip
-"/.vs"
 "NL Assets"
 /installer
 /.vs/helios/v15/Server/sqlite3
@@ -24,3 +23,6 @@ Keypress Receiver Installer/Release/Keypress Receiver Setup.msi
 .vs/slnx.sqlite
 /Lua
 /todo.txt
+.vs/*/DesignTimeBuild
+.vs/*.sqlite
+.vs/VSWorkspaceState.json

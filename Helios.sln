@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aircraft AV-8B", "Aircraft AV-8B\Aircraft AV-8B.csproj", "{2B00F04B-3CB2-44E7-B49B-DA94FF74C66C}"
 EndProject
@@ -20,6 +20,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profile Editor", "Profile Editor\Profile Editor.csproj", "{3AF089A2-9DA0-40C3-AD3A-92253F497BC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Control Center", "Control Center\Control Center.csproj", "{80D80B0F-0DC0-49E2-97C2-3CC6436FA61F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194} = {EE9E6A3B-4001-40F5-8BA6-62B58B537194}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phidgets", "Phidgets\Phidgets.csproj", "{06BA10F4-279C-4E82-B77C-333706A617B9}"
 EndProject
@@ -34,6 +37,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Helios Installer", "Helios 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aircraft A-10C", "Aircraft A-10C\Aircraft A-10C.csproj", "{80870108-EFE4-4ADF-969D-A0CE06123271}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelBIOS", "HelBIOS\HelBIOS.csproj", "{EE9E6A3B-4001-40F5-8BA6-62B58B537194}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -494,6 +499,46 @@ Global
 		{80870108-EFE4-4ADF-969D-A0CE06123271}.Release|x64.Build.0 = Release|Any CPU
 		{80870108-EFE4-4ADF-969D-A0CE06123271}.Release|x86.ActiveCfg = Release|Any CPU
 		{80870108-EFE4-4ADF-969D-A0CE06123271}.Release|x86.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Android.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Android.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|iOS.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|iOS.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-ARM.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-ARM.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-x64.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-x64.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-x86.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|Windows-x86.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Android.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Android.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|ARM.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|ARM64.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|iOS.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|iOS.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-ARM.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-ARM.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-x64.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-x64.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-x86.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|Windows-x86.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|x64.Build.0 = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE9E6A3B-4001-40F5-8BA6-62B58B537194}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -679,6 +679,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             #region Flight Instruments
             //  VVI
             CalibrationPointCollectionDouble vviScale = new CalibrationPointCollectionDouble(-1.0d, -6000d, 1.0d, 6000d);
+            // XXX what is the point of this?  isn't this a linear function that already goes through this point?
             vviScale.Add(new CalibrationPointDouble(0d, 0d));
             AddFunction(new ScaledNetworkValue(NetworkInterface, "225", vviScale, "Flight Instruments", "VVI", "Vertical velocity indicator -6000 to +6000.", "", BindingValueUnits.FeetPerMinute));
 

@@ -70,6 +70,11 @@ namespace GadrocsWorkshop.Helios
                 LoadModule("Phidgets.dll");
             }
 
+            if (File.Exists("HelBIOS.dll"))
+            {
+                LoadModule("HelBIOS.dll");
+            }
+
             if (RenderCapability.Tier == 0)
             {
                 ConfigManager.LogManager.LogWarning("Hardware rendering is not available on this machine.  Helios will consume large amounts of CPU.");
