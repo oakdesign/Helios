@@ -27,10 +27,8 @@ Since Lua does not have a real API system, we use [luacheck](https://github.com/
 # Requirement 4: Helios export core must not be split across files
 The parts of the Helios export script that are not vehicle-specfic must not be split across files.  We do want to clearly separate the private code from the exported API, but these must be stored in the same file.  This is required because users will copy these files around, and we must therefore disallow having one file from one version and another file from another version.  This follows from the API Background explained above, because the private code and the public API are tightly coupled and have no API between them, so they must be locked together.
 
-# Requirement 5: Helios must continue to support only exporting the minimum required data
-DCS-BIOS, Ikarus, and some profiles for Helios choose to always send the entire plane. However, Helios was designed from the ground up to allow exporting exactly what is needed.  That is why the Export scripts are written by Helios, not by hand.  It must continue to be possible to do that in the future.  
-
-From this requirement follows that the Export script has to be aware of not just what vehicle is running, but what profile is being run.  There could be multiple profiles for the same vehicle.  Switching between profiles must then dynamically switch what is being exported.
+# ~~Non-Requirement 5: Helios must continue to support only exporting the minimum required data~~
+This requirement was based on a misunderstanding of how Helios works.  This is not required.
 
 # Requirement 6: Helios must also support users who don't use the generated export scripts
 There is significant investment into export scripts (e.g. CaptZeen's work) that do a lot of custom work in the export.  These must continue to be supported.  That means Helios needs to know not to overwrite this export scripts and they must continue to work as they do today.  This places special requirements on any new protocols between Helios and the Export script, since they have to operate safely even if they are not supported by the Export script.
@@ -51,7 +49,7 @@ Export.lua itself should just be a stub that loads the Helios code from another 
 If we have Requirement 10, then we can have a version of Export.lua that reloads Helios if the files change, without restarting.  That would really help with the development cycle time.
 
 # Requirement 12: File naming should allow incompatible versions to coexist (not run)
-When we release a major version of Helios that introduces incompatible changes (if we have to) then there needs to be a way to tell that one file is the Export.lua for the previous version and one is for the new one.  Users will need this to migrate their changes they may have made to the Export script.  For example, if Helios 1.6 introduces a new Export.lua, then people can hit the "update Exports" button in Profile Editor and get a new HeliosExports16.lua that sits next to HeliosExports15.lua (modified).  Then they can switch to calling the new one (from Export.lua) after they migrate their changes.
+When we release a major version of Helios that introduces incompatible changes (if we have to) then there needs to be a way to tell that one file is the Export.lua for the previous version and one is for the new one.  Users will need this to migrate their changes they may have made to the Export script.  For example, if Helios 1.7 introduces a new Export.lua, then people can hit the "update Exports" button in Profile Editor and get a new HeliosExports17.lua that sits next to HeliosExports16.lua (modified).  Then they can switch to calling the new one (from Export.lua) after they migrate their changes.
 
 # Maybe Requirement 13:
-DCS Export can be tuned (via Export Frequence in Helios UI, which becones Export Interval in the scripts).   If anyone is actually using this to performance tune, then this should  be per profile and not one setting for all airplanes supported by the same Export.lua? 
+DCS Export can be tuned (via Export Frequency in Helios UI, which becones Export Interval in the scripts).   If anyone is actually using this to performance tune, then this should be per module/driver/plane and not one setting for all airplanes supported by the same Export.lua? 

@@ -2,101 +2,98 @@ title Helios Auto Start (https://sequencediagram.org/)
 participant Helios
 participant Export
 
-group Helios starts second, case 1
+group 1: Helios using its own exports
 
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
+Helios<-Helios:Start(my_F18_profile_name)
+Helios->Export:LoadDriver(FA-18C_hornet)
+Helios<-Export:ActiveVehicle(A-10C)
+note over Helios: Most recent A-10C profile uses Helios exports
+Helios->Export:LoadDriver(A-10C)
+Export->Export:SwitchFromModuleToDriver
+Helios<-Export:ActiveDriver(A-10C)
 Helios->Helios:AutoStart(my_A10_profile_name)
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: already matched
-Helios<-Export:Loaded(my_A10_profile_name)
-Helios->Helios:Start(my_A10_profile_name)
-
-end
-group Helios starts second, case 2
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios->Export:LoadProfile(my_A10_profile_name)
-Helios<-Export:Active(FA-18C_hornet)
-Helios->Export:LoadProfile(my_F18_profile_name)
-Helios<-Export:Loaded(my_F18_profile_name)
-Helios->Helios:Start(my_F18_profile_name)
-
-end
-group Helios starts second, case 3
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios-xExport:LoadProfile(my_A10_profile_name)
-note over Helios:can't tell difference between\nlegacy Export and lost message\nso we must not activate
-Helios->(2)Helios:wait
-Helios->Export:LoadProfile(my_A10_profile_name)
-Helios<-Export:Active(FA-18C_hornet)
-Helios->Export:LoadProfile(my_F18_profile_name)
-Helios<-Export:Loaded(my_F18_profile_name)
-Helios->Helios:Start(my_F18_profile_name)
-
-end
-group Helios starts first, case 4
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios-xExport:LoadProfile(my_A10_profile_name)
-Helios->(2)Helios:wait
-Helios<-Export:Active(A-10C)
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: already matched
-Helios<-Export:Loaded(my_A10_profile_name)
-Helios->Helios:Start(my_A10_profile_name)
-
-end
-group Helios starts first, case 5 
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios-xExport:LoadProfile(my_A10_profile_name)
-Helios->(2)Helios:wait
-Helios<-Export:Active(FA-18C_hornet)
-Helios->Export:LoadProfile(my_F18_profile_name)
-Helios<-Export:Loaded(my_F18_profile_name)
-Helios->Helios:Start(my_F18_profile_name)
-
-end
-group Helios starts first, case 6 
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios-xExport:LoadProfile(my_A10_profile_name)
-Helios->(2)Helios:wait
-Helios<-Export:Active(A-10C)
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: don't have this profile!
-Helios<-Export:Loaded(none)
-Helios->Helios:Error()
-
-end
-group Helios starts first, case 7
-
-Helios->Helios:AutoStart(my_A10_profile_name)
-Helios-xExport:LoadProfile(my_A10_profile_name)
-Heliosx-Export:Active(A-10C)
-Helios->(2)Helios:wait
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: already matched
-Heliosx-Export:Loaded(my_A10_profile_name)
-Helios->(2)Helios:wait
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: already matched
-Helios<-Export:Loaded(my_A10_profile_name)
-Helios->Helios:Start(my_A10_profile_name)
 
 end
 
-group Helios starts second, case 8
+group 1b: Helios using its own exports (CZ profile active)
 
-Helios<-Export:Active(A-10C)
-Export->(2)Export:wait
-Export->Export:LoadProfile(my_A10_profile_name)
-Heliosx-Export:Loaded(my_A10_profile_name)
-space
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
+Helios<-Helios:Start(CaptZeenF18C)
+Helios->Export:LoadModule()
+Helios<-Export:ActiveVehicle(A-10C)
+note over Helios: Most recent A-10C profile uses Helios exports
+Helios->Export:LoadDriver(A-10C)
+Export->Export:SwitchFromModuleToDriver
+Helios<-Export:ActiveDriver(A-10C)
 Helios->Helios:AutoStart(my_A10_profile_name)
-Helios->Export:LoadProfile(my_A10_profile_name)
-note over Export: already matched
-Helios<-Export:Loaded(my_A10_profile_name)
-Helios->Helios:Start(my_A10_profile_name)
+
+end
+group 2: Helios using Capt Zeen profile
+
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
+Helios<-Helios:Start(my_F18_profile_name)
+Helios->Export:LoadDriver(FA-18C_hornet)
+Helios<-Export:ActiveVehicle(A-10C)
+note over Helios: Most recent A-10C profile is Capt Zeen profile
+Helios->Helios:AutoStart(CaptZeenA10C)
+
+end
+
+group 2b: Helios active profile is Capt Zeen profile 
+
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
+Helios<-Helios:Start(CaptZeenF18C)
+Helios->Export:LoadModule()
+Helios<-Export:ActiveVehicle(A-10C)
+note over Helios: Most recent A-10C profile is Capt Zeen profile
+Helios->Helios:AutoStart(CaptZeenA10C)
+
+end
+group 3: Legacy Helios running Capt Zeen profile
+
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Heliosx-Export:ActiveModule(Helios_A10C)
+Helios<-Helios:Start(CaptZeenA10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+note over Helios: Works as today
+
+end
+
+group 4: Legacy Helios running Profile with its own Exports
+
+Export->Export:EnterVehicle(FA-18C_hornet)
+Heliosx-Export:ActiveVehicle(FA-18C_hornet)
+Export-xExport:LoadModule(FA-18C_hornet)
+note over Export:must not have matching module installed for this to work
+Export->Export:LoadDriver(FA-18C_hornet)
+Heliosx-Export:ActiveDriver(FA-18C_hornet)
+Helios<-Helios:Start(my_F18_profile_name)
+Heliosx-Export:ActiveVehicle(A-10C)
+note over Helios: Works as today
+
+end
+group 100: Legacy Helios running wrong profile
+
+Export->Export:EnterVehicle(A-10C)
+Heliosx-Export:ActiveVehicle(A-10C)
+Export->Export:LoadModule(Helios_A10C)
+Helios<-Helios:Start(my_F18_profile_name)
+Heliosx-Export:ActiveVehicle(A-10C)
+note over Helios: Fails just as it does today
 
 end
