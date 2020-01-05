@@ -12,7 +12,7 @@ namespace net.derammo.HelBIOS
         string DeviceName { get; }
         string Name { get; }
         string UniqueName { get; }
-        ManifestVersion1.ItemDefinition Definition { get; }
+        SchemaVersion1.ItemDefinition Definition { get; }
     }
 
     internal interface IFunctionFactory
@@ -37,12 +37,12 @@ namespace net.derammo.HelBIOS
 
         void SendCommand(string identifier, int argument);
         void SendCommand(string identifier, CommandArgument argument);
-        void SendCommand(string identifier, ManifestVersion1.ItemDefinition.Input.Argument argument);
+        void SendCommand(string identifier, SchemaVersion1.ItemDefinition.Input.Argument argument);
         void SendCommand(string identifier, double argument);
 
         bool AllocateUniqueNamePair(string deviceName, string itemName);
 
-        void RegisterInteger(ManifestVersion1.ItemDefinition.Output output, Action<int> code);
+        void RegisterInteger(SchemaVersion1.ItemDefinition.Output output, Action<int> code);
     }
 
     internal interface IFunction

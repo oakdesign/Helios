@@ -1,6 +1,6 @@
 ﻿using net.derammo.HelBIOS;
 using System.Collections.Generic;
-using static net.derammo.HelBIOS.ManifestVersion1.ItemDefinition;
+using static net.derammo.HelBIOS.SchemaVersion1.ItemDefinition;
 
 namespace net.derammo.HelBIOS
 {

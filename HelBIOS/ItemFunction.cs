@@ -7,7 +7,7 @@
     {
         protected string _deviceName;
         protected string _itemName;
-        protected ManifestVersion1.ItemDefinition _definition;
+        protected SchemaVersion1.ItemDefinition _definition;
 
         public ItemFunction(IFunctionTemplate template)
             : base(template.Parent)

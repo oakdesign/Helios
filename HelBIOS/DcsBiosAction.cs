@@ -37,7 +37,7 @@ namespace net.derammo.HelBIOS
         /// <param name="actionName"></param>
         /// <param name="actionDescription"></param>
         /// <param name="argument"></param>
-        public DcsBiosAction(IFunctionTemplate template, string actionName, string actionDescription, ManifestVersion1.ItemDefinition.Input.Argument argument)
+        public DcsBiosAction(IFunctionTemplate template, string actionName, string actionDescription, SchemaVersion1.ItemDefinition.Input.Argument argument)
             : base(template.Parent.CommandInterface, template.DeviceName, template.UniqueName, actionName, actionDescription)
         {
             Execute += (action, eventArgs) => { template.Parent.SendCommand(template.Definition.identifier, argument); };

@@ -8,11 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace net.derammo.HelBIOS
 {
-
     [HeliosInterface("HelBIOS.DcsBiosInterface", "DCS-BIOS", null, typeof(DcsBiosInterfaceFactory), UniquenessKey = "BaseUDPInterface")]
     public class DcsBiosInterface : HeliosNetworkInterface, IProfileAwareInterface
     {
@@ -32,11 +30,11 @@ namespace net.derammo.HelBIOS
 
             // meta information we consume ourselves
             RegisterReceiver(new StringReceiver(
-                new ManifestVersion1.ItemDefinition.Output()
+                new SchemaVersion1.ItemDefinition.Output()
                 {
                     address = 0,
                     max_length = 24,
-                    type = ManifestVersion1.ItemDefinition.Output.Type._string
+                    type = SchemaVersion1.ItemDefinition.Output.Type._string
                 },
                 ReceiveVehicleName));
         }
@@ -125,18 +123,6 @@ namespace net.derammo.HelBIOS
             _udpListener = null;
         }
 
-        private class PluginIndexRecord
-        {
-            public string pluginDir { get; set; }
-            public string luaFile { get; set; }
-        }
-
-        private class PluginManifest
-        {
-            public int manifestVersion { get; set; }
-            public string moduleDefinitionName { get; set; }
-        }
-
         private void LoadPlugins()
         {
             if (_loaded)
@@ -151,11 +137,11 @@ namespace net.derammo.HelBIOS
                 return;
             }
             string indexJson = File.ReadAllText(indexFile);
-            PluginIndexRecord[] index = JsonSerializer.Deserialize<PluginIndexRecord[]>(indexJson);
-            foreach(PluginIndexRecord record in index)
+            SchemaVersion1.PluginIndexRecord[] index = JsonSerializer.Deserialize<SchemaVersion1.PluginIndexRecord[]>(indexJson);
+            foreach(SchemaVersion1.PluginIndexRecord record in index)
             {
                 string manifestJson = File.ReadAllText(System.IO.Path.Combine(record.pluginDir, "dcs-bios-plugin-manifest.json"));
-                PluginManifest manifest = JsonSerializer.Deserialize<PluginManifest>(manifestJson);
+                SchemaVersion1.PluginManifest manifest = JsonSerializer.Deserialize<SchemaVersion1.PluginManifest>(manifestJson);
                 if (manifest.manifestVersion != 1)
                 {
                     ConfigManager.LogManager.LogError($"DCS-BIOS manifest version {manifest.manifestVersion} is unsupported;  vehicle {manifest.moduleDefinitionName} not loaded");

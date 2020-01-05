@@ -9,7 +9,7 @@ namespace net.derammo.HelBIOS
         public IFunctionParent Parent { get; internal set; }
         public string DeviceName { get; internal set; }
         public string Name { get; internal set; }
-        public ManifestVersion1.ItemDefinition Definition { get; internal set; }
+        public SchemaVersion1.ItemDefinition Definition { get; internal set; }
         /// <summary>
         /// lazy-created Unique Name for the item, which will be equal to Definition.description if the input data is perfect
         /// </summary>

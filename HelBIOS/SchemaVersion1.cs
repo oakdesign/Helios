@@ -1,9 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace net.derammo.HelBIOS.ManifestVersion1
+
+/// <summary>
+/// These are the definitions of DCS-BIOS JSON schema for JSON files that we read.
+/// If the format of DCS-BIOS JSON files changes, additional versions of this format
+/// will need to be supported.  Hopefully, PluginManifest.manifestVersion would be
+/// incremented in this case, so we can safely detect new versions.
+/// 
+/// Some of the enumerations on this schema are not actually enforced as enumerations in
+/// DCS-BIOS, but instead are sets of meaningful strings.  New values will likely be added
+/// in the future, causing our JSON import to break.  This is intentional, to signal to 
+/// Helios developers that new types should be implemented.
+/// 
+/// Additionally, string values in DCS-BIOS sometimes are not valid enumerated values in C#,
+/// so these are remapped by adding an _ character to the front of the value in our
+/// JSON Deserialization converter.
+/// 
+/// If this becomes a maintenance problem, the offending enums can be changed to strings in the future.
+/// </summary>
+namespace net.derammo.HelBIOS.SchemaVersion1
 {
+    [SuppressMessage("Microsoft.Design", "IDE1006")]
+    [Serializable]
+    public class PluginIndexRecord
+    {
+        public string pluginDir { get; set; }
+        public string luaFile { get; set; }
+    }
+
+    [SuppressMessage("Microsoft.Design", "IDE1006")]
+    [Serializable]
+    public class PluginManifest
+    {
+        public int manifestVersion { get; set; }
+        public string moduleDefinitionName { get; set; }
+    }
+
     [Serializable]
     public class ModuleDefinition : Dictionary<string, DeviceDefinition>
     {
@@ -14,6 +49,7 @@ namespace net.derammo.HelBIOS.ManifestVersion1
     {
     }
 
+    [SuppressMessage("Microsoft.Design", "IDE1006")]
     [Serializable]
     public class ItemDefinition
     {

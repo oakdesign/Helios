@@ -89,7 +89,7 @@
     <Compile Include="FunctionTemplate.cs" />
     <Compile Include="IMessageReceiver.cs" />
     <Compile Include="ItemFunction.cs" />
-    <Compile Include="ManifestVersion1.cs" />
+    <Compile Include="SchemaVersion1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushButton.cs" />
     <Compile Include="AnalogGaugeFactory.cs" />

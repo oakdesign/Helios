@@ -1,7 +1,7 @@
 ﻿using GadrocsWorkshop.Helios;
 using GadrocsWorkshop.Helios.ComponentModel;
 using GadrocsWorkshop.Helios.Interfaces.Network;
-using net.derammo.HelBIOS.ManifestVersion1;
+using net.derammo.HelBIOS.SchemaVersion1;
 using System;
 using System.Collections.Generic;
 using System.IO;

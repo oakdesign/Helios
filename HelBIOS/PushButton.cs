@@ -1,5 +1,5 @@
 ﻿using GadrocsWorkshop.Helios;
-using static net.derammo.HelBIOS.ManifestVersion1.ItemDefinition;
+using static net.derammo.HelBIOS.SchemaVersion1.ItemDefinition;
 
 namespace net.derammo.HelBIOS
 {

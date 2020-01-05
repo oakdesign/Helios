@@ -1,4 +1,4 @@
-﻿using net.derammo.HelBIOS.ManifestVersion1;
+﻿using net.derammo.HelBIOS.SchemaVersion1;
 
 namespace net.derammo.HelBIOS
 {
