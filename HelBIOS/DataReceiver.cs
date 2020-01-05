@@ -10,14 +10,14 @@ namespace net.derammo.HelBIOS
         
         public int Size { get; protected set; }
         
-        public virtual bool NeedsSyncNotification => false;
+        public virtual bool NeedsUpdateNotification => false;
 
         public DataReceiver(ItemDefinition.Output output)
         {
             _output = output;
         }
 
-        public virtual void NotifySync(byte[] buffer)
+        public virtual void NotifyUpdate(byte[] buffer)
         {
             // no op
         }

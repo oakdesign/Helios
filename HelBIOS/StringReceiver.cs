@@ -9,7 +9,19 @@ namespace net.derammo.HelBIOS
 
         private Action<string> _code;
         private bool _dirty = false;
+
+        /// <summary>
+        /// the state of the string buffer after the last update
+        /// </summary>
         private byte[] _previous;
+
+        /// <summary>
+        ///  this array tracks writes to the bytes of this string on the current update
+        /// if any messages are lost, not all bytes will be written and we don't use the resulting value
+        ///    
+        /// NOTE: DCS-BIOS writes the entire buffer every update, filling in the unused parts of the string with
+        /// ASCII space 0x20, even if the string is zero-terminated before that
+        /// </summary>
         private bool[] _valid;
 
         public StringReceiver(ItemDefinition.Output output, Action<string> code)
@@ -38,7 +50,6 @@ namespace net.derammo.HelBIOS
                 {
                     _dirty = true;
                 }
-                // DCS-BIOS will send the entire string width, so we know when it is done
                 _valid[targetOffset + i] = true;
             }
         }
@@ -50,7 +61,7 @@ namespace net.derammo.HelBIOS
             Array.Clear(_valid, 0, _valid.Length);
         }
 
-        public override void NotifySync(byte[] buffer)
+        public override void NotifyUpdate(byte[] buffer)
         {
             if (_dirty)
             {
@@ -72,10 +83,9 @@ namespace net.derammo.HelBIOS
                 // this is now our reference
                 Array.Copy(buffer, _output.address, _previous, 0, Size);
                 _dirty = false;
-                // XXX do we need to wait to receive all bits again or will it change only parts?
             }
         }
 
-        public override bool NeedsSyncNotification => true;
+        public override bool NeedsUpdateNotification => true;
     }
 }

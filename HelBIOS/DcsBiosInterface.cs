@@ -37,6 +37,13 @@ namespace net.derammo.HelBIOS
                     type = SchemaVersion1.ItemDefinition.Output.Type._string
                 },
                 ReceiveVehicleName));
+            RegisterReceiver(new IntegerReceiver(
+                new SchemaVersion1.ItemDefinition.Output()
+                {
+                    address = 0xfffe,
+                    type = SchemaVersion1.ItemDefinition.Output.Type.integer
+                },
+                ReceiveUpdateCounters));
         }
 
         public IEnumerable<string> Tags => new List<string>() { "XXX dummy" };
@@ -104,6 +111,26 @@ namespace net.derammo.HelBIOS
         private void ReceiveVehicleName(string value)
         {
             ProfileHintReceived?.Invoke(this, new ProfileHint() { Tag = value });
+        }
+
+        private void ReceiveUpdateCounters(int values)
+        {
+            // these update counters are sent as the last thing in each frame, so we can
+            // use it to trigger updates instead of waiting for the next sync to start
+            // from DCS-BIOS MetadataEnd.lua:
+            //
+            // --place update counters at address 0xfffe
+            // -- DCS - BIOS guarantees that the value for address 0xfffe
+            // -- will be the last one that is written in each update.
+            // -- Clients can use that as an "update complete" signal.
+            // -- At the point when the write access to 0xfffe has been received,
+            // -- all string values have been completely updated(so the client
+            // -- can assume they are in a consistent state) and some time will
+            // -- pass until the next update has to be processed, so it is a good
+            // -- trigger to update graphical displays and do other time-consuming
+            // -- operations.
+            //
+            _protocol.NotifyUpdate();
         }
 
         private void Profile_ProfileStarted(object sender, EventArgs e)

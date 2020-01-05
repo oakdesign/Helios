@@ -1,4 +1,5 @@
 ﻿using GadrocsWorkshop.Helios;
+using System;
 using System.Collections.Generic;
 
 namespace net.derammo.HelBIOS
@@ -37,12 +38,12 @@ namespace net.derammo.HelBIOS
             int Size { get; }
 
             /// <summary>
-            /// if true, this data element wants to be notified on frame sync
+            /// if true, this data element wants to be notified on frame complete
             /// </summary>
-            bool NeedsSyncNotification { get; }
+            bool NeedsUpdateNotification { get; }
 
             void ReceiveData(byte[] buffer, int sourceOffset, int size, int targetOffset);
-            void NotifySync(byte[] buffer);
+            void NotifyUpdate(byte[] buffer);
             void Reset(byte[] buffer);
         }
 
@@ -53,7 +54,7 @@ namespace net.derammo.HelBIOS
         private List<IDataReceiver>[] _dispatch = new List<IDataReceiver>[0x10000 / 2];
 
         // those receivers that need to know when sync happens
-        private List<IDataReceiver> _syncAwareCustomers = new List<IDataReceiver>();
+        private List<IDataReceiver> _updateAwareCustomers = new List<IDataReceiver>();
 
         internal ExportProtocol()
         {
@@ -109,6 +110,10 @@ namespace net.derammo.HelBIOS
                     count--;
                     if (count == 0)
                     {
+                        // NOTE: we could detect the write to 0xfffe here, by checking the 
+                        // range written, but we will instead dispatch that write to the interface
+                        // so it can also react to the end of update, if it wants to
+
                         // done writing
                         DispatchWrites(address, size);
                         state = State.ADDRESS_LOW;
@@ -133,7 +138,6 @@ namespace net.derammo.HelBIOS
             {
                 state = State.ADDRESS_LOW;
                 sync_byte_count = 0;
-                NotifySync();
             }
         }
 
@@ -161,9 +165,9 @@ namespace net.derammo.HelBIOS
             }
 
             // register for sync
-            if (receiver.NeedsSyncNotification)
+            if (receiver.NeedsUpdateNotification)
             {
-                _syncAwareCustomers.Add(receiver);
+                _updateAwareCustomers.Add(receiver);
             }
         }
 
@@ -182,11 +186,11 @@ namespace net.derammo.HelBIOS
             }
         }
 
-        private void NotifySync()
+        internal void NotifyUpdate()
         {
-            foreach (IDataReceiver receiver in _syncAwareCustomers)
+            foreach (IDataReceiver receiver in _updateAwareCustomers)
             {
-                receiver.NotifySync(_buffer);
+                receiver.NotifyUpdate(_buffer);
             }
         }
     }
