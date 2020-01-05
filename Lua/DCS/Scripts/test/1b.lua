@@ -7,10 +7,10 @@ helios_mock.test = {
         helios_mock.loadModule("A-10C", "Helios_A10C")
     end,
     [12] = function()
-        helios_mock.receiveLoadDriver("FA-18C_hornet")
+        helios_mock.receiveLoadModule()
     end,
     [13] = function()
-        assert(helios_mock.moduleName() == "Helios_A10C", "should resist change")
+        assert(helios_mock.moduleName() == "Helios_A10C", "should not change")
     end,
     [14] = function()
         helios_mock.receiveLoadDriver("A-10C")

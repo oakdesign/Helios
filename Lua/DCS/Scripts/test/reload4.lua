@@ -11,14 +11,14 @@ helios_mock.test = {
         helios_mock.installReloaded(reloaded)
     end,
     [3] = function()
-        assert(helios_mock.profileName() == "", "state not reset")
+        assert(helios_mock.driverName() == "", "state not reset")
         helios_mock.impl.setSimID("SECOND*")
         local reloaded = helios_loader.reload() -- luacheck: no global
 
         -- this step is only because mock needs the privileged interface, it would
         -- not happen at run time
         helios_mock.installReloaded(reloaded)
-        assert(helios_mock.profileName() == "", "state not reset")
+        assert(helios_mock.driverName() == "", "state not reset")
     end,
     [4] = function()
     end

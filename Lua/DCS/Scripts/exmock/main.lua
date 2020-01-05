@@ -166,26 +166,29 @@ function helios_mock.setSelf(name)
     helios_mock.selfName = name
 end
 
-function helios_mock.profileName()
+function helios_mock.driverName()
     return helios_mock.impl.driverName
 end
 
-function helios_mock.loadDriver(selfName, profileName)
+function helios_mock.moduleName()
+    return helios_mock.impl.moduleName
+end
+
+function helios_mock.loadDriver(driverName)
     -- NOTE: this isn't part of the helios API, enforced by luacheck
-    helios_mock.impl.loadProfile(selfName, profileName)
+    helios_mock.impl.loadDriver(driverName)
 end
 
-function helios_mock.receiveLoadProfile(profileName)
-    helios_mock.impl.dispatchCommand(string.format("P%s", profileName))
+function helios_mock.receiveLoadDriver(driverName)
+    helios_mock.impl.dispatchCommand(string.format("D%s", driverName))
 end
 
-function helios_mock.framesUntilAutoLoad()
-    return math.ceil((helios_mock.impl.autoLoadDelay + helios_mock.impl.exportInterval) * helios_mock_private.fps)
+function helios_mock.receiveLoadModule()
+    helios_mock.impl.dispatchCommand(string.format("M"))
 end
 
 -- test loading module in compatibility mode
-function helios_mock.loadModuleDriver(selfName, moduleName)
-    helios_mock.impl.cancelAutoLoad();
+function helios_mock.loadModule(selfName, moduleName)
     local driver = helios_mock.impl.createModuleDriver(selfName, moduleName)
     if driver == nil then
         log.write('MOCK', log.ERROR, string.format("failed to create module driver %s for %s", moduleName, selfName))

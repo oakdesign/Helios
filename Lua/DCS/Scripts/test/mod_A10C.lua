@@ -5,7 +5,7 @@ helios_mock.test = {
     end,
     -- wait until we notice vehicle change
     [11] = function()
-        helios_mock.loadModuleDriver("A-10C", "Helios_A10C")
+        helios_mock.loadModule("A-10C", "Helios_A10C")
     end,
     [10000] = function()
     end

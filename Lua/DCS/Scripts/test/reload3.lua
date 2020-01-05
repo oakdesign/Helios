@@ -14,7 +14,7 @@ helios_mock.test = {
     [11] = function()
         assert(helios.selfName() == "FA-18C_hornet", "plane not active")
         helios_mock.loadDriver("FA-18C_hornet", "my_F18_profile_name")
-        assert(helios_mock.profileName() == "my_F18_profile_name", "profile not active")
+        assert(helios_mock.driverName() == "FA-18C_hornet", "driver not active")
     end,
     [12] = function()
         local fd = io.open("Helios\\HeliosExport15.lua", "a")

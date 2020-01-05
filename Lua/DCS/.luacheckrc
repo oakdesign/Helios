@@ -120,7 +120,7 @@ ignore = {
 -- either: execute "lua\bin\luacheck Scripts" manually on the command line or configure an
 -- absolute path to luacheck in settings.json (workspace path does not get expanded on vscode-lua)
 -- For ease of local hacking, consider running "git update-index --skip-worktree .vscode\settings.json"
-files["Scripts/Helios/Drivers/*/*.lua"] = {
+files["Scripts/Helios/Drivers/*.lua"] = {
     std = {
         globals = { },
         read_globals = {
@@ -179,9 +179,11 @@ files["Scripts/Helios/Drivers/*/*.lua"] = {
                     "impl",
                     "installReloaded",
                     "loadDriver",
-                    "loadModuleDriver",
-                    "profileName",
-                    "receiveLoadProfile",
+                    "loadModule",
+                    "driverName",
+                    "moduleName",
+                    "receiveLoadDriver",
+                    "receiveLoadModule",
                     "setSelf",
                     "sleepRatio"
                 }
