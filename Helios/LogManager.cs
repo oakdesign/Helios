@@ -13,6 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Text.RegularExpressions;
+
 namespace GadrocsWorkshop.Helios
 {
     using System;
@@ -21,26 +23,11 @@ namespace GadrocsWorkshop.Helios
 
     public class LogManager
     {
-        private string _logFile;
-        private LogLevel _level = LogLevel.Info;
-
-        private System.Object _lock = new System.Object();
-
-        public LogManager(string path, LogLevel level)
+        public LogManager(LogLevel level)
         {
-            _logFile = path;
-            _level = level;
+            _ = level;
+            // no code, log level is managed via NLog
         }
-
-        #region Properties
-
-        public LogLevel LogLevel
-        {
-            get { return _level; }
-            set { _level = value; }
-        }
-
-        #endregion
 
         public void LogDebug(string message)
         {
@@ -77,65 +64,57 @@ namespace GadrocsWorkshop.Helios
             WriteLogMessage(LogLevel.Info, message, null);
         }
 
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private void WriteLogMessage(LogLevel level, string message, Exception exception)
         {
-#if DEBUG
-            Console.WriteLine(message);
-#endif
-            if (_level >= level)
+            switch (level)
             {
-                lock (_lock)
-                {
-                    try
+                case LogLevel.All:
+                    Logger.Info(message);
+                    break;
+                case LogLevel.Error:
+                    if (exception != null)
                     {
-                        FileInfo errorFile = new FileInfo(_logFile);
-
-                        StreamWriter errorWriter;
-
-                        if (errorFile.Exists)
-                        {
-                            errorWriter = errorFile.AppendText();
-                        }
-                        else
-                        {
-                            errorWriter = errorFile.CreateText();
-                        }
-
-                        using (errorWriter)
-                        {
-
-                            errorWriter.Write(DateTime.Now.ToString());
-                            errorWriter.Write(" - ");
-                            errorWriter.Write(level.ToString());
-                            errorWriter.Write(" - ");
-                            errorWriter.WriteLine(message);
-
-                            if (exception != null)
-                            {
-                                WriteException(errorWriter, exception);
-                            }
-                        }
+                        Logger.Error(exception, message);
                     }
-                    catch (Exception)
+                    else
                     {
-                        // Nothing to do but go on.
+                        Logger.Error(message);
                     }
-                }
+                    break;
+                case LogLevel.Warning:
+                    Logger.Warn(message);
+                    break;
+                case LogLevel.Info:
+                    Logger.Info(message);
+                    break;
+                case LogLevel.Debug:
+                    Logger.Debug(message);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
         }
 
+        // XXX remove these after reviewing our logging of exceptions via NLog 
+        private static string CreateTimeStamp()
+        {
+            return DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt");
+        }
+
+        // XXX remove these after reviewing our logging of exceptions via NLog 
         private void WriteException(StreamWriter writer, Exception exception)
         {
-            if (exception.Source != null && exception.Source.Length > 0)
+            if (!string.IsNullOrEmpty(exception.Source))
             {
                 writer.WriteLine("Exception Source:" + exception.Source);
             }
             writer.WriteLine("Exception Message:" + exception.Message);
             writer.WriteLine("Stack Trace:");
-            writer.WriteLine(exception.StackTrace);
+            WriteStackTrace(writer, exception);
 
-            ReflectionTypeLoadException le = exception as ReflectionTypeLoadException;
-            if (le != null)
+            if (exception is ReflectionTypeLoadException le)
             {
                 foreach (Exception e2 in le.LoaderExceptions)
                 {
@@ -147,6 +126,22 @@ namespace GadrocsWorkshop.Helios
             {
                 writer.WriteLine();
                 WriteException(writer, exception.InnerException);
+            }
+        }
+
+        // XXX remove these after reviewing our logging of exceptions via NLog 
+        private static void WriteStackTrace(StreamWriter writer, Exception exception)
+        {
+            Regex buildPathExpression = new Regex("[A-Z]:\\\\.*\\\\Helios\\\\");
+            string trace = exception.StackTrace;
+            Match buildPathMatch = buildPathExpression.Match(trace);
+            if (buildPathMatch.Success)
+            {
+                writer.WriteLine(trace.Replace(buildPathMatch.Groups[0].Value, ""));
+            }
+            else
+            {
+                writer.WriteLine(trace);
             }
         }
     }

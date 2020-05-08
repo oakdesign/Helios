@@ -13,6 +13,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Linq;
+using GadrocsWorkshop.Helios.Interfaces.Capabilities.ProfileAwareInterface;
+using GadrocsWorkshop.Helios.Util;
+
 namespace GadrocsWorkshop.Helios.ControlCenter
 {
     using Microsoft.Win32;
@@ -26,6 +30,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
     using System.Windows.Interop;
     using System.Windows.Threading;
     using GadrocsWorkshop.Helios.Splash;
+    using GadrocsWorkshop.Helios.Windows;
+    using GadrocsWorkshop.Helios.Windows.Controls;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -40,25 +46,58 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private DispatcherTimer _dispatcherTimer;
         private List<MonitorWindow> _windows = new List<MonitorWindow>();
-        private bool _deletingProfile = false;
-        private long _lastTick = 0;
+        private long _lastTick;
 
         private WindowInteropHelper _helper;
-        private bool _prefsShown = false;
+        private bool _prefsShown;
 
-        private HotKey _hotkey = null;
+        private HotKey _hotkey;
+
+        // current status message to display
+        private StatusValue _status = StatusValue.Empty;
+
+        // most recently received simulator info
+        private string _lastProfileHint = "";
+        private string _lastDriverStatus = "";
+
+        // our writable preferences
+        // NOTE: we have readonly access to the global helios settings being written by Profile Editor
+        public SettingsManager PreferencesFile { get; }
+
+        // model for our preferences
+        public Preferences Preferences { get; }
 
         public MainWindow()
         {
+            PreferencesFile = new SettingsManager(Path.Combine(ConfigManager.DocumentPath, "ControlCenterPreferences.xml"))
+            {
+                Writable = true
+            };
+            Preferences = new Preferences(PreferencesFile); 
             InitializeComponent();
 
-            ConfigManager.LogManager.LogInfo("Initializing Main Window");
-            KeyboardEmulator.ControlCenterSession = true;  // Keyboard emulator needs to know that we're in the Control Center
+            // this is gross, but correct:  this time is before any read access to settings, meaning before we load them
+            SettingsLoadTime = DateTime.Now;
+            
+            // starting
+            ConfigManager.LogManager.LogDebug("Control Center initializing");
 
-            displaySplash(4000);  // Display a dynamic splash panel with release and credits
+            StatusMessage = StatusValue.RunningVersion;
 
-            MinimizeCheckBox.IsChecked = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "StartMinimized", false);
-            if (MinimizeCheckBox.IsChecked == true)
+            if (Preferences.SplashScreen)
+            {
+                // Display a dynamic splash panel with release and credits
+                DisplaySplash(4000);
+            }
+            else
+            {
+                // add the list of contributors to the console instead
+                StatusViewer.AddItem(new StatusReportItem {
+                    Status = $"Contributors: {string.Join(", ", About.Authors.Union(About.Contributors))}",
+                    Flags = StatusReportItem.StatusFlags.ConfigurationUpToDate });
+            }
+
+            if (Preferences.StartMinimized)
             {
                 Minimize();
             }
@@ -67,7 +106,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 Maximize();
             }
 
-            LoadProfileList(ConfigManager.SettingsManager.LoadSetting("ControlCenter", "LastProfile", ""));
+            LoadProfileList(PreferencesFile.LoadSetting("ControlCenter", "LastProfile", ""));
             if (_profileIndex == -1 && _profiles.Count > 0)
             {
                 _profileIndex = 0;
@@ -81,23 +120,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 SelectedProfileName = "- No Profiles Available -";
             }
 
-            if (ConfigManager.SettingsManager.IsSettingAvailable("ControlCenter", "TouchScreenMouseSuppressionPeriod"))
-            {
-                TouchScreenDelaySlider.Value = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "TouchScreenMouseSuppressionPeriod", 0);
-                if (TouchScreenDelaySlider.Value > 0)
-                {
-                    TouchscreenDelayTextBlock.Visibility = Visibility.Visible;
-                    TouchScreenDelaySlider.Visibility = Visibility.Visible;
-                    TouchScreenDelayBorder.Visibility = Visibility.Visible;
-                    TouchScreenDelayTitle.Visibility = Visibility.Visible;
-                    TouchscreenCheckBox.IsChecked = true;
-                }
-                else
-                {
-                    TouchscreenCheckBox.IsChecked = false;
-                }
-            }
-
+            // fix up UI state that isn't implemented as bindings
+            TouchscreenCheckBox.IsChecked = (Preferences.SuppressMouseAfterTouchDuration > 0);
             try
             {
                 RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
@@ -105,7 +129,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 {
                     if (pathKey.GetValue("Helios") != null)
                     {
-                        AutoStartCheckBox.IsChecked = true;
+                        Preferences.AutoStart = true;
                     }
                     pathKey.Close();
                 }
@@ -114,17 +138,12 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             {
                 AutoStartCheckBox.IsChecked = false;
                 AutoStartCheckBox.IsEnabled = false;
-                AutoStartCheckBox.ToolTip = "Unable to read/write registry for auto start.  Try running Control Center as an administrator.";
+                AutoStartCheckBox.ToolTip = "Unable to read/write registry to enable auto start.  Control Center may require administrator rights for this feature.";
                 ConfigManager.LogManager.LogError("Error checking for auto start.", e);
             }
-
-            AutoHideCheckBox.IsChecked = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "AutoHide", false);
-
-            SetLicenseMessage();
-            SetProjectReleaseMessage();
         }
 
-        private void displaySplash(Int32 splashDelay)
+        private void DisplaySplash(Int32 splashDelay)
         {
             About aboutDialog = new About();
             aboutDialog.InitializeComponent();
@@ -132,6 +151,114 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             System.Threading.Thread.Sleep(splashDelay);
             aboutDialog.Close();
         }
+
+        private void ComposeStatusMessage(string firstLine)
+        {
+            string message = firstLine;
+            if (_lastProfileHint.Length > 0)
+            {
+                message += $"\nSimulator is {_lastProfileHint}";
+            }
+            else
+            {
+                message += "\n";
+            }
+            if (_lastDriverStatus.Length > 0)
+            {
+                message += $"\nSimulator is running {_lastDriverStatus}";
+            }
+            Message = message;
+        }
+
+        private void ComposeErrorMessage(string status, string recommendation)
+        {
+            // this multiline message does not combine with anything
+            Message = $"{status} {recommendation}";
+        }
+
+        private void ComposePopupMessage(string message)
+        {
+            Message = message;
+        }
+
+        private void ReportStatus(string status) {
+            if (status.Length < 1)
+            {
+                return;
+            }
+            StatusViewer.AddItem(new StatusReportItem()
+            {
+                Status = status
+            });
+        }
+
+        private void ReportError(string status, string recommendation)
+        {
+            StatusViewer.AddItem(new StatusReportItem()
+            {
+                Severity = StatusReportItem.SeverityCode.Error,
+                Status = status,
+                Recommendation = recommendation
+            });
+        }
+
+        // helper
+        private void UpdateStatusMessage()
+        {
+            UpdateStatusMessage(ComposeStatusMessage, ComposeErrorMessage, ComposePopupMessage);
+        }
+
+        // helper
+        private void ReportStatusToStatusViewer()
+        {
+            UpdateStatusMessage(ReportStatus, ReportError, null);
+        }
+
+        private void UpdateStatusMessage(Action<string> updateInfoStatus, Action<string, string> updateErrorStatus, Action<string> updatePopup)
+        {
+            // centralize all these messages, because they all need to fit in the same space
+            switch (_status)
+            {
+                case StatusValue.Empty:
+                // fall through
+                case StatusValue.License:
+                    updateInfoStatus("");
+                    break;
+                case StatusValue.Running:
+                    updateInfoStatus("Running Profile");
+                    break;
+                case StatusValue.Loading:
+                    updateInfoStatus("Loading Profile...");
+                    break;
+                case StatusValue.LoadError:
+                    updateInfoStatus("Error loading Profile");
+                    break;
+                case StatusValue.RunningVersion:
+                    Version ver = Assembly.GetEntryAssembly().GetName().Version;
+                    string message =
+                        $"Helios {ver.Major.ToString()}.{ver.Minor.ToString()}.{ver.Build.ToString("0000")}.{ver.Revision.ToString("0000")}";
+                    message += $"\n{KnownLinks.GitRepoUrl() ?? "BlueFinBima fork"}";
+                    updateInfoStatus(message);
+                    break;
+                case StatusValue.ProfileVersionHigher:
+                    updateErrorStatus(
+                        "Cannot display this profile because it was created with a newer version of Helios.",
+                        "Please upgrade to the latest version.");
+                    break;
+                case StatusValue.BadMonitorConfig:
+                    updateErrorStatus(
+                        "Cannot display this profile because it has an invalid monitor configuration.",
+                        "Please open the Helios Profile Editor and select reset monitors from the profile menu.");
+                    break;
+                case StatusValue.FailedPreflight:
+                    updateErrorStatus(
+                        "Failed preflight check.",
+                        "Please resolve problems or disable preflight check in preferences."
+                    );
+                    break;
+            }
+        }
+
 
         #region Properties
 
@@ -155,28 +282,48 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         public static readonly DependencyProperty SelectedProfileNameProperty =
             DependencyProperty.Register("SelectedProfileName", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
 
+        public enum StatusValue
+        {
+            Empty,
+            License, // Helios used to display a license; this case is here in case we need to put that back
+            Running,
+            Loading,
+            LoadError,
+            RunningVersion,
+            ProfileVersionHigher,
+            BadMonitorConfig,
+            FailedPreflight
+        }
+
         public string Message
         {
             get { return (string)GetValue(MessageProperty); }
             set { SetValue(MessageProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
 
+        public StatusValue StatusMessage
+        {
+            get { return _status; }
+            set {
+                _status = value;
+                UpdateStatusMessage();
+                ReportStatusToStatusViewer();
+            }
+        }
 
         public string HotKeyDescription
         {
             get { return (string)GetValue(HotKeyDescriptionProperty); }
             set { SetValue(HotKeyDescriptionProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for HotKeyDescription.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HotKeyDescriptionProperty =
             DependencyProperty.Register("HotKeyDescription", typeof(string), typeof(MainWindow), new PropertyMetadata(""));
 
-
+        // no need for dependency property, this is constant
+        public StatusViewer.StatusViewer StatusViewer { get; } = new StatusViewer.StatusViewer();
         #endregion
 
         private void Minimize()
@@ -198,8 +345,6 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void RunProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _deletingProfile = false;
-
             string profileToLoad = e.Parameter as string;
             if (profileToLoad == null || !File.Exists(profileToLoad))
             {
@@ -216,7 +361,19 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                     ActiveProfile = null;
                 }
 
+                // try to load the profile, setting SelectedProfileName in the process
+                SettingsLoadTime = DateTime.Now;
+                (ConfigManager.SettingsManager as ISettingsManager2)?.SynchronizeSettings(null);
                 LoadProfile(profileToLoad);
+
+                if (ActiveProfile != null)
+                {
+                    // we need to fix up the selection index or Next/Prev buttons will not work correctly
+                    // because LoadProfile sets SelectedProfileName but assumes the prev/next has already been set
+                    // by user interaction.  however, we selected this profile without user interaction
+                    LoadProfileList(profileToLoad);
+                }
+
                 StartProfile();
             }
         }
@@ -228,50 +385,46 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void StartProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_deletingProfile)
+            bool settingsChanged = false;
+            if (ConfigManager.SettingsManager is ISettingsManager2 settings)
             {
-                if (_profileIndex < _profiles.Count)
-                {
-                    File.Delete(_profiles[_profileIndex]);
-                    _profiles.RemoveAt(_profileIndex);
-                    if (_profileIndex == _profiles.Count)
-                    {
-                        _profileIndex--;
-                        if (_profileIndex > -1)
-                        {
-                            SelectedProfileName = System.IO.Path.GetFileNameWithoutExtension(_profiles[_profileIndex]);
-                        }
-                        else
-                        {
-                            SelectedProfileName = "- No Profiles Available -";
-                        }
-                        ActiveProfile = null;
-                    }
-                    LoadProfileList();
-                }
+                DateTime checkTime = DateTime.Now;
+                settingsChanged = settings.SynchronizeSettings(SettingsLoadTime);
+                SettingsLoadTime = checkTime;
             }
-            else
+
+            if (ActiveProfile != null)
             {
-                if (ActiveProfile != null)
+                if (ActiveProfile.IsStarted)
                 {
-                    if (ActiveProfile.IsStarted)
+                    if (!settingsChanged)
                     {
                         return;
                     }
-
-                    if (File.GetLastWriteTime(ActiveProfile.Path) > ActiveProfile.LoadTime)
-                    {
-                        LoadProfile(ActiveProfile.Path);
-                    }
+                    ConfigManager.LogManager.LogInfo("Stopping profile due to external settings changes");
+                    StopProfile();
                 }
-                else if (_profileIndex >= 0)
+
+                StatusViewer.ResetCautionLight();
+                if (settingsChanged || File.GetLastWriteTime(ActiveProfile.Path) > ActiveProfile.LoadTime)
                 {
-                    LoadProfile(_profiles[_profileIndex]);
+                    if (settingsChanged)
+                    {
+                        ConfigManager.LogManager.LogInfo("Reloading profile due to external settings changes");
+                    }
+                    LoadProfile(ActiveProfile.Path);
                 }
-
-                StartProfile();
             }
+            else if (_profileIndex >= 0)
+            {
+                StatusViewer.ResetCautionLight();
+                LoadProfile(_profiles[_profileIndex]);
+            }
+            
+            StartProfile();
         }
+
+        public DateTime? SettingsLoadTime { get; set; }
 
         public void StopProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -280,9 +433,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void StopProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _deletingProfile = false;
             StopProfile();
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
         }
 
         public void ResetProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -292,12 +444,12 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void ResetProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_deletingProfile)
-            {
-                _deletingProfile = false;
-                SetLicenseMessage();
-            }
             ResetProfile();
+            StatusViewer.ResetCautionLight();
+            StatusViewer.AddItem(new StatusReportItem()
+            {
+                Status = "Profile was manually reset."
+            });
         }
 
         private void OpenControlCenter_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -322,8 +474,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void PrevProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _deletingProfile = false;
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             LoadProfileList();
 
@@ -342,8 +493,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void NextProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _deletingProfile = false;
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             LoadProfileList();
 
@@ -360,15 +510,36 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             }
         }
 
-        private void DeleteProfile_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            _deletingProfile = true;
-            Message = "!!WARNING!!\nYou are about to permanetly delete this profile.  Please press start to confirm.";
-        }
-
         private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Close();
+        }
+
+        private void ResetCaution_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            StatusViewer.ResetCautionLight();
+        }
+
+
+        private void DialogShowModal_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // this is the source of the event, and we will resolve DataTemplate from their position
+            FrameworkElement host = (FrameworkElement)e.OriginalSource;
+
+            // crash if incorrect parameter type
+            ShowModalParameter parameter = (ShowModalParameter)e.Parameter;
+
+            // resolve the data template
+            DataTemplate template = parameter.DataTemplate ?? (DataTemplate)host.TryFindResource(new DataTemplateKey(parameter.Content.GetType()));
+
+            // display the dialog appropriate to the content
+            Window generic = new DialogWindow
+            {
+                ContentTemplate = template,
+                Content = parameter.Content
+            };
+            
+            generic.ShowDialog();
         }
 
         #endregion
@@ -377,76 +548,136 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void StartProfile()
         {
-            if (ActiveProfile != null && !ActiveProfile.IsStarted)
+            if (ActiveProfile == null || ActiveProfile.IsStarted)
             {
-                ActiveProfile.ControlCenterShown += Profile_ShowControlCenter;
-                ActiveProfile.ControlCenterHidden += Profile_HideControlCenter;
-                ActiveProfile.ProfileStopped += new EventHandler(Profile_ProfileStopped);
+                return;
+            }
 
-                ActiveProfile.Dispatcher = Dispatcher;
-                ActiveProfile.Start();
-
-                if (_dispatcherTimer != null)
+            ActiveProfile.Dispatcher = Dispatcher;
+            if (Preferences.PreflightCheck)
+            {
+                if (!PerformReadyCheck())
                 {
-                    _dispatcherTimer.Stop();
-                }
-
-                _dispatcherTimer = new DispatcherTimer();
-                _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 33);
-                _dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-                _dispatcherTimer.Start();
-
-                foreach (Monitor monitor in ActiveProfile.Monitors)
-                {
-                    try
-                    {
-                        if (monitor.Children.Count > 0 || monitor.FillBackground || !String.IsNullOrWhiteSpace(monitor.BackgroundImage))
-                        {
-                            if (ConfigManager.SettingsManager.IsSettingAvailable("ControlCenter", "TouchScreenMouseSuppressionPeriod"))
-                            {
-                                monitor.SuppressMouseAfterTouchDuration = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "TouchScreenMouseSuppressionPeriod", 0);
-                            }
-                            else
-                            {
-                                monitor.SuppressMouseAfterTouchDuration = 0;
-                            }
-                            ConfigManager.LogManager.LogDebug("Creating window (Monitor=\"" + monitor.Name + "\")" + " with Touchscreen 2nd Trigger suppression delay set to " + Convert.ToString(monitor.SuppressMouseAfterTouchDuration) + " msec.");
-                            MonitorWindow window = new MonitorWindow(monitor, true);
-                            window.Show();
-                            _windows.Add(window);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfigManager.LogManager.LogError("Error creating monitor window (Monitor=\"" + monitor.Name + "\")", ex);
-                    }
-                }
-
-                //App app = Application.Current as App;
-                //if (app == null || (app != null && !app.DisableTouchKit))
-                //{
-                //    try
-                //    {
-                //        EGalaxTouch.CaptureTouchScreens(_windows);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        ConfigManager.LogManager.LogError("Error capturing touchkit screens.", ex);
-                //    }
-                //}
-
-                Message = "Running Profile";
-
-                if (AutoHideCheckBox.IsChecked == true)
-                {
-                    Minimize();
-                }
-                else
-                {
-                    NativeMethods.BringWindowToTop(_helper.Handle);
+                    // this is already logged as an error because we set the StatusMessage to an error type
+                    ConfigManager.LogManager.LogDebug("Aborted start up of Profile due to failed preflight check.");
+                    return;
                 }
             }
 
+            ActiveProfile.ControlCenterShown += Profile_ShowControlCenter;
+            ActiveProfile.ControlCenterHidden += Profile_HideControlCenter;
+            ActiveProfile.ProfileStopped += Profile_ProfileStopped;
+            ActiveProfile.ProfileHintReceived += Profile_ProfileHintReceived;
+            ActiveProfile.DriverStatusReceived += Profile_DriverStatusReceived;
+            ActiveProfile.ClientChanged += Profile_ClientChanged;
+
+            ActiveProfile.Start();
+
+            if (_dispatcherTimer != null)
+            {
+                _dispatcherTimer.Stop();
+            }
+
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 33);
+            _dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            _dispatcherTimer.Start();
+
+            foreach (Monitor monitor in ActiveProfile.Monitors)
+            {
+                try
+                {
+                    if (monitor.Children.Count > 0 || monitor.FillBackground || !String.IsNullOrWhiteSpace(monitor.BackgroundImage))
+                    {
+                        monitor.SuppressMouseAfterTouchDuration = Preferences.SuppressMouseAfterTouchDuration;
+                        ConfigManager.LogManager.LogDebug("Creating window (Monitor=\"" + monitor.Name + "\")" + " with touchscreen mouse event suppression delay set to " + Convert.ToString(monitor.SuppressMouseAfterTouchDuration) + " msec.");
+                        MonitorWindow window = new MonitorWindow(monitor, true);
+                        window.Show();
+                        _windows.Add(window);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConfigManager.LogManager.LogError("Error creating monitor window (Monitor=\"" + monitor.Name + "\")", ex);
+                }
+            }
+
+            // success, consider this the most recently run profile for its tags (usually just the aircraft types supported)
+            foreach (string tag in ActiveProfile.Tags)
+            {
+                PreferencesFile.SaveSetting("RecentByTag", tag, ActiveProfile.Path);
+            }
+
+            StatusMessage = StatusValue.Running;
+
+            if (Preferences.AutoHide)
+            {
+                Minimize();
+            }
+            else
+            {
+                NativeMethods.BringWindowToTop(_helper.Handle);
+            }
+        }
+
+        private void Profile_DriverStatusReceived(object sender, DriverStatus e)
+        {
+            string oldValue = _lastDriverStatus;
+            _lastDriverStatus = e.DriverType;
+            ConfigManager.LogManager.LogDebug($"received profile status indicating that simulator is running exports for '{e.DriverType}'");
+            if (oldValue != _lastDriverStatus)
+            {
+                UpdateStatusMessage();
+                StatusViewer.AddItem(new StatusReportItem()
+                {
+                    Status = $"Simulator is running exports '{_lastDriverStatus}'"
+                });
+            }
+        }
+
+        private void Profile_ProfileHintReceived(object sender, ProfileHint e)
+        {
+            string oldValue = _lastProfileHint;
+            _lastProfileHint = e.Tag;
+            if (oldValue != _lastProfileHint)
+            {
+                UpdateStatusMessage();
+                StatusViewer.AddItem(new StatusReportItem()
+                {
+                    Status = $"Simulator is '{_lastProfileHint}'"
+                });
+            }
+            if (!Preferences.ProfileAutoStart)
+            {
+                return;
+            }
+            ConfigManager.LogManager.LogDebug($"received profile hint with tag '{e.Tag}'");
+            string mostRecent = PreferencesFile.LoadSetting("RecentByTag", e.Tag, null);
+            if (mostRecent == null)
+            {
+                ConfigManager.LogManager.LogInfo($"received profile hint with tag '{e.Tag}' but no matching profile has been loaded; cannot auto load");
+                return;
+            }
+            if ((ActiveProfile != null) && (ActiveProfile.Path == mostRecent))
+            {
+                ConfigManager.LogManager.LogDebug($"most recent profile for profile hint with tag '{e.Tag}' is already active");
+                // ask simulator to use the one we are running, if possible
+                ActiveProfile.RequestProfileSupport();
+                return;
+            }
+            // execute auto load
+            ConfigManager.LogManager.LogDebug($"trying to start most recent matching profile '{mostRecent}'");
+            ControlCenterCommands.RunProfile.Execute(mostRecent, Application.Current.MainWindow);
+        }
+
+        private void Profile_ClientChanged(object sender, ClientChange e)
+        {
+            if (e.FromOpaqueHandle != ClientChange.NO_CLIENT)
+            {
+                // this is a change during our profile's lifetime, so we need to discard information we have
+                _lastProfileHint = "";
+            }
+            _lastDriverStatus = "";
         }
 
         private void StopProfile()
@@ -462,7 +693,13 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             if (ActiveProfile != null)
             {
                 ActiveProfile.Reset();
+                if (ActiveProfile.IsStarted)
+                {
+                    StatusMessage = StatusValue.Running;
+                    return;
+                }
             }
+            StatusMessage = StatusValue.RunningVersion;
         }
 
         private void Profile_ShowControlCenter(object sender, EventArgs e)
@@ -490,6 +727,9 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 profile.ControlCenterShown -= Profile_ShowControlCenter;
                 profile.ControlCenterHidden -= Profile_HideControlCenter;
                 profile.ProfileStopped -= Profile_ProfileStopped;
+                profile.ProfileHintReceived -= Profile_ProfileHintReceived;
+                profile.DriverStatusReceived -= Profile_DriverStatusReceived;
+                profile.ClientChanged -= Profile_ClientChanged;
             }
 
             if (_dispatcherTimer != null)
@@ -498,7 +738,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 _dispatcherTimer = null;
             }
 
-            SetLicenseMessage();
+            StatusMessage = StatusValue.License;
 
             //EGalaxTouch.ReleaseTouchScreens();
         }
@@ -537,12 +777,13 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         private void LoadProfile(string path)
         {
-            if (ActiveProfile == null || (ActiveProfile != null && ActiveProfile.LoadTime < Directory.GetLastWriteTime(ActiveProfile.Path)))
-            {
-                Message = "Loading Profile...";
-                Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Loaded, (Action)delegate { });
-                ActiveProfile = ConfigManager.ProfileManager.LoadProfile(path, Dispatcher);
-            }
+            StatusMessage = StatusValue.Loading;
+
+            // pump UI events to update UI (NOTE: we are the main thread)
+            Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Loaded, (Action)delegate { });
+
+            // now do the load that might take a while
+            ActiveProfile = ConfigManager.ProfileManager.LoadProfile(path);
 
             if (ActiveProfile != null)
             {
@@ -552,7 +793,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 #if !DEBUG
                 if (!ActiveProfile.IsValidMonitorLayout)
                 {
-                    Message = "Cannot display this profile because it has an invalid monitor configuration.  Please open the editor and select reset monitors from the profile menu.";
+                    StatusMessage = StatusValue.BadMonitorConfig;
                     ActiveProfile = null;
                     return;
                 }
@@ -560,14 +801,14 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
                 if (ActiveProfile.IsInvalidVersion)
                 {
-                    Message = "Cannot display this profile because it was created with a newer version of Helios.  Please upgrade to the latest version.";
+                    StatusMessage = StatusValue.ProfileVersionHigher;
                     ActiveProfile = null;
                     return;
                 }
             }
             else
             {
-                Message = "Error loading profile.";
+                StatusMessage = StatusValue.LoadError;
             }
         }
 
@@ -581,20 +822,47 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             LoadProfileList(currentProfilePath);
         }
 
-        private void LoadProfileList(string currentProfileName)
+        /// <summary>
+        /// reload the list of profiles on disk and set the current selected index if
+        /// the given path matches references a file that still exists
+        /// </summary>
+        /// <param name="currentProfilePath"></param>
+        private void LoadProfileList(string currentProfilePath)
         {
             _profileIndex = -1;
             _profiles.Clear();
 
             foreach (string file in Directory.GetFiles(ConfigManager.ProfilePath, "*.hpf"))
             {
-                if (currentProfileName != null && file.Equals(currentProfileName))
+                if (currentProfilePath != null && file.Equals(currentProfilePath))
                 {
                     _profileIndex = _profiles.Count;
                     SelectedProfileName = System.IO.Path.GetFileNameWithoutExtension(file);
                 }
                 _profiles.Add(file);
             }
+        }
+
+        private bool PerformReadyCheck()
+        {
+            bool success = true;
+            foreach (StatusReportItem status in ActiveProfile.PerformReadyCheck())
+            {
+                if (status.Severity == StatusReportItem.SeverityCode.Error)
+                {
+                    success = false;
+                }
+                StatusViewer.AddItem(status);
+            }
+            StatusCanvas.StatusLines.ScrollToBottom();
+            if (!success)
+            {
+                StatusMessage = StatusValue.FailedPreflight;
+
+                // preflight only:  we automatically pop up the status view
+                StatusCheckBox.IsChecked = true;
+            }
+            return success;
         }
 
         #endregion
@@ -607,16 +875,8 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             Top = Top + e.VerticalChange;
         }
 
-        private void TouchScreenDelaySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs < double > e)
-        {
-            Int16 delayValue = Convert.ToInt16(e.NewValue);
-            string msg = String.Format(" {0} ms", delayValue);
-            this.TouchscreenDelayTextBlock.Text = msg;
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "TouchScreenMouseSuppressionPeriod", Convert.ToString(delayValue));
-        }
         private void PowerButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            _deletingProfile = false;
             DispatcherTimer minimizeTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 250), DispatcherPriority.Normal, TimedMinimize, Dispatcher);
         }
 
@@ -640,12 +900,12 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
             NativeMethods.GetWindowPlacement(hwnd, out wp);
 
-            //Properties.Settings.Default.ControlCenterPlacement = wp;
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "WindowLocation", wp.normalPosition);
+            //Properties.PreferencesFile.Default.ControlCenterPlacement = wp;
+            PreferencesFile.SaveSetting("ControlCenter", "WindowLocation", wp.normalPosition);
 
             if (ActiveProfile != null && _profileIndex >= 0 && _profileIndex < _profiles.Count)
             {
-                ConfigManager.SettingsManager.SaveSetting("ControlCenter", "LastProfile", _profiles[_profileIndex]);
+                PreferencesFile.SaveSetting("ControlCenter", "LastProfile", _profiles[_profileIndex]);
             }
 
             Properties.Settings.Default.Save();
@@ -674,31 +934,47 @@ namespace GadrocsWorkshop.Helios.ControlCenter
                 // Note - if window was closed on a monitor that is now disconnected from the computer,
                 //        SetWindowPlacement will place the window onto a visible monitor.
 
-                if (ConfigManager.SettingsManager.IsSettingAvailable("ControlCenter", "WindowLocation"))
+                if (PreferencesFile.IsSettingAvailable("ControlCenter", "WindowLocation"))
                 {
                     WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
-                    wp.normalPosition = ConfigManager.SettingsManager.LoadSetting("ControlCenter", "WindowLocation", new RECT(0, 0, (int)Width, (int)Height));
+                    wp.normalPosition = PreferencesFile.LoadSetting("ControlCenter", "WindowLocation",
+                        new RECT(0, 0, (int) Width, (int) Height));
                     wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
                     wp.flags = 0;
-                    wp.showCmd = (wp.showCmd == NativeMethods.SW_SHOWMINIMIZED ? NativeMethods.SW_SHOWNORMAL : wp.showCmd);
+                    wp.showCmd = (wp.showCmd == NativeMethods.SW_SHOWMINIMIZED
+                        ? NativeMethods.SW_SHOWNORMAL
+                        : wp.showCmd);
                     IntPtr hwnd = new WindowInteropHelper(this).Handle;
                     NativeMethods.SetWindowPlacement(hwnd, ref wp);
                 }
 
-                ModifierKeys mods = (ModifierKeys)Enum.Parse(typeof(ModifierKeys), ConfigManager.SettingsManager.LoadSetting("ControlCenter", "HotKeyModifiers", "None"));
-                Keys hotKey = (Keys)Enum.Parse(typeof(Keys), ConfigManager.SettingsManager.LoadSetting("ControlCenter", "HotKey", "None"));
+                if (!Enum.TryParse(Preferences.HotKeyModifiers, out ModifierKeys mods))
+                {
+                    HotKeyDescription = "None";
+                    return;
+                }
+                if (!Enum.TryParse(Preferences.HotKey, out Keys hotKey))
+                {
+                    HotKeyDescription = "None";
+                    return;
+                }
                 if (hotKey != Keys.None)
                 {
                     _hotkey = new HotKey(mods, hotKey, this);
                     _hotkey.HotKeyPressed += new Action<HotKey>(HotKeyPressed);
-                    HotKeyDescription = KeyboardEmulator.ModifierKeysToString(_hotkey.KeyModifier) + _hotkey.Key.ToString();
+                    HotKeyDescription = KeyboardEmulator.ModifierKeysToString(_hotkey.KeyModifier) +
+                                        _hotkey.Key.ToString();
                 }
                 else
                 {
                     HotKeyDescription = "None";
                 }
             }
-            catch { }
+            catch (System.Exception ex)
+            {
+                ConfigManager.LogManager.LogError("exception thrown during hotkey initialization", ex);
+                RemoveHotkey();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -716,7 +992,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             Height = _prefsShown ? 277+320 : 277;
             Width = 504;
 
-            if (Environment.OSVersion.Version.Major > 5 && ConfigManager.SettingsManager.LoadSetting("ControlCenter", "AeroWarning", true))
+            if (Environment.OSVersion.Version.Major > 5 && PreferencesFile.LoadSetting("ControlCenter", "AeroWarning", true))
             {
                 bool aeroEnabled;
                 NativeMethods.DwmIsCompositionEnabled(out aeroEnabled);
@@ -728,7 +1004,7 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
                     if (warningDialog.DisplayAgainCheckbox.IsChecked == true)
                     {
-                        ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AeroWarning", false);
+                        PreferencesFile.SaveSetting("ControlCenter", "AeroWarning", false);
                     }
                 }
             }
@@ -746,75 +1022,20 @@ namespace GadrocsWorkshop.Helios.ControlCenter
 
         }
 
-        protected override void OnInitialized(EventArgs e)
+        private void HideButton_Clicked(object sender, RoutedEventArgs e)
         {
-            base.OnInitialized(e);
+            Minimize();
         }
 
         #endregion
 
         #region Preferences
 
-        private void AutoStartCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-            pathKey.SetValue("Helios", "\"" + System.IO.Path.Combine(ConfigManager.ApplicationPath, "ControlCenter.exe") + "\"");
-            pathKey.Close();
-        }
-
-        private void MinimizeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "StartMinimized", true);
-        }
-
-        private void AutoStartCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-            pathKey.DeleteValue("Helios", false);
-            pathKey.Close();
-        }
-
-        private void MinimizeCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "StartMinimized", false);
-        }
-
-        private void AutoHideCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", true);
-        }
-
-        private void AutoHideCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", false);
-        }
-        private void TouchscreenCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", true);
-            TouchscreenDelayTextBlock.Visibility = Visibility.Visible;
-            TouchScreenDelaySlider.Visibility = Visibility.Visible;
-            TouchScreenDelayBorder.Visibility = Visibility.Visible;
-            TouchScreenDelayTitle.Visibility = Visibility.Visible;
-        }
-
         private void TouchscreenCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "TouchScreenMouseSuppressionPeriod", "0");
-            TouchScreenDelaySlider.Value = 0;
-            TouchscreenDelayTextBlock.Visibility = Visibility.Hidden;
-            TouchScreenDelaySlider.Visibility = Visibility.Hidden;
-            TouchScreenDelayBorder.Visibility = Visibility.Hidden;
-            TouchScreenDelayTitle.Visibility = Visibility.Hidden;
-        }
-        private void TBDCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", true);
+            Preferences.SuppressMouseAfterTouchDuration = 0;
         }
 
-        private void TBDCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //ConfigManager.SettingsManager.SaveSetting("ControlCenter", "AutoHide", false);
-         }
         private void SetHotkey_Click(object sender, RoutedEventArgs e)
         {
             HotKeyDetector detector = new HotKeyDetector();
@@ -828,25 +1049,29 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             }
 
             _hotkey = new HotKey(detector.Modifiers, detector.Key, _helper.Handle);
-            _hotkey.HotKeyPressed += new Action<HotKey>(HotKeyPressed);
+            _hotkey.HotKeyPressed += HotKeyPressed;
 
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "HotKeyModifiers", detector.Modifiers.ToString());
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "HotKey", detector.Key.ToString());
-
+            Preferences.HotKeyModifiers = detector.Modifiers.ToString();
+            Preferences.HotKey = detector.Key.ToString();
             HotKeyDescription = KeyboardEmulator.ModifierKeysToString(_hotkey.KeyModifier) + _hotkey.Key.ToString();
         }
 
         private void ClearHotkey_Click(object sender, RoutedEventArgs e)
         {
+            RemoveHotkey();
+        }
+
+        private void RemoveHotkey()
+        {
             if (_hotkey != null)
             {
+                _hotkey.HotKeyPressed -= HotKeyPressed;
                 _hotkey.UnregisterHotKey();
                 _hotkey.Dispose();
             }
 
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "HotKeyModifiers", ModifierKeys.None.ToString());
-            ConfigManager.SettingsManager.SaveSetting("ControlCenter", "HotKey", Keys.None.ToString());
-
+            Preferences.HotKeyModifiers = ModifierKeys.None.ToString();
+            Preferences.HotKey = Keys.None.ToString();
             HotKeyDescription = "None";
         }
 
@@ -860,25 +1085,5 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         }
 
         #endregion
-
-        #region Helper Methods
-
-        private void SetLicenseMessage()
-        {
-            Message = "";
-        }
-
-        private void SetProjectReleaseMessage()
-        {
-            Version _runningVersion = Assembly.GetEntryAssembly().GetName().Version;
-            Message = _runningVersion.Major.ToString() + "." + _runningVersion.Minor.ToString() + "." + _runningVersion.Build.ToString("0000") + "." + _runningVersion.Revision.ToString("0000") +
-                "\nProject Fork: BlueFinBima\n";
-        }
-        #endregion
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Minimize();
-        }
     }
 }

@@ -13,28 +13,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using GadrocsWorkshop.Helios.ControlCenter.StatusViewer;
+using GadrocsWorkshop.Helios.Windows;
+using NLog;
+
 namespace GadrocsWorkshop.Helios.ControlCenter
 {
+    using Microsoft.Shell;
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Threading;
-    using Microsoft.Shell;
 
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application, ISingleInstanceApp
     {
-        private const string InstanceUniqueName = "HeliosApplicationInstanceMutex";
+        private const string INSTANCE_UNIQUE_NAME = "HeliosApplicationInstanceMutex";
         private string _startupProfile = null;
-        private bool _disableTouchKit;
 
         /// <summary>
         /// Application Entry Point.
@@ -42,16 +42,10 @@ namespace GadrocsWorkshop.Helios.ControlCenter
         [System.STAThreadAttribute()]
         public static void Main()
         {
-            if (SingleInstance<App>.InitializeAsFirstInstance(InstanceUniqueName))
+            if (SingleInstance<App>.InitializeAsFirstInstance(INSTANCE_UNIQUE_NAME))
             {
-                //SplashScreen splashScreen = null;
-
-                //splashScreen = new SplashScreen("splash_logo.png");
-                //splashScreen.Show(false);
                 GadrocsWorkshop.Helios.ControlCenter.App app = new GadrocsWorkshop.Helios.ControlCenter.App();
                 app.InitializeComponent();
-                //Thread.Sleep(1000);
-                //splashScreen.Close(TimeSpan.FromMilliseconds(500));
                 app.Run();
                 SingleInstance<App>.Cleanup();
             }
@@ -65,59 +59,68 @@ namespace GadrocsWorkshop.Helios.ControlCenter
             private set { _startupProfile = value; }
         }
 
-        public bool DisableTouchKit
-        {
-            get { return _disableTouchKit; }
-            private set { _disableTouchKit = value; }
-        }
-
         #endregion
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            NLog.LogManager.Setup().SetupExtensions(s =>
+                s.RegisterTarget<StatusViewerLogTarget>("StatusViewer")
+            );
+
             base.OnStartup(e);
+            Current.Dispatcher.UnhandledException += App_DispatcherUnhandledException;
 
-            CommandLineOptions options = new CommandLineOptions();
+            CommandLineOptions options = Util.CommandLineOptions.Parse(new CommandLineOptions(), e.Args, out int exitCode);
 
-            if (CommandLine.Parser.Default.ParseArguments(e.Args, options))
+            // react to options or defaults
+            if (options.Profiles != null && options.Profiles.Any())
             {
-                DisableTouchKit = options.DisableTouchKit;
-
-                if (options.Profiles != null && options.Profiles.Count > 0)
-                {
-                    StartupProfile = options.Profiles.Last();
-                }
+                StartupProfile = options.Profiles.Last();
             }
 
-            string documentPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), options.DocumentPath);
-            HeliosInit.Initialize(documentPath, "ControlCenter.log", options.LogLevel);
+            // start up Helios
+            string documentPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+                RunningVersion.IsDevelopmentPrototype ? options.DevDocumentPath : options.DocumentPath);
+            HeliosInit.Initialize(documentPath, "ControlCenter.log", options.LogLevel, new HeliosApplication
+            {
+                ShowDesignTimeControls = false,
+                ConnectToServers = true,
+                SettingsAreWritable = false
+            });
+
+            // need to defer exit until after we initialize Helios or our main window will crash
+            if (exitCode < 0)
+            {
+                Current.Shutdown();
+            }
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            HeliosInit.OnShutdown();
+            base.OnExit(e);
         }
 
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-
-            CommandLineOptions options = new CommandLineOptions();
-
-            CommandLine.Parser.Default.ParseArguments(args.ToArray(), options);
-
+            CommandLineOptions options = Util.CommandLineOptions.Parse(new CommandLineOptions(), args.ToArray(), out int exitCode);
             if (options.Exit)
             {
-                ApplicationCommands.Close.Execute(null, Application.Current.MainWindow);
+                ApplicationCommands.Close.Execute(null, Current.MainWindow);
             }
-            else if (options.Profiles != null && options.Profiles.Count > 0 && File.Exists(options.Profiles.Last()))
+            else if (options.Profiles != null && options.Profiles.Any() &&
+                     File.Exists(options.Profiles.Last()))
             {
-                ControlCenterCommands.RunProfile.Execute(options.Profiles.Last(), Application.Current.MainWindow);
+                ControlCenterCommands.RunProfile.Execute(options.Profiles.Last(),
+                    Current.MainWindow);
             }
-
-            return true;
+            return exitCode == 0;
         }
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            System.Windows.MessageBox.Show(string.Format("An error occured: {0}", e.Exception.Message), "Error");
-            e.Handled = true;
-            //ConfigManager.LogManager.LogError("Unhandled Exception", e.Exception);
-            //e.Handled = false;
+            ExceptionViewer.DisplayUnhandledException(e);
         }
     }
 }

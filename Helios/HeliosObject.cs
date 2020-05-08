@@ -19,6 +19,11 @@ namespace GadrocsWorkshop.Helios
     using System.Windows.Threading;
     using System.Xml;
 
+    /// <summary>
+    /// this is the type of Helios object that supports input and output bindings
+    /// 
+    /// it inherits the capability of being in a profile and supporting the undo manager for all property changes
+    /// </summary>
     public abstract class HeliosObject : NotificationObject
     {
         private string _name;
@@ -33,6 +38,9 @@ namespace GadrocsWorkshop.Helios
 
         private HeliosBindingCollection _inputs = new HeliosBindingCollection();
         private HeliosBindingCollection _outputs = new HeliosBindingCollection();
+#if DEVELOPMENT_CONFIGURATION
+        internal bool _tracing = false;
+#endif
 
         protected HeliosObject(string name)
         {
@@ -229,10 +237,14 @@ namespace GadrocsWorkshop.Helios
 
         /// <summary>
         /// Notification method for profile changes.
+        ///
+        /// WARNING: this method is called on the profile loading thread when
+        /// loading a saved profile, and otherwise on main thread when adding
+        /// an interface to a running profile
         /// </summary>
         protected virtual void OnProfileChanged(HeliosProfile oldProfile)
         {
-
+            // no code
         }
 
         /// <summary>

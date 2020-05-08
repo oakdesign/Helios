@@ -15,11 +15,12 @@
 
 namespace GadrocsWorkshop.Helios
 {
+    using GadrocsWorkshop.Helios.Util;
     using System;
     using System.ComponentModel;
     using System.Runtime.InteropServices;
 
-    class NativeMethods
+    public class NativeMethods
     {
         private NativeMethods()
         {
@@ -30,7 +31,7 @@ namespace GadrocsWorkshop.Helios
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
         [TypeConverter(typeof(RectConverter))]
-        internal struct Rect
+        public struct Rect
         {
             public int Left;
             public int Top;
@@ -69,9 +70,9 @@ namespace GadrocsWorkshop.Helios
 
             public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
             {
-                if (value is string)
+                if (value is string text)
                 {
-                    string[] v = ((string)value).Split(',');
+                    string[] v = Tokenizer.TokenizeAtLeast(text, 4, ',');
                     return new Rect(int.Parse(v[0]), int.Parse(v[1]), int.Parse(v[2]), int.Parse(v[3]));
                 }
                 return base.ConvertFrom(context, culture, value);
@@ -387,6 +388,9 @@ namespace GadrocsWorkshop.Helios
 
         [DllImport("user32.dll")]
         internal static extern IntPtr GetKeyboardLayout(uint idThread);
+
+        [DllImport("user32.dll")]
+        internal static extern Int32 GetKeyboardLayoutList(Int32 bufferSize, IntPtr[] buffer);
 
         [DllImport("user32.dll")]
         internal static extern short VkKeyScanEx(char ch, IntPtr dwhkl);

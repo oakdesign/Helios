@@ -16,24 +16,12 @@
 namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
 {
     using GadrocsWorkshop.Helios.ComponentModel;
-    using GadrocsWorkshop.Helios.Interfaces.DCS.FA18C.Functions;
-    //using GadrocsWorkshop.Helios.Interfaces.DCS.FA18C;
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
-    using GadrocsWorkshop.Helios.UDPInterface;
-    using Microsoft.Win32;
-    using System;
+    using GadrocsWorkshop.Helios.Interfaces.DCS.FA18C.Functions;
 
-    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(FA18CInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
-    public class FA18CInterface : BaseUDPInterface
+    [HeliosInterface("Helios.FA18C", "DCS F/A-18C", typeof(DCSInterfaceEditor), typeof(UniqueHeliosInterfaceFactory))]
+    public class FA18CInterface : DCSInterface
     {
-        private string _dcsPath;
-
-        private bool _phantomFix;
-        private int _phantomLeft;
-        private int _phantomTop;
-
-        private long _nextCheck = 0;
-
         #region Devices
         //  From devices.lua - DCS seem to want this to remain constant which is great 
         private const string FM_PROXY = "1";
@@ -78,8 +66,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
         private const string MDI_LEFT = "35";                   // Left Multipurpose Display Indicator (DDI) - IP-1556/A
         private const string MDI_RIGHT = "36";                  // Right Multipurpose Display Indicator (DDI) - IP-1556/A
         private const string AMPCD = "37";                      // Advanced Multipurpose Color Display - ???
-        //  Stick and throttle grips
-        //private const string HOTASA = "38";                     // Stick and throttle grips //  Is this a duplicate of 13
         //  Radio & Comm
         private const string UHF1 = "38";                       // VHF/UHF Receiver-Transmitter - ARC 210
         private const string UHF2 = "39";                       // VHF/UHF Receiver-Transmitter - ARC 210 DCS
@@ -96,30 +82,33 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
         private const string SIDEWINDER_INTERFACE = "47";
         private const string MAVERICK_INTERFACE = "48";
         //  RNAV
-        private const string ADF = "49";                        //  Direction Finder OA-8697/ARD
+        private const string ADF = "49";                        // Direction Finder OA-8697/ARD
         private const string ANTENNA_SELECTOR = "50";
         private const string MIDS = "51";                       // MIDS-LVT (implements Link 16 and TACAN)
         private const string ILS = "52";                        // AN/ARA-63D, airborne segment of US NAVY ACLS, and US Marines MRAALS
         //  TEWS
         private const string RWR = "53";                        // AN/ALR-67(V)
-        private const string CMDS = "54";                       //  Countermeasures dispenser System
+        private const string CMDS = "54";                       // Countermeasures dispenser System
 
         private const string MACROS = "55";
         private const string IFF = "56";                        // IFF, AN/APX-111(V) CIT
+        //Helmet
         private const string NVG = "57";
+        private const string HMD_INTERFACE = "58";
+        // MIDS Parts
+        private const string MIDS_RT = "59";
+        private const string CLC = "60";                        // Command Launch Computer
+        private const string HARM_INTERFACE = "61";
+        private const string TGP_INTERFACE = "62";
+        private const string WALLEYE_INTERFACE = "63";
+        private const string DATALINK_INTERFACE = "64";
+        private const string HMD = "65";
+
         #endregion
 
         public FA18CInterface()
-            : base("DCS F/A-18C")
+            : base("DCS F/A-18C", "FA-18C_hornet", "pack://application:,,,/Helios;component/Interfaces/DCS/FA18C/ExportFunctions.lua")
         {
-            DCSConfigurator config = new DCSConfigurator("DCS F/A-18C", DCSPath);
-            config.ExportConfigPath = "Scripts";
-            config.ExportFunctionsPath = "pack://application:,,,/Helios;component/Interfaces/DCS/FA18C/ExportFunctions.lua";
-            Port = config.Port;
-            _phantomFix = config.PhantomFix;
-            _phantomLeft = config.PhantomFixLeft;
-            _phantomTop = config.PhantomFixTop;
-
             #region Caution Indicators
             // Caution Light Indicator Panel
             AddFunction(new FlagValue(this, "298", "Caution Indicators", "CK_SEAT", ""));       // create_caution_lamp(298,CautionLights.CPT_LTS_CK_SEAT)
@@ -475,7 +464,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             AddFunction(new Switch(this, MDI_LEFT, "312", new SwitchPosition[] { new SwitchPosition("1", "+ve", "3004", "3004", "0"), new SwitchPosition("0", "Off", "3005"), new SwitchPosition("-1", "-ve", "3005", "3005", "0") }, "AMPCD", "Heading Set Switch", "%1d")); // elements["pnt_312"]     = springloaded_3_pos_tumb2(_("Heading Set Switch"),devices.MDI_LEFT, MDI_commands.MDI_Left_HDG_Negative, MDI_commands.MDI_Left_HDG_Positive, 312)
             AddFunction(new Switch(this, MDI_LEFT, "313", new SwitchPosition[] { new SwitchPosition("1", "+ve", "3006", "3006", "0"), new SwitchPosition("0", "Off", "3007"), new SwitchPosition("-1", "-ve", "3007", "3007", "0") }, "AMPCD", "Course Set Switch", "%1d"));  // elements["pnt_313"]= springloaded_3_pos_tumb(_("Course Set Switch"),devices.MDI_LEFT, MDI_commands.MDI_Left_CRS_Negative, MDI_commands.MDI_Left_CRS_Positive, 313)
             #endregion
-
             #region  Integrated Fuel/Engine Indicator (IFEI)
             AddFunction(new PushButton(this, IFEI, "3001", "168", "IFEI", "IFEI Mode Button", "1", "0", "%1d"));    // elements["pnt_168"] = short_way_button(_("IFEI Mode Button"),           devices.IFEI, IFEI_commands.IFEI_BTN_MODE,          168)
             AddFunction(new PushButton(this, IFEI, "3002", "169", "IFEI", "IFEI QTY Button", "1", "0", "%1d"));    // elements["pnt_169"] = short_way_button(_("IFEI QTY Button"),            devices.IFEI, IFEI_commands.IFEI_BTN_QTY,           169)
@@ -644,7 +632,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             #endregion
             #region  CMDS
             AddFunction(new PushButton(this, CMDS, "3002", "380", "CMDS", "Dispense Button - Push to dispense flares and chaff", "1", "0", "%1d"));    // elements["pnt_380"]     = default_button(_("Dispense Button - Push to dispense flares and chaff"),  devices.CMDS, cmds_commands.EcmDisp, 380)
-            AddFunction(new Switch(this, CMDS, "517", new SwitchPosition[] { new SwitchPosition("1.0", "BYPASS", "3001"), new SwitchPosition("0.5", "ON", "3001"), new SwitchPosition("0.0", "OFF", "3001") }, "CMDS", "DISPENSER Switch", "%0.1f"));    // elements["pnt_517"]     = default_3_position_tumb(_("DISPENSER Switch, BYPASS/ON/OFF"),             devices.CMDS, cmds_commands.Dispenser, 517, false, anim_speed_default, false, 0.1, {0.0, 0.2})
+            AddFunction(new Switch(this, CMDS, "517", new SwitchPosition[] { new SwitchPosition("0.0", "BYPASS", "3001"), new SwitchPosition("0.1", "ON", "3001"), new SwitchPosition("0.2", "OFF", "3001") }, "CMDS", "DISPENSER Switch", "%0.1f"));    // elements["pnt_517"]     = default_3_position_tumb(_("DISPENSER Switch, BYPASS/ON/OFF"),             devices.CMDS, cmds_commands.Dispenser, 517, false, anim_speed_default, false, 0.1, {0.0, 0.2})
             AddFunction(new PushButton(this, CMDS, "3003", "515", "CMDS", "ECM JETT JETT SEL Button - Push to jettison", "1", "0", "%1d"));    // elements["pnt_515"]     = default_2_position_tumb(_("ECM JETT JETT SEL Button - Push to jettison"), devices.CMDS, cmds_commands.EcmJett, 515)
             #endregion
             #region  ICMCP
@@ -729,63 +717,6 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.FA18C
             #region Instrument parsed values
 
             #endregion
-        }
-
-        private string DCSPath
-        {
-            get
-            {
-                if (_dcsPath == null)
-                {
-                    RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(@"Software\Eagle Dynamics\DCS World");
-                    if (pathKey != null)
-                    {
-                        _dcsPath = (string)pathKey.GetValue("Path");
-                        pathKey.Close();
-                        ConfigManager.LogManager.LogDebug("DCS FA-18C Interface Editor - Found DCS Path (Path=\"" + _dcsPath + "\")");
-                    }
-                    else
-                    {
-                        _dcsPath = "";
-                    }
-                }
-                return _dcsPath;
-            }
-        }
-
-        protected override void OnProfileChanged(HeliosProfile oldProfile)
-        {
-            base.OnProfileChanged(oldProfile);
-
-            if (oldProfile != null)
-            {
-                oldProfile.ProfileTick -= Profile_Tick;
-            }
-
-            if (Profile != null)
-            {
-                Profile.ProfileTick += Profile_Tick;
-            }
-        }
-
-        void Profile_Tick(object sender, EventArgs e)
-        {
-            if (_phantomFix && System.Environment.TickCount - _nextCheck >= 0)
-            {
-                System.Diagnostics.Process[] dcs = System.Diagnostics.Process.GetProcessesByName("DCS");
-                if (dcs.Length == 1)
-                {
-                    IntPtr hWnd = dcs[0].MainWindowHandle;
-                    NativeMethods.Rect dcsRect;
-                    NativeMethods.GetWindowRect(hWnd, out dcsRect);
-
-                    if (dcsRect.Width > 640 && (dcsRect.Left != _phantomLeft || dcsRect.Top != _phantomTop))
-                    {
-                        NativeMethods.MoveWindow(hWnd, _phantomLeft, _phantomTop, dcsRect.Width, dcsRect.Height, true);
-                    }
-                }
-                _nextCheck = System.Environment.TickCount + 5000;
-            }
         }
     }
 }

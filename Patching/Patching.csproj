@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{85E85BDF-EB98-4440-BC7D-52CD44176BD9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GadrocsWorkshop.Helios.Patching</RootNamespace>
+    <AssemblyName>Patching</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DCS\AdditionalViewports.cs" />
+    <Compile Include="DCS\MonitorSetupGenerator.cs" />
+    <Compile Include="DCS\MonitorSetupViewModel.cs" />
+    <Compile Include="DCS\MonitorSetupEditor.xaml.cs">
+      <DependentUpon>MonitorSetupEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DCS\AdditionalViewportsEditor.xaml.cs">
+      <DependentUpon>AdditionalViewportsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DCS\MonitorSetup.cs" />
+    <Compile Include="DCS\MonitorViewModel.cs" />
+    <Compile Include="DCS\PatchVersion.cs" />
+    <Compile Include="DCS\ShadowMonitor.cs" />
+    <Compile Include="DCS\ShadowVisual.cs" />
+    <Compile Include="DCS\ViewportViewModel.cs" />
+    <Compile Include="PatchDestinationViewModel.cs" />
+    <Compile Include="PatchingConfiguration.cs" />
+    <Compile Include="IPatchDestination.cs" />
+    <Compile Include="PatchFile.cs" />
+    <Compile Include="DCS\PatchDestination.cs" />
+    <Compile Include="PatchList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helios\Helios.csproj">
+      <Project>{e5abe3f5-46ec-46d1-9330-d42311471a93}</Project>
+      <Name>Helios</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\diff-match-patch\GoogleDiffMatchPatch.csproj">
+      <Project>{efc42b48-44dd-4066-81f4-60c0d8104f7b}</Project>
+      <Name>GoogleDiffMatchPatch</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DCS\MonitorSetupEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DCS\AdditionalViewportsEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\Patching\Additional Simulator Viewports\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Patches\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Templates\Patching\readme.md" />
+  </ItemGroup>
+  <Import Project="..\HeliosPlugin.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

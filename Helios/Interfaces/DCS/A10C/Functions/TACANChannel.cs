@@ -17,12 +17,13 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
 {
     using GadrocsWorkshop.Helios.Interfaces.DCS.Common;
     using GadrocsWorkshop.Helios.UDPInterface;
+    using GadrocsWorkshop.Helios.Util;
     using System;
     using System.Globalization;
 
     public class TACANChannel : NetworkFunction
     {
-        private static DCSDataElement[] _dataElements = new DCSDataElement[] { new DCSDataElement("2263", null, false), new DCSDataElement("266", "%1d", false) };
+        private static DCSDataElement[] _dataElements = new DCSDataElement[] { new DCSDataElement("2263", null, false), new DCSDataElement("266", "0.1f", false) };
 
         private static BindingValue _xValue = new BindingValue(1);
         private static BindingValue _yValue = new BindingValue(2);
@@ -56,7 +57,7 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
             switch (id)
             {
                 case "2263":
-                    string[] parts = value.Split(';');
+                    string[] parts = Tokenizer.TokenizeAtLeast(value, 3, ';');
                     _hundreds = ClampedParse(parts[0], 100d);
                     _tens = ClampedParse(parts[1], 10d);
                     _ones = ClampedParse(parts[2], 1d);
@@ -67,11 +68,11 @@ namespace GadrocsWorkshop.Helios.Interfaces.DCS.A10C.Functions
                 case "266":
                     switch (value)
                     {
-                        case "0":
-                            _mode.SetValue(_yValue, false);
-                            break;
-                        case "1":
+                        case "0.0":
                             _mode.SetValue(_xValue, false);
+                            break;
+                        case "0.1":
+                            _mode.SetValue(_yValue, false);
                             break;
                     }
                     break;

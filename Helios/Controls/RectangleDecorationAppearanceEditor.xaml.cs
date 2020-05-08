@@ -20,7 +20,7 @@ namespace GadrocsWorkshop.Helios.Controls
     using GadrocsWorkshop.Helios.Windows.Controls;
 	
     /// <summary>
-    /// Interaction logic for ImageAppearanceEditor.xaml
+    /// Interaction logic for RectangleDecorationAppearanceEditor.xaml
     /// </summary>
     [HeliosPropertyEditor("Helios.Base.Rectangle", "Appearance")]
     public partial class RectangleDecorationAppearanceEditor : HeliosPropertyEditor

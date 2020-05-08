@@ -15,31 +15,15 @@
 
 namespace GadrocsWorkshop.Helios
 {
-    using System.Windows.Threading;
+    using System.Windows;
 
     public class BaseDeserializer
     {
-        private delegate object CreateObjectDelegate(string type, string typeId);
-        private CreateObjectDelegate _objectCreator;
-        private Dispatcher _dispatcher;
-
-        public BaseDeserializer(Dispatcher dispatcher)
-        {
-            _objectCreator = new CreateObjectDelegate(DispCreateNewObject);
-            _dispatcher = dispatcher;
-        }
-
-        protected Dispatcher Dispatcher
-        { get { return _dispatcher; } }
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         #region Object Creation Methods
 
         protected object CreateNewObject(string type, string typeId)
-        {
-            return Dispatcher.Invoke(_objectCreator, type, typeId);
-        }
-
-        private object DispCreateNewObject(string type, string typeId)
         {
             switch (type)
             {
@@ -50,23 +34,23 @@ namespace GadrocsWorkshop.Helios
                     HeliosVisual visual = ConfigManager.ModuleManager.CreateControl(typeId);
                     if (visual == null)
                     {
-                        ConfigManager.LogManager.LogError("Ignoring control not supported by this version of Helios: " + typeId);
+                        Logger.Error("Ignoring control not supported by this version of Helios: " + typeId);
                         return null;
                     }
-                    visual.Dispatcher = _dispatcher;
+                    visual.Dispatcher = Application.Current.Dispatcher;
                     return visual;
 
                 case "Interface":
                     HeliosInterfaceDescriptor descriptor = ConfigManager.ModuleManager.InterfaceDescriptors[typeId];
                     if (descriptor == null)
                     {
-                        ConfigManager.LogManager.LogError("Ignoring interface not supported by this version of Helios: " + typeId);
+                        Logger.Error("Ignoring interface not supported by this version of Helios: " + typeId);
                         return null;
                     }
                     HeliosInterface heliosInterface = descriptor != null ? descriptor.CreateInstance() : null;
                     if (heliosInterface != null)
                     {
-                        heliosInterface.Dispatcher = _dispatcher;
+                        heliosInterface.Dispatcher = Application.Current.Dispatcher;
                     }                    
                     return heliosInterface;
 

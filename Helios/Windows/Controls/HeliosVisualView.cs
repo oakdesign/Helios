@@ -29,6 +29,8 @@ namespace GadrocsWorkshop.Helios.Windows.Controls
         public HeliosVisualView()
         {
             _children = new List<HeliosVisualView>();
+            // XXX make this a configuration option, at least in XML
+            // RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
         }
 
         #region Properties
@@ -522,5 +524,16 @@ namespace GadrocsWorkshop.Helios.Windows.Controls
                 e.Handled = true;
             }
         }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            if (this.IsEnabled)
+            {
+                int delta = e.Delta;
+                Visual.MouseWheel(delta);
+                e.Handled = true;
+            }
+        }
+
     }
 }

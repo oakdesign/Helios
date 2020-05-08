@@ -2,53 +2,15 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E5ABE3F5-46EC-46D1-9330-D42311471A93}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GadrocsWorkshop.Helios</RootNamespace>
     <AssemblyName>Helios</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -57,22 +19,27 @@
     <ApplicationIcon>Helios.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.7.82.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.7.82\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="EosSharp, Version=1.1.5488.21795, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EosSharp.1.1.5488.21795\lib\net45\EosSharp.dll</HintPath>
     </Reference>
-    <Reference Include="HidSharp, Version=2.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HidSharp.2.0.5\lib\net35\HidSharp.dll</HintPath>
+    <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HidSharp.2.1.0\lib\net35\HidSharp.dll</HintPath>
     </Reference>
-    <Reference Include="KeraLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=04d04586786c6f34, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLua.1.3.2.1\lib\net45\KeraLua.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="KeraLua, Version=1.0.29.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\KeraLua.1.0.29\lib\net45\KeraLua.dll</HintPath>
     </Reference>
-    <Reference Include="NLua, Version=1.3.2.0, Culture=neutral, PublicKeyToken=8df2ab518030ea95, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NLua.1.3.2.1\lib\net45\NLua.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua, Version=1.4.31.0, Culture=neutral, PublicKeyToken=6a194c04b9c89217, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLua.1.4.31\lib\net45\NLua.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -83,10 +50,17 @@
       <HintPath>..\packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -107,6 +81,86 @@
     <Compile Include="CalibrationPointCollectionLong.cs" />
     <Compile Include="CalibrationPointDouble.cs" />
     <Compile Include="CalibrationPointLong.cs" />
+    <Compile Include="Controls\ViewportExtentBehaviorEditor.xaml.cs">
+      <DependentUpon>ViewportExtentBehaviorEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ViewportExtentRenderer.cs" />
+    <Compile Include="Interfaces\Capabilities\IReadyCheck.cs" />
+    <Compile Include="Interfaces\Capabilities\IViewportProvider.cs" />
+    <Compile Include="Util\OnceLogger.cs" />
+    <Compile Include="HeliosApplication.cs" />
+    <Compile Include="IInstallation.cs" />
+    <Compile Include="Interfaces\Capabilities\IExtendedDescription.cs" />
+    <Compile Include="Interfaces\Common\InterfaceStatusScanner.cs" />
+    <AdditionalFiles Include="TimeStamp.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TimeStamp.g.cs</LastGenOutput>
+    </AdditionalFiles>
+    <Compile Include="TimeStamp.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeStamp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Util\Anonymizer.cs" />
+    <Compile Include="Util\DCS\DCSConfiguration.cs" />
+    <Compile Include="Interfaces\Capabilities\IResetMonitorsObserver.cs" />
+    <Compile Include="ISettingsManager2.cs" />
+    <Compile Include="Interfaces\Capabilities\IStatusReportNotify.cs" />
+    <Compile Include="IViewportExtent.cs" />
+    <Compile Include="Controls\CustomGaugeNeedle.cs" />
+    <Compile Include="Controls\CustomDrum.cs" />
+    <Compile Include="Controls\CustomTape.cs" />
+    <Compile Include="Controls\CustomDrumAppearanceEditor.xaml.cs">
+      <DependentUpon>CustomDrumAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomTapeAppearanceEditor.xaml.cs">
+      <DependentUpon>CustomTapeAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageTranslucent.cs" />
+    <Compile Include="Controls\ImageTranslucentAppearanceEditor.xaml.cs">
+      <DependentUpon>ImageTranslucentAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageTranslucentRenderer.cs" />
+    <Compile Include="Controls\PotentiometerEndless.cs" />
+    <Compile Include="Controls\PotentiometerEndlessAppearanceEditor.xaml.cs">
+      <DependentUpon>PotentiometerEndlessAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PotentiometerEndlessBehaviorEditor.xaml.cs">
+      <DependentUpon>PotentiometerEndlessBehaviorEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ViewportExtent.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\Slip Turn Panel.cs" />
+    <Compile Include="Gauges\F-16\HydraulicPressure\HydraulicPressure.cs" />
+    <Compile Include="Gauges\M2000C\Common\Mk2CDrumTacanChannel.cs" />
+    <Compile Include="Gauges\M2000C\Common\Mk2CDrumGauge.cs" />
+    <Compile Include="Gauges\M2000C\Common\Mk2CNeedle.cs" />
+    <Compile Include="Gauges\M2000C\ECMBox\ECM_Box.cs" />
+    <Compile Include="Gauges\M2000C\TestPanel\Test_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\AOA_Panel.cs" />
+    <Compile Include="Gauges\M2000C\HSIPanel\HSI_Panel.cs" />
+    <Compile Include="Gauges\M2000C\EngineSensorsPanel\EngineSensors_Panel.cs" />
+    <Compile Include="Gauges\M2000C\INSPanel\INS_Panel.cs" />
+    <Compile Include="Gauges\M2000C\PCNPanel\PCN_Panel.cs" />
+    <Compile Include="Gauges\M2000C\PCAPanel\PCA_Panel.cs" />
+    <Compile Include="Gauges\M2000C\PPAPanel\PPA_Panel.cs" />
+    <Compile Include="Gauges\M2000C\FuelPanel\Fuel_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\Demar_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\RWR_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\FireWarning_Panel.cs" />
+    <Compile Include="Gauges\M2000C\Miscellaneous\PCI_Panel.cs" />
+    <Compile Include="Gauges\M2000C\VorIlsChannel\VorIls_Panel.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSExportConfiguration.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSExportProtocol.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml.cs">
+      <DependentUpon>DCSInterfaceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\DCS\Common\DCSPhantomMonitorFix.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSVehicleImpersonation.cs" />
+    <Compile Include="Interfaces\DCS\Common\EditableComboBoxModel.cs" />
+    <Compile Include="Interfaces\DCS\Common\EnumComboBoxConverter.cs" />
+    <Compile Include="Interfaces\Capabilities\IProfileAwareInterface.cs" />
+    <Compile Include="Interfaces\DCS\Common\SilentValueConsumer.cs" />
+    <Compile Include="NonClickableZone.cs" />
     <Compile Include="Collections\HeliosObjectCollection.cs" />
     <Compile Include="Collections\KeyedObservableCollection.cs" />
     <Compile Include="Collections\NoResetObservablecollection.cs" />
@@ -117,7 +171,9 @@
     <Compile Include="ComponentModel\HeliosUnitConverterAttribute.cs" />
     <Compile Include="ComponentModel\IPropertyNotification.cs" />
     <Compile Include="ComponentModel\PropertyNotificationEventArgs.cs" />
+    <Compile Include="Gauges\AV-8B\AV8BDevice\AV8BCompositeVisual.cs" />
     <Compile Include="CompositeVisual.cs" />
+    <Compile Include="Gauges\M2000C\M2000CDevice\M2000CCompositeVisual.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="Controls\ClickType.cs" />
     <Compile Include="Controls\CustomGauge.cs" />
@@ -129,12 +185,30 @@
     </Compile>
     <Compile Include="Controls\CustomGaugeRenderer.cs" />
     <Compile Include="Controls\CustonNeedle.cs" />
+    <Compile Include="Gauges\AV-8B\ADI\ADI.cs" />
+    <Compile Include="Gauges\AV-8B\Altimeter\Altimeter.cs" />
+    <Compile Include="Gauges\AV-8B\Radio\Radio.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\AV-8B Front Cockpit.cs" />
     <Compile Include="Gauges\AV-8B\MFD\MFD-Right-AV8B.cs" />
     <Compile Include="Gauges\AV-8B\MFD\MFD-Left-AV8B.cs" />
     <Compile Include="Gauges\AV-8B\MFD\MPCD.cs" />
     <Compile Include="Gauges\AV-8B\ODU\ODU_1.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\Flight Instrument Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\CockpitAppearanceEditor.xaml.cs">
+      <DependentUpon>CockpitAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\AV-8B\Small Panels\Gear and Flaps Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\H2O Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\FlightInstrumentAppearanceEditor.xaml.cs">
+      <DependentUpon>FlightInstrumentAppearanceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gauges\AV-8B\Small Panels\Landing Gear Indicator Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\Threat Indicator Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\Master Arm Panel.cs" />
+    <Compile Include="Gauges\AV-8B\Small Panels\Right RWR.cs" />
     <Compile Include="Gauges\AV-8B\SMC\SMC_1.cs" />
     <Compile Include="Gauges\AV-8B\UFC\UFC_1.cs" />
+    <Compile Include="Gauges\AV-8B\VVI\VVI.cs" />
     <Compile Include="Gauges\M2000C\LGPanel\LG_Panel.cs" />
     <Compile Include="Gauges\M2000C\EnginePanel\Engine_Start_Panel.cs" />
     <Compile Include="Gauges\M2000C\CautionPanel\Caution_Panel.cs" />
@@ -403,13 +477,72 @@
     <Compile Include="Gauges\AV-8B\IAS\IAS.cs" />
     <Compile Include="Gauges\AV-8B\4 Digit Display\4DigitDisplay.cs" />
     <Compile Include="Gauges\AV-8B\2 Digit Display\2DigitDisplay.cs" />
-    <Compile Include="Gauges\AV-8B\VVI\VVI.cs" />
+    <Compile Include="Gauges\AV-8B\VVI\VVI Old.cs" />
     <Compile Include="Gauges\BaseGauge.cs" />
     <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDevice.cs" />
     <Compile Include="Gauges\FA-18C\FA18CDevice\FA18CDeviceRenderer.cs" />
     <Compile Include="Gauges\FA-18C\UFC\UFC.cs" />
     <Compile Include="Gauges\FA-18C\IFEI\IFEI.cs" />
     <Compile Include="Gauges\FA-18C\VVI\VVI.cs" />
+    <Compile Include="Util\CommandLineOptions.cs" />
+    <Compile Include="Util\DCS\MockInstallationLocations.cs" />
+    <Compile Include="Util\EnumBooleanConverter.cs" />
+    <Compile Include="Util\XamlFirewall.cs" />
+    <Compile Include="Windows\ExceptionViewer.cs" />
+    <Compile Include="Util\HeliosUndoBatch.cs" />
+    <Compile Include="Interfaces\Common\InterfaceStatus.cs" />
+    <Compile Include="RunningVersion.cs" />
+    <Compile Include="Windows\Controls\FilePicker.xaml.cs">
+      <DependentUpon>FilePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\ImagePicker.xaml.cs">
+      <DependentUpon>ImagePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\ShareDialog.xaml.cs">
+      <DependentUpon>ShareDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Dialog.cs" />
+    <Compile Include="Windows\HeliosViewModel.cs" />
+    <Compile Include="Windows\InstallationDialogs.cs" />
+    <Compile Include="Windows\RelayCommand.cs" />
+    <Compile Include="Windows\ShowModalParameter.cs" />
+    <Compile Include="Windows\ViewModel\InterfaceStatusViewItem.cs" />
+    <Compile Include="Windows\ViewModel\InterfaceStatusViewSection.cs" />
+    <Compile Include="Windows\ViewModel\InterfaceStatusViewModel.cs" />
+    <Compile Include="Util\KnownLinks.cs" />
+    <Compile Include="Windows\ViewModel\MockInterfaceStatusView.cs" />
+    <Compile Include="Windows\ViewModel\Share.cs" />
+    <Compile Include="Windows\ViewModel\ShareInterfaceStatus.cs" />
+    <Compile Include="Windows\ViewModel\ViewModelCollection.cs" />
+    <None Include="Images\A-10\readme.md" />
+    <None Include="Interfaces\Falcon\readme.md" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\ded.png" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\hud.png" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\mfd_left.png" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\mfd_right.png" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\pfl.png" />
+    <Resource Include="Interfaces\Falcon\OpenFalcon\rwr.png" />
+    <Resource Include="Interfaces\Falcon\RWR\rwr_bezel.png" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_Documents\Licenses\AvalonDock\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\CommandLineParser\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\EOSSharp\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\GoogleDiffMatchPatch\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\HidSharp\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\KeraLua\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\LibGit2Sharp.NativeBinaries\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\LibGit2Sharp\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\NLog\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\NLua\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\Phidget\License.txt" />
+    <Content Include="_Documents\Licenses\SharpDX.DirectInput\LICENSE.txt" />
+    <Content Include="_Documents\Licenses\SharpDX\LICENSE.txt" />
+    <None Include="HeliosNotificationObject.cd" />
     <None Include="Gauges\GaugeTextDisplay.cs" />
     <Compile Include="Gauges\KA-50\EGT\EGT.cs" />
     <Compile Include="Gauges\F-16\ADI\ADI.cs" />
@@ -446,10 +579,8 @@
     <Compile Include="Gauges\KA-50\VVI\VVI.cs" />
     <Compile Include="Gauges\M2000C\M2000CDevice\M2000CDevice.cs" />
     <Compile Include="Gauges\M2000C\M2000CDevice\M2000CDeviceRenderer.cs" />
-    <Compile Include="Gauges\M2000C\ILSFrequency\ILSFrequency.cs" />
     <Compile Include="Gauges\M2000C\MCLPanel\MCL_Panel.cs" />
-    <Compile Include="Gauges\M2000C\TACANChannel\TACANChannel.cs" />
-    <Compile Include="Gauges\M2000C\UVHFPanel\UVHFChannelDisplay.cs" />
+    <Compile Include="Gauges\M2000C\TACANChannel\Tacan_Panel.cs" />
     <Compile Include="Gauges\Mi-8\ADI\ADI.cs" />
     <Compile Include="Gauges\MiG-21\BatteryCapacity\BatteryCapacity.cs" />
     <Compile Include="Gauges\MiG-21\RadioChannelDisplay\RadioChannelDisplay.cs" />
@@ -514,9 +645,6 @@
     <Compile Include="ImageManager.cs" />
     <Compile Include="IModuleManager.cs" />
     <Compile Include="Interfaces\DCS\A10C\A10CInterface.cs" />
-    <Compile Include="Interfaces\DCS\A10C\A10CInterfaceEditor.xaml.cs">
-      <DependentUpon>A10CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\A10C\Functions\Altimeter.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\HSIMiles.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\ILSFrequency.cs" />
@@ -528,18 +656,15 @@
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder3.cs" />
     <Compile Include="Interfaces\DCS\A10C\Functions\VHFRadioEncoder4.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\SMCFuzeDisplay.cs" />
+    <Compile Include="Interfaces\DCS\Common\DualNetworkValue.cs" />
+    <Compile Include="Interfaces\DCS\Common\DualRocker.cs" />
+    <Compile Include="StatusReportItem.cs" />
+    <Compile Include="UDPInterface\NetworkTriggerValue.cs" />
+    <Compile Include="UDPInterface\NetworkTrigger.cs" />
+    <Compile Include="Interfaces\DCS\Common\DCSInterface.cs" />
     <Compile Include="Interfaces\DCS\F14B\F14BInterface.cs" />
-    <Compile Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml.cs">
-      <DependentUpon>F14BInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\FA18C\FA18CInterface.cs" />
-    <Compile Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml.cs">
-      <DependentUpon>FA18CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\AV8B\AV8BInterface.cs" />
-    <Compile Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml.cs">
-      <DependentUpon>AV8BInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\AV8B\Functions\Altimeter.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\Digits3Display.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\Digits4Dispaly.cs" />
@@ -547,9 +672,6 @@
     <Compile Include="Interfaces\DCS\AV8B\Functions\Digits2Display.cs" />
     <Compile Include="Interfaces\DCS\AV8B\Functions\FuelTotalDisplay.cs" />
     <Compile Include="Interfaces\DCS\BlackShark\BlackSharkInterface.cs" />
-    <Compile Include="Interfaces\DCS\BlackShark\BlackSharkInterfaceEditor.xaml.cs">
-      <DependentUpon>BlackSharkInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\BlackShark\Functions\HSIRange.cs" />
     <Compile Include="Interfaces\DCS\BlackShark\Functions\LatitudeEntry.cs" />
     <Compile Include="Interfaces\DCS\BlackShark\Functions\MagVariation.cs" />
@@ -558,7 +680,6 @@
     <Compile Include="Interfaces\DCS\BlackShark\Functions\VHF2Rotary4.cs" />
     <Compile Include="Interfaces\DCS\Common\AbsoluteEncoder.cs" />
     <Compile Include="Interfaces\DCS\Common\Axis.cs" />
-    <Compile Include="Interfaces\DCS\Common\DCSConfigurator.cs" />
     <Compile Include="Interfaces\DCS\Common\DCSDataElement.cs" />
     <Compile Include="Interfaces\DCS\Common\FlagValue.cs" />
     <Compile Include="Interfaces\DCS\Common\GuardedSwitch.cs" />
@@ -575,26 +696,10 @@
     <Compile Include="Interfaces\DCS\Common\Text.cs" />
     <Compile Include="Interfaces\DCS\FA18C\Functions\Altimeter.cs" />
     <Compile Include="Interfaces\DCS\FC2\FC2Interface.cs" />
-    <Compile Include="Interfaces\DCS\FC2\FC2InterfaceEditor.xaml.cs">
-      <DependentUpon>FC2InterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\Generic\GenericInterface.cs" />
-    <Compile Include="Interfaces\DCS\Generic\GenericInterfaceEditor.xaml.cs">
-      <DependentUpon>GenericInterfaceEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\DCS\M2000C\Functions\TACANChannel.cs" />
     <Compile Include="Interfaces\DCS\M2000C\M2000CInterface.cs" />
-    <Compile Include="Interfaces\DCS\M2000C\M2000CInterfaceEditor.xaml.cs">
-      <DependentUpon>M2000CInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\Mi8Simple\Mi8SimpleInterface.cs" />
-    <Compile Include="Interfaces\DCS\Mi8Simple\Mi8SimpleInterfaceEditor.xaml.cs">
-      <DependentUpon>Mi8SimpleInterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DCS\MiG21\MiG21Interface.cs" />
-    <Compile Include="Interfaces\DCS\MiG21\MiG21InterfaceEditor.xaml.cs">
-      <DependentUpon>MiG21InterfaceEditor.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\DirectX\DirectXControllerAxis.cs" />
     <Compile Include="Interfaces\DirectX\DirectXControllerButton.cs" />
     <Compile Include="Interfaces\DirectX\DirectXControllerFunction.cs" />
@@ -626,45 +731,6 @@
     <Compile Include="Interfaces\Eos\EosServo.cs" />
     <Compile Include="Interfaces\Eos\EosStepper.cs" />
     <Compile Include="Interfaces\Eos\EosTextOutput.cs" />
-    <Compile Include="Interfaces\Falcon\AlliedForces\AlliedForcesDataExporter.cs" />
-    <Compile Include="Interfaces\Falcon\AlliedForces\FlightData.cs" />
-    <Compile Include="Interfaces\Falcon\BMS\BMSFalconDataExporter.cs" />
-    <Compile Include="Interfaces\Falcon\BMS\BMSLightBits.cs" />
-    <Compile Include="Interfaces\Falcon\BMS\BMSLightBits3.cs" />
-    <Compile Include="Interfaces\Falcon\BMS\FlightData.cs" />
-    <Compile Include="Interfaces\Falcon\BMS\FlightData2.cs" />
-    <Compile Include="Interfaces\Falcon\FalconCallbackValueEditor.xaml.cs">
-      <DependentUpon>FalconCallbackValueEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\Falcon\FalconDataExporter.cs" />
-    <Compile Include="Interfaces\Falcon\FalconIntefaceEditor.xaml.cs">
-      <DependentUpon>FalconIntefaceEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\Falcon\FalconInterface.cs" />
-    <Compile Include="Interfaces\Falcon\FalconKeyCallback.cs" />
-    <Compile Include="Interfaces\Falcon\FalconKeyCallbackFilter.cs" />
-    <Compile Include="Interfaces\Falcon\FalconKeyFile.cs" />
-    <Compile Include="Interfaces\Falcon\FalconTypes.cs" />
-    <Compile Include="Interfaces\Falcon\HsiBits.cs" />
-    <Compile Include="Interfaces\Falcon\LightBits.cs" />
-    <Compile Include="Interfaces\Falcon\LightBits2.cs" />
-    <Compile Include="Interfaces\Falcon\LightBits3.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\DED.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\FlightData.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\FlightData2.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\HUD.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\LeftMFD.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\OpenFalconDataExporter.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\OpenFalconTextureDisplay.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\OpenFalconTextureDisplayRenderer.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\PFL.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\RightMFD.cs" />
-    <Compile Include="Interfaces\Falcon\OpenFalcon\RWR.cs" />
-    <Compile Include="Interfaces\Falcon\RadarContact.cs" />
-    <Compile Include="Interfaces\Falcon\RadarSymbols.cs" />
-    <Compile Include="Interfaces\Falcon\RWR\RWR.cs" />
-    <Compile Include="Interfaces\Falcon\RWR\RWRRenderer.cs" />
-    <Compile Include="Interfaces\Falcon\TextLines.cs" />
     <Compile Include="Interfaces\Keyboard\KeyboardInterface.cs" />
     <Compile Include="Interfaces\Keyboard\KeyboardInterfaceEditor.xaml.cs">
       <DependentUpon>KeyboardInterfaceEditor.xaml</DependentUpon>
@@ -685,6 +751,13 @@
     <Compile Include="UnitConverters\TimeConverter.cs" />
     <Compile Include="Units\NozzlePositionPercentUnit.cs" />
     <Compile Include="Units\NozzlePositionUnit.cs" />
+    <Compile Include="Util\DCS\InstallationLocation.cs" />
+    <Compile Include="Util\DCS\InstallationLocations.cs" />
+    <Compile Include="VersionReminderForm.xaml.cs">
+      <DependentUpon>VersionReminderForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\KnownFolders.cs" />
+    <Compile Include="Util\Tokenizer.cs" />
     <Compile Include="Windows\Controls\AnalogBar.cs" />
     <Compile Include="Windows\Controls\AxisBar.cs" />
     <Compile Include="Windows\Controls\ButtonIndicator.cs" />
@@ -766,6 +839,13 @@
     <Compile Include="Windows\Controls\ColorWell.xaml.cs">
       <DependentUpon>ColorWell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Controls\DCS\InstallationLocationsControl.xaml.cs">
+      <DependentUpon>InstallationLocationsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\DCS\InstallationLocationsGroup.xaml.cs">
+      <DependentUpon>InstallationLocationsGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\StatusCodes.cs" />
     <Compile Include="Windows\Controls\DigitalInputIndicator.cs" />
     <Compile Include="Windows\Controls\FontChooserDialog.xaml.cs">
       <DependentUpon>FontChooserDialog.xaml</DependentUpon>
@@ -777,9 +857,6 @@
     <Compile Include="Windows\Controls\HeliosPropertyEditorCollection.cs" />
     <Compile Include="Windows\Controls\HeliosTextBox.cs" />
     <Compile Include="Windows\Controls\HeliosVisualView.cs" />
-    <Compile Include="Windows\Controls\ImagePicker.xaml.cs">
-      <DependentUpon>ImagePicker.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Controls\PointOfViewIndicator.cs" />
     <Compile Include="Windows\Controls\POVDirection.cs" />
     <Compile Include="Windows\Controls\StaticValueEditor.cs" />
@@ -790,18 +867,33 @@
       <DependentUpon>TextStaticEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Controls\TypefaceListItem.cs" />
-    <Resource Include="Interfaces\DCS\Common\Export_Stub.lua" />
-    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Post.lua" />
-    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Pre.lua" />
-    <Content Include="Templates\Base\Panels\Empty Panel.htpl">
+    <Content Include="Templates\Base\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\Base\F-16\RWR Bezel.htpl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="_Documents\Licenses\VCRedist\VS_2017_ENT_PRO_TRIAL_RTW_ENU_Eula.1033.rtf" />
+    <Resource Include="Gauges\M2000C\Common\needleA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Resource>
+    <Resource Include="Gauges\M2000C\TACANChannel\tacan_channel_x_mode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Resource>
+    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Post.lua" />
+    <Resource Include="Interfaces\DCS\FA18C\ExportFunctions - New - Pre.lua" />
+    <Resource Include="Images\Toggles\guard-up-empty.png" />
+    <Resource Include="Images\Buttons\green-push-in.png">
+    </Resource>
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions - New - Post.lua" />
     <Resource Include="Interfaces\DCS\AV8B\ExportFunctions - New - Pre.lua" />
+    <Resource Include="Interfaces\DCS\Common\HeliosExport16.lua" />
     <None Include="_Documents\Helios Release 1.4 Users Guide.docx" />
-    <None Include="_Documents\Helios Release 1.4 Users Guide.pdf">
+    <Content Include="_Documents\Helios Release 1.4 Users Guide.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Gauges\AV-8B\Common\needle_a.xaml">
@@ -825,408 +917,15 @@
     <Resource Include="about.png" />
     <Resource Include="Icon.png" />
     <Content Include="Fonts\Hornet IFEI.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Fonts\Hornet UFC.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Fonts\MS33558.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Interfaces\DCS\F14B\ExportFunctions.lua" />
-    <Content Include="Templates\Base\A-10\0.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\1.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\2.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\3.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\4.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\5.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\6.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\7.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\8.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\9.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\AFT.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Altitude Alert.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\ANCHR.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Blank.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Clear.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Data.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\EGI.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Enter.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Fire Pull APU.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Fire Pull Left.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Fire Pull Right.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\FM Indicator.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Func.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\FWD.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Gear Handle.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Hack.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\HARS.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Horizontal Rocker.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\ILS.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\LTR.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Mark.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Master Caution.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\MID.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\RWR Bezel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Sel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Space.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\STR PT.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\TCN.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\TISL.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\UHF Indicator.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\A-10\Vertical Rocker.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\MFD Lit.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\MFD.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\Push - Red.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\Push - White.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\Tactile Round - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\Tactile Round.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Buttons\Tactile Square - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Bottom Left.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Bottom Right.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Bottom.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Left.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Right.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Top Left.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Top Right.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Backplate Screw - Top.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Caution.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Decorations\Screw.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Encoders\Encoder - Knob 2.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Encoders\Encoder - Knob 3.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Encoders\Encoder - Knob 4.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Encoders\Encoder - Knob 5.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\0.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\1.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\2.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\3.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\4.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\5.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\6.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\7.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\8.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\9.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\A-A.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\A-G.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Arrow.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\CMDS Outline.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\COM 1.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\COM 2.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\DED Bezel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\ENTR.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\F-16 ICP Panel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\F-16 Panel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Gear Handle.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Gear Light Diagarm.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Horizontal Panel Guard.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\IFF.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\LIST.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Panel Screw.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\RCL.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Seat Arming Switch.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Spider Canopy Switch.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Vertical Panel Guard.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\WX.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\F-16\Yaw Trim Scale.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Hats\DCS Switch.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Indicators\Anunciator.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Indicators\Green Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Indicators\Indicator - Square.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Panels\Generic Backplate.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Panels\Generic Screws.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Push Button Indicators\Push Indicator - Square.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Arrows - Dark.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Arrows - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Blank - Dark.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Blank - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Dark Wheel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Plus Minus - Dark - Horizontal.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Plus Minus - Dark.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Plus Minus - Light - Horizontal.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Plus Minus - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Triangles - Dark.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\Triangles - Light.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rockers\White Wheel.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rotaries\Rotary - Knob 1.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rotaries\Rotary - Knob 3.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rotaries\Rotary - Knob 4.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Rotaries\Rotary - Knob 5.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Flat Top - Locking.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Flat Top.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Orange Seal - Round.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Orange Seal.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Round - Locking.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Round.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Threeway Toggles\Square - Tan.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Flat Top - Locking.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Flat Top.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Orange Seal - Round.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Orange Seal.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Round - Locking.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Round.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\Base\Toggles\Square - Tan.htpl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Interfaces\DCS\A10C\ExportFunctions.lua" />
     <Resource Include="Interfaces\DCS\Common\Export.lua" />
     <Resource Include="Interfaces\DCS\BlackShark\ExportFunctions.lua" />
@@ -1242,6 +941,26 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CustomGaugeBehaviorEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomDrumAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomTapeAppearanceEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Controls\ImageTranslucentAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PotentiometerEndlessAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PotentiometerEndlessBehaviorEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1290,6 +1009,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\IndicatorAppearancePropertyEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ViewportExtentBehaviorEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2833,6 +2556,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Gauges\AV-8B\Small Panels\CockpitAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Gauges\AV-8B\Small Panels\FlightInstrumentAppearanceEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Gauges\F-16\HydraulicPressure\hydraulic_faceplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Gauges\F-16\HydraulicPressure\hydraulic_needle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Gauges\FA-18C\IFEI\IFEI Nozzle Gauge Marks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2861,65 +2600,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Resource Include="Gauges\M2000C\ILSFrequency\ils_frequency_faceplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\M2000C\TACANChannel\tacan_channel_faceplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\M2000C\TACANChannel\tacan_channel_hundreds_tape.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Gauges\M2000C\TACANChannel\tacan_channel_x_mode.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
     <Resource Include="Gauges\M2000C\TACANChannel\tacan_channel_y_mode.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="Interfaces\DCS\A10C\A10CInterfaceEditor.xaml">
+    <Resource Include="Gauges\M2000C\Common\needleB.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\F14B\F14BInterfaceEditor.xaml">
+    </Resource>
+    <Resource Include="Gauges\M2000C\HSIPanel\compass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\FA18C\FA18CInterfaceEditor.xaml">
+    </Resource>
+    <Resource Include="Gauges\M2000C\Common\drum_tape_with_point.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\AV8B\AV8BInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\BlackShark\BlackSharkInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\FC2\FC2InterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\Generic\GenericInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\M2000C\M2000CInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\Mi8Simple\Mi8SimpleInterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\DCS\MiG21\MiG21InterfaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="Interfaces\DCS\Common\DCSInterfaceEditor.xaml">
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="Interfaces\DirectX\DirectXControllerInterfaceEditor.xaml">
       <SubType>Designer</SubType>
@@ -2929,14 +2627,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Interfaces\Falcon\FalconCallbackValueEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Interfaces\Falcon\FalconIntefaceEditor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Interfaces\Keyboard\KeyboardInterfaceEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2944,6 +2634,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VersionReminderForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Controls\CalibrationEditorLong.xaml">
       <SubType>Designer</SubType>
@@ -2957,6 +2651,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\Controls\DCS\InstallationLocationsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Controls\DCS\InstallationLocationsGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Controls\FilePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Controls\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Controls\FontChooserDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2964,6 +2674,10 @@
     <Page Include="Windows\Controls\ImagePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Controls\ShareDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Controls\TextFormatButton.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -2977,6 +2691,7 @@
   <ItemGroup>
     <Folder Include="Gauges\FA-18C\Controls\" />
     <Folder Include="Interfaces\DCS\F14B\Functions\" />
+    <Folder Include="Interfaces\DCS\M2000C\Functions\" />
     <Folder Include="Interfaces\DCS\Mi8Simple\Functions\" />
     <Folder Include="Interfaces\DCS\MiG21\Functions\" />
   </ItemGroup>
@@ -3181,14 +2896,6 @@
     <Resource Include="Images\General\missing_image.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Interfaces\Falcon\OpenFalcon\ded.png" />
-    <Resource Include="Interfaces\Falcon\OpenFalcon\hud.png" />
-    <Resource Include="Interfaces\Falcon\OpenFalcon\mfd_left.png" />
-    <Resource Include="Interfaces\Falcon\OpenFalcon\mfd_right.png" />
-    <Resource Include="Interfaces\Falcon\OpenFalcon\pfl.png" />
-    <Resource Include="Interfaces\Falcon\OpenFalcon\rwr.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\A-10\adj-down.png" />
     <Resource Include="Images\A-10\adj-norm.png" />
     <Resource Include="Images\A-10\adj-up.png" />
@@ -3319,9 +3026,6 @@
     <Resource Include="Images\A-10\ufc_vrocker_blank_up.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Interfaces\Falcon\RWR\rwr_bezel.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Gauges\A-10\ADI\adi_bezel.png" />
   </ItemGroup>
   <ItemGroup>
@@ -3333,241 +3037,162 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\F-16\a-a-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\a-a.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\a-g-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\a-g.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\arrow-image.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\aux-comm-freq.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\canopy-down.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\canopy-up.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\cmds_outline.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\comm1-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\comm1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\comm2-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\comm2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\ded-box.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\earming-off.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\earming-on.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_border_left.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_border_right.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_bottom_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_bottom_left_croner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_bottom_right_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_horizontal_guard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_screw.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_top_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_top_left_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_top_right_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_panel_vertical_guard.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_bottom_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_bottom_left_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_bottom_right_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_left_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_right_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_top_border.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_top_left_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\f16_small_panel_top_right_corner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\gear-down-red-on.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\gear-down.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\gear-light-graphic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\gear-up-red-on.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\gear-up.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-0-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-1-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-2-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-3-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-4-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-5-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-6-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-7-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-7.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-8-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-8.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-9-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-9.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-enter-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-enter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-wx-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp-wx.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\icp_panel_background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\iff-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\iff.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\ipc-rcl-press.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\ipc-rcl.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\list-pressed.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\list.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\mfd-in.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\mfd-out.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\mfd_bezel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\rocker-down.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\rocker-middle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\rocker-up.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\F-16\yaw_trim_scale.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
@@ -3592,9 +3217,7 @@
   <ItemGroup>
     <Resource Include="Gauges\MiG-21\RSBNDistance\RSBNDistance.png" />
     <Resource Include="Gauges\AV-8B\ADI\adi_bezel.png" />
-    <Resource Include="Gauges\AV-8B\ADI\adi_slip_bezel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Gauges\AV-8B\ADI\adi_slip_bezel.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -3638,43 +3261,33 @@
     <Resource Include="Gauges\FA-18C\IFEI\IFEI_ZONE_DN.png" />
     <Resource Include="Gauges\FA-18C\IFEI\IFEI Reflections.png" />
     <Resource Include="Images\KneeBoards\default_kneeboard_image.png" />
-    <Content Include="Helios.ico" />
-    <Content Include="_Documents\changelog.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="_Documents\GNU Lesser General Public License.txt">
+    <Content Include="Helios.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="_Documents\Helios.M2000C.Read.Me.txt" />
-    <Content Include="_Documents\Helios.Read.Me.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="_Documents\*.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_Documents\*.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Aircraft AV-8B\Aircraft AV-8B.csproj">
-      <Project>{2b00f04b-3cb2-44e7-b49b-da94ff74c66c}</Project>
-      <Name>Aircraft AV-8B</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Aircraft FA-18C\Aircraft FA-18C.csproj">
-      <Project>{4fdce381-aa97-4c5e-b4cf-f9ec6792dd2c}</Project>
-      <Name>Aircraft FA-18C</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Aircraft M2000C\Aircraft M2000C.csproj">
-      <Project>{bd8b2678-7d32-4e3d-8a9d-ca1ce201285f}</Project>
-      <Name>Aircraft M2000C</Name>
-    </ProjectReference>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\Helios.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)packages\NLua.1.3.2.1\lib\native\*.*" "$(TargetDir)"
-del "$(TargetDir)Templates\*.htpl"
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\KeraLua.1.0.29\build\net45\KeraLua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\KeraLua.1.0.29\build\net45\KeraLua.targets'))" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\KeraLua.1.0.29\build\net45\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.0.29\build\net45\KeraLua.targets')" />
 </Project>

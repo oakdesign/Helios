@@ -16,27 +16,29 @@
 namespace GadrocsWorkshop.Helios.Splash
 {
     using System;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Input;
 
     /// <summary>
-    /// Interaction logic for About.xaml
+    /// Splash screen for Helios, currently also used as about box without any buttons
     /// </summary>
     public partial class About : Window
     {
+        public static readonly string[] Authors = { "Gadroc", "BlueFinBima", "derammo" };
+        public static readonly string[] Contributors = { "CaptZeen", "KiwiLostInMelb", "Phar71", "damien022", "Will Hartsell", "Cylution", "Rachmaninoff", "yzfanimal", "WillianG83", "wheelchock", "BeamRider", "Jabbers" };
+
         public About()
         {
             InitializeComponent();
         }
 
-         protected override void OnActivated(EventArgs e)
+        protected override void OnActivated(EventArgs e)
         {
-            Version _runningVersion = Assembly.GetEntryAssembly().GetName().Version;
-            VersionBlock.Text = _runningVersion.Major.ToString() + "." + _runningVersion.Minor.ToString() + "." + _runningVersion.Build.ToString() + "." + _runningVersion.Revision.ToString("0000");
-            ContributionBlock.Text = "Gadroc; BlueFinBima; ";
-            ContributionBlock.Text = ContributionBlock.Text + "CaptZeen; derammo; KiwiLostInMelb; damien022; Will Hartsell; Cylution; Phar71; Rachmaninoff; yzfanimal ";
-            StatusBlock.Text = "Released";
+            Version runningVersion = VersionChecker.RunningVersion;
+            VersionBlock.Text = runningVersion.Major.ToString() + "." + runningVersion.Minor.ToString() + "." + runningVersion.Build.ToString() + "." + runningVersion.Revision.ToString("0000");
+            ContributionBlock.Text = string.Join("; ", Authors);
+            ContributionBlock.Text = ContributionBlock.Text + "; " + string.Join("; ", Contributors);
+            StatusBlock.Text = RunningVersion.IsDevelopmentPrototype ? "Development Prototype" : "Released";
             base.OnActivated(e);
         }
 

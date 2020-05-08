@@ -26,13 +26,14 @@ namespace GadrocsWorkshop.Helios
     public struct DefaultInputBinding
     {
         public string ChildName, InterfaceTriggerName, DeviceActionName;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public DefaultInputBinding(string childName, string interfaceTriggerName, string deviceActionName)
         {
             ChildName = childName;
             InterfaceTriggerName = interfaceTriggerName;
             DeviceActionName = deviceActionName;
-            ConfigManager.LogManager.LogInfo("Default Input Binding: Trigger " + interfaceTriggerName + " to action " + deviceActionName + " for child " + childName);
+            Logger.Info("Default Input Binding: Trigger " + interfaceTriggerName + " to action " + deviceActionName + " for child " + childName);
         }
     }
 
@@ -40,13 +41,14 @@ namespace GadrocsWorkshop.Helios
     public struct DefaultOutputBinding
     {
         public string ChildName, DeviceTriggerName, InterfaceActionName;
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public DefaultOutputBinding(string childName, string deviceTriggerName, string interfaceActionName)
         {
             ChildName = childName;
             DeviceTriggerName = deviceTriggerName;
             InterfaceActionName = interfaceActionName;
-            ConfigManager.LogManager.LogInfo("Default Output Binding: Trigger " + deviceTriggerName + " to action " + interfaceActionName  + " for child " + childName);
+            Logger.Info("Default Output Binding: Trigger " + deviceTriggerName + " to action " + interfaceActionName + " for child " + childName);
         }
     }
 
@@ -58,7 +60,7 @@ namespace GadrocsWorkshop.Helios
         protected string _defaultInterfaceName; // default name of the interface to be used
         protected string _defaultBindingName;   // the name of the default binding in the interface
         protected HeliosInterface _defaultInterface;
-
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         public CompositeVisual(string name, Size nativeSize)
             : base(name, nativeSize)
@@ -102,6 +104,11 @@ namespace GadrocsWorkshop.Helios
         #region Properties
         public string DefaultInterfaceName
         {
+            get
+            {
+                return _defaultInterfaceName;
+            }
+
             set
             {
                 _defaultInterfaceName = value;
@@ -172,7 +179,7 @@ namespace GadrocsWorkshop.Helios
             }
         }
 
-        protected void AddDefaultInputBinding(string childName, string interfaceTriggerName, string deviceActionName)
+        protected virtual void AddDefaultInputBinding(string childName, string interfaceTriggerName, string deviceActionName)
         {
             DefaultInputBindings.Add(new DefaultInputBinding(
                 childName: childName,
@@ -181,7 +188,7 @@ namespace GadrocsWorkshop.Helios
                 ));
         }
 
-        protected void AddDefaultOutputBinding(string childName, string deviceTriggerName, string interfaceActionName)
+        protected virtual void AddDefaultOutputBinding(string childName, string deviceTriggerName, string interfaceActionName)
         {
             DefaultOutputBindings.Add(new DefaultOutputBinding(
                 childName: childName,
@@ -213,39 +220,39 @@ namespace GadrocsWorkshop.Helios
             if (!DesignMode)
                 return;
 
-            /// grab the default interface, if it exists
+            // grab the default interface, if it exists
             if (_defaultInterfaceName == "")
             {
                 return;
             }
             if (!Profile.Interfaces.ContainsKey(_defaultInterfaceName))
             {
-                ConfigManager.LogManager.LogError("Cannot find default interface " + _defaultInterfaceName);
+                Logger.Info("Cannot find default interface " + _defaultInterfaceName);
                 return;
             }
             _defaultInterface = Profile.Interfaces[_defaultInterfaceName];
 
-            /// looping for all default input bindings to assign the value
+            // looping for all default input bindings to assign the value
             foreach (DefaultInputBinding defaultBinding in _defaultInputBindings)
             {
                 if (!Children.ContainsKey(defaultBinding.ChildName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find child " + defaultBinding.ChildName);
+                    Logger.Error("Cannot find child " + defaultBinding.ChildName);
                     continue;
                 }
-                ConfigManager.LogManager.LogDebug("Auto binding child " + defaultBinding.ChildName);
+                Logger.Debug("Auto binding child " + defaultBinding.ChildName);
                 HeliosVisual child = Children[defaultBinding.ChildName];
                 if (!child.Actions.ContainsKey(defaultBinding.DeviceActionName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find action " + defaultBinding.DeviceActionName);
+                    Logger.Error("Cannot find action " + defaultBinding.DeviceActionName);
                     continue;
                 }
                 if (!_defaultInterface.Triggers.ContainsKey(defaultBinding.InterfaceTriggerName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find interface trigger " + defaultBinding.InterfaceTriggerName);
+                    Logger.Error("Cannot find interface trigger " + defaultBinding.InterfaceTriggerName);
                     continue;
                 }
-                ConfigManager.LogManager.LogDebug("Auto binding trigger " + defaultBinding.InterfaceTriggerName + " to " + defaultBinding.DeviceActionName);
+                Logger.Debug("Auto binding trigger " + defaultBinding.InterfaceTriggerName + " to " + defaultBinding.DeviceActionName);
                 child.OutputBindings.Add(CreateNewBinding(_defaultInterface.Triggers[defaultBinding.InterfaceTriggerName],
                     child.Actions[defaultBinding.DeviceActionName]));
 
@@ -254,26 +261,26 @@ namespace GadrocsWorkshop.Helios
                 //        child.Actions[defaultBinding.DeviceActionName]));
             }
 
-            /// now looping for all default output bindings to assign the value
+            // now looping for all default output bindings to assign the value
             foreach (DefaultOutputBinding defaultBinding in _defaultOutputBindings)
             {
                 if (!Children.ContainsKey(defaultBinding.ChildName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find child " + defaultBinding.ChildName);
+                    Logger.Error("Cannot find child " + defaultBinding.ChildName);
                     continue;
                 }
                 HeliosVisual child = Children[defaultBinding.ChildName];
                 if (!child.Triggers.ContainsKey(defaultBinding.DeviceTriggerName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find trigger " + defaultBinding.DeviceTriggerName);
+                    Logger.Error("Cannot find trigger " + defaultBinding.DeviceTriggerName);
                     continue;
                 }
                 if (!_defaultInterface.Actions.ContainsKey(defaultBinding.InterfaceActionName))
                 {
-                    ConfigManager.LogManager.LogError("Cannot find action " + defaultBinding.InterfaceActionName);
+                    Logger.Error("Cannot find action " + defaultBinding.InterfaceActionName);
                     continue;
                 }
-                ConfigManager.LogManager.LogDebug("Child Output binding trigger " + defaultBinding.DeviceTriggerName + " to " + defaultBinding.InterfaceActionName);
+                Logger.Debug("Child Output binding trigger " + defaultBinding.DeviceTriggerName + " to " + defaultBinding.InterfaceActionName);
                 child.OutputBindings.Add(CreateNewBinding(child.Triggers[defaultBinding.DeviceTriggerName],
                                       _defaultInterface.Actions[defaultBinding.InterfaceActionName]));
                 //            child.OutputBindings.Add(
@@ -299,7 +306,7 @@ namespace GadrocsWorkshop.Helios
             Actions.Add(action);
         }
 
-        private string GetComponentName(string name)
+        protected string GetComponentName(string name)
         {
             return Name + "_" + name;
         }
@@ -307,7 +314,7 @@ namespace GadrocsWorkshop.Helios
         protected Potentiometer AddPot(string name, Point posn, Size size, string knobImage,
             double initialRotation, double rotationTravel, double minValue, double maxValue,
             double initialValue, double stepValue,
-            string interfaceDeviceName, string interfaceElementName, bool fromCenter)
+            string interfaceDeviceName, string interfaceElementName, bool fromCenter, ClickType clickType = ClickType.Swipe, bool isContinuous = false)
         {
             string componentName = GetComponentName(name);
             if (fromCenter)
@@ -327,6 +334,8 @@ namespace GadrocsWorkshop.Helios
                 Width = size.Width,
                 Height = size.Height
             };
+            _knob.ClickType = clickType;
+            _knob.IsContinuous = isContinuous;
 
             Children.Add(_knob);
             foreach (IBindingTrigger trigger in _knob.Triggers)
@@ -432,6 +441,7 @@ namespace GadrocsWorkshop.Helios
 
             return _knob;
         }
+
         protected void AddRotarySwitchBindings(string name, Point posn, Size size, RotarySwitch rotarySwitch,
             string interfaceDeviceName, string interfaceElementName)
         {
@@ -455,7 +465,6 @@ namespace GadrocsWorkshop.Helios
                 deviceActionName: "set.position");
 
         }
-
 
         protected PushButton AddButton(string name, Point posn, Size size, string image, string pushedImage,
             string buttonText, string interfaceDeviceName, string interfaceElementName, bool fromCenter)
@@ -566,7 +575,15 @@ namespace GadrocsWorkshop.Helios
         }
 
         protected ToggleSwitch AddToggleSwitch(string name, Point posn, Size size, ToggleSwitchPosition defaultPosition,
-            string positionOneImage, string positionTwoImage, ToggleSwitchType defaultType, string interfaceDeviceName, string interfaceElementName,
+           string positionOneImage, string positionTwoImage, ToggleSwitchType defaultType, string interfaceDeviceName, string interfaceElementName,
+           bool fromCenter, bool horizontal = false)
+        {
+            return AddToggleSwitch(name, posn, size, defaultPosition, positionOneImage, positionTwoImage, defaultType, ClickType.Touch, interfaceDeviceName, interfaceElementName,
+                fromCenter, horizontal);
+        }
+
+        protected ToggleSwitch AddToggleSwitch(string name, Point posn, Size size, ToggleSwitchPosition defaultPosition,
+            string positionOneImage, string positionTwoImage, ToggleSwitchType defaultType, ClickType clickType, string interfaceDeviceName, string interfaceElementName,
             bool fromCenter, bool horizontal = false)
         {
             if (fromCenter)
@@ -576,7 +593,7 @@ namespace GadrocsWorkshop.Helios
             ToggleSwitch newSwitch = new ToggleSwitch();
             newSwitch.Name = componentName;
             newSwitch.SwitchType = defaultType;
-            newSwitch.ClickType = ClickType.Touch;
+            newSwitch.ClickType = clickType;
             newSwitch.DefaultPosition = defaultPosition;
             newSwitch.PositionOneImage = positionOneImage;
             newSwitch.PositionTwoImage = positionTwoImage;
@@ -700,9 +717,9 @@ namespace GadrocsWorkshop.Helios
                 PositionTwoImage = positionTwoImage,
                 PositionThreeImage = positionThreeImage,
                 SwitchType = defaultType,
-                Name = componentName
+                Name = componentName,
+                ClickType = clickType
             };
-            toggle.ClickType = clickType;
             if (horizontal)
             {
                 toggle.Rotation = HeliosVisualRotation.CW;
@@ -805,8 +822,7 @@ namespace GadrocsWorkshop.Helios
             gauge.Top = posn.Y;
             gauge.Left = posn.X;
             gauge.Width = size.Width;
-            gauge.Height = size.Height;
-
+            gauge.Height = size.Height;
             string componentName = GetComponentName(name);
             gauge.Name = componentName;
 
@@ -820,5 +836,99 @@ namespace GadrocsWorkshop.Helios
                 deviceActionName: "set.value");
             return gauge;
         }
-    }
+
+        protected CompositeVisual AddDevice(
+            string name,
+            CompositeVisual device,
+            Point posn,
+            Size size,
+            string interfaceDeviceName,
+            string interfaceElementName
+            )
+        {
+            device.Name = name;
+            device.Top = posn.Y;
+            device.Left = posn.X;
+            device.Width = size.Width;
+            device.Height = size.Height;
+
+            string componentName = GetComponentName(name);
+            device.Name = componentName;
+
+            Children.Add(device);
+            foreach (IBindingTrigger trigger in device.Triggers)
+            {
+                AddTrigger(trigger, trigger.Device);
+            }
+            foreach (IBindingAction action in device.Actions)
+            {
+                if (action.Name == "hidden")
+                {
+                    continue;
+                }
+
+                AddAction(action, action.Device);
+                // Create the automatic input bindings for the IFEI_Gauge sub component
+                AddDefaultInputBinding(
+                    childName: name,
+                    deviceActionName: action.ActionVerb + "." + action.Device,
+                    interfaceTriggerName: name + "." + action.Device + ".changed"
+                );
+            }
+            return device;
+        }
+
+        protected Gauges.BaseGauge AddGauge(
+            string name,
+            Gauges.BaseGauge gauge,
+            Point posn,
+            Size size,
+            string interfaceDeviceName,
+            string interfaceElementName
+            )
+        {
+            gauge.Name = name;
+            gauge.Top = posn.Y;
+            gauge.Left = posn.X;
+            gauge.Width = size.Width;
+            gauge.Height = size.Height;
+
+            string componentName = GetComponentName(name);
+            gauge.Name = componentName;
+
+            Children.Add(gauge);
+            foreach (IBindingTrigger trigger in gauge.Triggers)
+            {
+                AddTrigger(trigger, trigger.Device); 
+            }
+            foreach (IBindingAction action in gauge.Actions)
+            {
+                if (action.Name == "hidden")
+                {
+                    continue;
+                }
+
+                AddAction(action, action.Device);
+                AddDefaultInputBinding(
+                    childName: componentName,
+                    interfaceTriggerName: interfaceDeviceName + "." + interfaceElementName + ".changed",
+                    deviceActionName: action.Device + "." + action.ActionVerb + "." + action.Name
+                );
+            }
+            return gauge;
+        }
+        protected HeliosPanel AddPanel(string name, Point posn, Size size, string background)
+        {
+            HeliosPanel _panel = new HeliosPanel();
+            _panel.Left = posn.X;
+            _panel.Top = posn.Y;
+            _panel.Width = size.Width;
+            _panel.Height = size.Height;
+            _panel.BackgroundImage = background;
+            _panel.Name = GetComponentName(name);
+            Children.Add(_panel);
+            return _panel;
+ 
+        }
+}
 }

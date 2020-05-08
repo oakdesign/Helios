@@ -13,6 +13,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+
 namespace GadrocsWorkshop.Helios
 {
     using System.Windows.Media;
@@ -20,20 +23,51 @@ namespace GadrocsWorkshop.Helios
     public interface IImageManager
     {
         /// <summary>
-        /// Loads an image file iterating through the profile subdirectories.
+        /// Loads an image file from the specified URI.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="uri">Can be a file system path, a pack URI, or a special uri of form {assembly}/relativePath</param>
         /// <returns></returns>
-        ImageSource LoadImage(string path);
+        ImageSource LoadImage(string uri);
 
         /// <summary>
         /// Loads an image file iterating through the profile subdirectories.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="uri">Can be a file system path, a pack URI, or a special uri of form {assembly}/relativePath</param>
         /// <returns></returns>
-        ImageSource LoadImage(string path, int width, int height);
+        ImageSource LoadImage(string uri, int width, int height);
         
         string MakeImagePathRelative(string filename);
         string MakeImagePathAbsolute(string fileName);
+    }
+
+    public class ImageLoadEventArgs : EventArgs
+    {
+        public ImageLoadEventArgs(string path)
+        {
+            Path = path;
+        }
+
+        public string Path { get; }
+    }
+
+    /// <summary>
+    /// Version 2 of IImageManager interface
+    /// </summary>
+    public interface IImageManager2: IImageManager
+    {
+        event EventHandler<ImageLoadEventArgs> ImageLoadSuccess;
+        event EventHandler<ImageLoadEventArgs> ImageLoadFailure;
+
+        /// <summary>
+        /// discard any previous image load failures; to be called when switching to a new profile
+        /// or other context where previous failures would not be relevant to ReplayCurrentFailures
+        /// </summary>
+        void ClearFailureTracking();
+
+        /// <summary>
+        /// replays all failed image loads since the last call to ClearFailureTracking
+        /// </summary>
+        /// <param name="imageLoadFailureHandler"></param>
+        void ReplayCurrentFailures(Action<object, ImageLoadEventArgs> imageLoadFailureHandler);
     }
 }

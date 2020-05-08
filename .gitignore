@@ -1,21 +1,49 @@
-# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+# build output
 bin
 obj
-"NL Assets"
+Helios*.msi
+setup.exe
+Keypress*.msi
+Helios*.exe
+*.tmp
+*.binlog
 
 # mstest test results
 TestResults
+
+# version upgrade output
+/UpgradeLog*.htm*
+
+# solution / workspace / project user options
 *.suo
-/packages
-Helios *.zip
-"/.vs"
-"NL Assets"
-/installer
-/.vs/helios/v15/Server/sqlite3
-Helios *.zip
-Helios*.msi
-setup.exe
-*.bak
 *.user
-Keypress Receiver Installer/Release/Keypress Receiver Setup.msi
-!/Docs/*.txt
+
+# visual studio temp directory, including more per-user options and build state
+/.vs
+
+# archives
+Helios *.zip
+
+# installer output folder
+/installer
+
+# nuget output folder
+/packages
+
+# temp files
+*.bak
+
+# these need clean up
+Lua/DCS/doc/todo.txt
+Lua/DCS/Scripts/HeliosExport/Mods
+/Helios Installer/select_output.txt
+/ActivityLog.xsl
+/Patching/Templates/Patching/Additional Simulator Viewports
+/prebuild.binlog
+/Tools/TestApplyPatches/test
+attribution_*.txt
+/Helios/Templates/Base/Simulator Viewports
+/Helios/TimeStamp.g.cs
+/Lua/DCS/Scripts/Helios/HeliosExport16.lua
+/Lua/runExportLua.ps1
+/publish.cmd

@@ -23,13 +23,15 @@ namespace GadrocsWorkshop.Helios
     /// </summary>
     public class UniqueHeliosInterfaceFactory : HeliosInterfaceFactory
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public override List<HeliosInterface> GetInterfaceInstances(HeliosInterfaceDescriptor descriptor, HeliosProfile profile)
         {
             List<HeliosInterface> interfaces = new List<HeliosInterface>();
 
             if (descriptor == null)
             {
-                ConfigManager.LogManager.LogWarning("Descriptor is null passed into UniqueHeliosInterfaceFactory.GetInterfaceInstances.");
+                Logger.Warn("Descriptor is null passed into UniqueHeliosInterfaceFactory.GetInterfaceInstances.");
             }
             else
             {
@@ -38,13 +40,13 @@ namespace GadrocsWorkshop.Helios
                     HeliosInterface newInterface = (HeliosInterface)Activator.CreateInstance(descriptor.InterfaceType);
                     if (newInterface == null)
                     {
-                        ConfigManager.LogManager.LogWarning("New interface is null.");
+                        Logger.Warn("New interface is null.");
                     }
                     interfaces.Add(newInterface);
                 }
                 else
                 {
-                    ConfigManager.LogManager.LogInfo("Unique interface already exists in profile " + descriptor.Name);
+                    Logger.Debug("Unique interface already exists in profile " + descriptor.Name + ". Type: " + descriptor.InterfaceType.BaseType.Name);
                 }
             }
 
@@ -63,6 +65,13 @@ namespace GadrocsWorkshop.Helios
             return interfaces;
         }
 
+        // XXX this hack is going away in helios17 and interface2 branches
+        private static readonly HashSet<string> _udpInterfaceTypes = new HashSet<string>
+        {
+            "BaseUDPInterface",
+            "DCSInterface"
+        };
+
         private bool IsUnique(HeliosInterfaceDescriptor descriptor, HeliosProfile profile)
         {
             foreach (HeliosInterface heliosInterface in profile.Interfaces)
@@ -71,6 +80,14 @@ namespace GadrocsWorkshop.Helios
                 if (interfaceDescriptor.TypeIdentifier.Equals(descriptor.TypeIdentifier))
                 {
                     // If any existing interfaces in the profile have the same type identifier do not add them.
+                    return false;
+                }
+
+                // XXX this hack is going away in helios17 and interface2 branches
+                if (_udpInterfaceTypes.Contains(descriptor.InterfaceType.BaseType.Name) &&
+                    _udpInterfaceTypes.Contains(heliosInterface.GetType().BaseType.Name))
+                {
+                    // don't add descendants of BaseUDPInterface
                     return false;
                 }
             }

@@ -26,6 +26,8 @@ namespace GadrocsWorkshop.Helios
     /// </summary>
     public class TemplateManager : ITemplateManager
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private HeliosTemplateCollection _userTemplates = new HeliosTemplateCollection();
         private List<HeliosTemplate> _moduleTemplates = new List<HeliosTemplate>();
 
@@ -33,6 +35,9 @@ namespace GadrocsWorkshop.Helios
 
         internal TemplateManager(string userTemplateDirectory, string userPanelTemplateDirectory)
         {
+            Logger.Debug($"Helios will load user templates from {Util.Anonymizer.Anonymize(userTemplateDirectory)}");
+            Logger.Debug($"Helios will load user panel templates from {Util.Anonymizer.Anonymize(userPanelTemplateDirectory)}");
+
             _userTemplateDirectory = userTemplateDirectory;
 
             PopulateUserTemplatesCollection();
@@ -62,15 +67,23 @@ namespace GadrocsWorkshop.Helios
 
         internal void LoadModuleTemplates(string moduleName)
         {
-            string templateDirectory = Path.Combine(ConfigManager.ApplicationPath, "Templates", moduleName);
-            if (Directory.Exists(templateDirectory))
+            string templatesDirectory = Path.Combine(ConfigManager.ApplicationPath, "Templates", moduleName);
+            if (Directory.Exists(templatesDirectory))
             {
-                LoadTemplateDirectory(_moduleTemplates, templateDirectory, false);
+                Logger.Debug($"Loading module templates for module '{moduleName}' from '{Util.Anonymizer.Anonymize(templatesDirectory)}'");
+                LoadTemplateDirectory(_moduleTemplates, templatesDirectory, false);
+            }
+            string pluingTemplatesDirectory = Path.Combine(ConfigManager.ApplicationPath, "Plugins", "Templates", moduleName);
+            if (Directory.Exists(pluingTemplatesDirectory))
+            {
+                Logger.Debug($"Loading module templates for plugin '{moduleName}' from '{pluingTemplatesDirectory}'");
+                LoadTemplateDirectory(_moduleTemplates, pluingTemplatesDirectory, false);
             }
         }
 
         private void PopulateUserTemplatesCollection()
         {
+            Logger.Debug("Loading user templates from documents folder");
             LoadTemplateDirectory(_userTemplates, _userTemplateDirectory, true);
         }
 
@@ -78,7 +91,19 @@ namespace GadrocsWorkshop.Helios
         {
             foreach (string templateFile in Directory.GetFiles(directory, "*.htpl"))
             {
-                templates.Add(LoadTemplate(templateFile, userTemplates));
+                HeliosTemplate template = LoadTemplate(templateFile, userTemplates);
+
+                // prevent crash on duplicate key
+                if (templates is HeliosTemplateCollection indexed)
+                {
+                    string key = indexed.GetKeyForItem(template);
+                    if (indexed.ContainsKey(key))
+                    {
+                        Logger.Error($"ignored duplicate template '{Util.Anonymizer.Anonymize(templateFile)}' already loaded from another location");
+                        continue;
+                    }
+                }
+                templates.Add(template);
             }
 
             foreach (string subDirectory in Directory.GetDirectories(directory))
